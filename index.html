@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFGSU Master - Plateforme Pédagogique & Évaluation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --warning: #f59e0b;
+      --bg: #0f172a;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+    
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .app-card {
+      background: var(--card-bg);
+      max-width: 800px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    /* En-tête */
+    .hero-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 5px 14px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+    .hero-title {
+      font-size: 1.85rem;
+      color: #0f172a;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    /* Sélecteur de mode Accueil */
+    .mode-selection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .mode-card {
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      background: #f8fafc;
+    }
+    .mode-card:hover { border-color: #94a3b8; }
+    .mode-card.selected {
+      border-color: var(--primary);
+      background: #f0f9ff;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    .mode-card h3 { font-size: 1rem; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .mode-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.35; }
+
+    /* Contrôles */
+    .controls-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 18px 0;
+    }
+    .field-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .select-styled, .input-styled {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: #f8fafc;
+      font-size: 0.95rem;
+      color: #1e293b;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .select-styled:focus, .input-styled:focus {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .switch-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .switch-text strong { display: block; font-size: 0.9rem; color: #1e293b; }
+    .switch-text span { font-size: 0.78rem; color: var(--text-muted); }
+    .toggle-input { width: 20px; height: 20px; accent-color: var(--primary); }
+
+    /* Boutons */
+    .btn {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4); }
+    .btn-success { background: var(--success); color: white; margin-top: 10px; }
+    .btn-secondary-soft { background: #f1f5f9; color: #334155; margin-top: 8px; }
+    .btn-secondary-soft:hover { background: #e2e8f0; }
+    .btn-warning-soft { background: #fffbeb; color: #b45309; border: 1.5px solid #fde68a; margin-top: 8px; }
+    .btn-row { display: flex; gap: 8px; margin-top: 10px; }
+
+    /* Quiz */
+    .quiz-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .progress-track, .timer-track {
+      height: 6px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .progress-fill-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+    .timer-fill-bar { height: 100%; background: var(--success); width: 100%; transition: width 1s linear; }
+
+    .q-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+
+    .answers-grid { display: flex; flex-direction: column; gap: 9px; }
+    .opt-card {
+      padding: 13px 16px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: white;
+      text-align: left;
+      font-size: 0.92rem;
+      color: #334155;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s;
+    }
+    .opt-card:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+    .opt-card.correct { background: var(--success-bg); border-color: var(--success); color: #065f46; }
+    .opt-card.wrong { background: var(--danger-bg); border-color: var(--danger); color: #991b1b; }
+
+    /* Rétroaction */
+    .feedback-card {
+      display: none;
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 16px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: #334155;
+    }
+    .illustration-box {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px dashed #cbd5e1;
+      margin-bottom: 12px;
+    }
+    .illustration-box svg { max-width: 100%; height: 95px; }
+    .illustration-caption {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    /* Modal QR Code */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-window {
+      background: white;
+      max-width: 460px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+    #qrcode-box {
+      margin: 18px auto;
+      padding: 12px;
+      background: white;
+      display: inline-block;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+    }
+    #qrcode-box img, #qrcode-box canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Résultats */
+    .score-badge-circle {
+      width: 95px;
+      height: 95px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0 auto 12px auto;
+    }
+    .stats-container {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 14px;
+      margin: 14px 0;
+      border: 1px solid var(--border);
+    }
+    .stats-line { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.88rem; }
+    .review-box {
+      text-align: left;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--danger);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+    }
+
+    /* Attestation Imprimable */
+    #certificate-printable { display: none; }
+    @media print {
+      body * { visibility: hidden; }
+      #certificate-printable, #certificate-printable * { visibility: visible; }
+      #certificate-printable {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 40px;
+        background: white;
+        color: black;
+      }
+    }
+    .cert-frame {
+      border: 6px double #0284c7;
+      padding: 40px;
+      text-align: center;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-card">
+
+  <div id="start-screen">
+    <div class="hero-header">
+      <span class="hero-badge">AFGSU 1 & 2 • Formation Continue</span>
+      <h1 class="hero-title">Plateforme Pédagogique</h1>
+      <p class="hero-sub">Entraînement réflexe, cas cliniques et validation des gestes d'urgence.</p>
+    </div>
+
+    <label class="field-label">Choisissez le mode d'utilisation :</label>
+    <div class="mode-selection-grid">
+      <div class="mode-card selected" id="card-mode-presenter" onclick="selectAppMode('PRESENTER')">
+        <h3>💻 Formateur / Débrief</h3>
+        <p>Pilotez la session sur grand écran avec analyse des réponses et schémas guidés.</p>
+      </div>
+      <div class="mode-card" id="card-mode-qr" onclick="selectAppMode('QR_CODE')">
+        <h3>📱 Stagiaire (QR Code)</h3>
+        <p>Affichez le QR Code normalisé pour faire participer les apprenants sur smartphone.</p>
+      </div>
+    </div>
+
+    <div class="controls-grid">
+      <div>
+        <label class="field-label" for="module-filter">Module de formation :</label>
+        <select id="module-filter" class="select-styled">
+          <option value="ALL">🌐 Tous les modules (Évaluation globale)</option>
+          <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales</option>
+          <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles</option>
+          <option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & NRBC</option>
+          <option value="Module 4 : Urgences Pédiatriques & Maternité">👶 Module 4 : Urgences Pédiatriques & Maternité</option>
+          <option value="Module 5 : Risque Infectieux & AES">💉 Module 5 : Risque Infectieux & AES</option>
+          <option value="Module 6 : Damage Control & Plaies Graves">🩹 Module 6 : Damage Control & Plaies Graves</option>
+          <option value="Module 7 : Cas Cliniques & ABCDE">📋 Module 7 : Cas Cliniques & ABCDE</option>
+        </select>
+      </div>
+
+      <label class="switch-card">
+        <div class="switch-text">
+          <strong>⏱️ Mode Stress / Chronomètre</strong>
+          <span>25 secondes par décision thérapeutique</span>
+        </div>
+        <input type="checkbox" id="timer-toggle" class="toggle-input">
+      </label>
+    </div>
+
+    <button type="button" class="btn btn-primary" id="btn-start-action">🚀 Démarrer l'entraînement</button>
+    
+    <button type="button" class="btn btn-warning-soft" id="review-mistakes-btn" style="display: none;">
+      🎯 Réviser mes erreurs ciblées (<span id="mistakes-count">0</span>)
+    </button>
+    
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary-soft" id="btn-show-dashboard">📊 Historique</button>
+      <button type="button" class="btn btn-secondary-soft" id="btn-show-io">⚙️ Banques QCM (Import/Export)</button>
+    </div>
+  </div>
+
+  <div id="quiz-screen" style="display: none;">
+    <div class="quiz-meta">
+      <span id="q-counter">Question 1 / X</span>
+      <span id="timer-display" style="color: var(--primary-dark);"></span>
+      <span id="score-counter">Score : 0</span>
+    </div>
+    
+    <div class="progress-track"><div class="progress-fill-bar" id="progress-fill"></div></div>
+    <div class="timer-track" id="timer-box"><div class="timer-fill-bar" id="timer-fill"></div></div>
+
+    <span class="hero-badge" id="category-badge">Module</span>
+    <h2 class="q-title" id="question-text">Énoncé...</h2>
+
+    <div class="answers-grid" id="options-container"></div>
+    <div class="feedback-card" id="feedback"></div>
+
+    <button type="button" class="btn btn-primary" id="next-btn" style="display: none; margin-top: 18px;">Question Suivante ➔</button>
+  </div>
+
+  <div id="result-screen" style="display: none; text-align: center;">
+    <span class="hero-badge">Session Validée</span>
+    <h1 style="font-size: 1.5rem; margin: 10px 0;">Bilan des Compétences</h1>
+    
+    <div class="score-badge-circle" id="final-score">0/0</div>
+    <p id="score-message" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px;"></p>
+
+    <div id="cert-generator-box" style="background: #f0f9ff; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: left;">
+      <strong style="color: #0369a1; font-size: 0.95rem; display: block; margin-bottom: 6px;">🎓 Attestation de Réussite :</strong>
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <input type="text" id="trainee-name" class="input-styled" placeholder="Nom et Prénom de l'apprenant">
+        <button type="button" class="btn btn-success" id="btn-generate-pdf" style="margin-top: 0; width: auto; white-space: nowrap;">📄 Imprimer Attestation</button>
+      </div>
+    </div>
+
+    <div id="review-container"></div>
+
+    <button type="button" class="btn btn-primary" id="btn-back-menu-1">Retourner au menu principal</button>
+  </div>
+
+  <div id="dashboard-screen" style="display: none;">
+    <div class="hero-header" style="text-align: left;">
+      <span class="hero-badge">Suivi des Acquis</span>
+      <h1 class="hero-title">Tableau de bord</h1>
+    </div>
+
+    <div class="stats-container">
+      <div class="stats-line"><span>Sessions effectuées :</span><strong id="stat-sessions">0</strong></div>
+      <div class="stats-line"><span>Taux moyen de réussite :</span><strong id="stat-avg">0%</strong></div>
+      <div class="stats-line"><span>Erreurs mémorisées :</span><strong id="stat-mistakes" style="color: var(--danger);">0</strong></div>
+    </div>
+
+    <h3 style="font-size: 0.95rem; margin-bottom: 8px;">Historique des dernières sessions :</h3>
+    <div id="history-container" style="max-height: 200px; overflow-y: auto;"></div>
+
+    <button type="button" class="btn btn-warning-soft" id="btn-clear-data">🗑️ Effacer l'historique</button>
+    <button type="button" class="btn btn-secondary-soft" id="btn-back-menu-2">Retour au menu</button>
+  </div>
+
+  <div id="io-screen" style="display: none;">
+    <div class="hero-header" style="text-align: left;">
+      <span class="hero-badge">Gestion de Contenu</span>
+      <h1 class="hero-title">Banques de Questions</h1>
+    </div>
+
+    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">
+      Exportez vos questions actuelles au format JSON pour les sauvegarder ou chargez une banque personnalisée.
+    </p>
+
+    <button type="button" class="btn btn-primary" id="btn-export-json">📥 Télécharger la banque (JSON)</button>
+    
+    <div style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
+      <label class="field-label">Importer un fichier JSON de questions :</label>
+      <input type="file" id="input-import-file" accept=".json" class="input-styled" style="padding: 8px;">
+      <button type="button" class="btn btn-success" id="btn-import-json" style="margin-top: 8px;">📤 Charger cette banque</button>
+    </div>
+
+    <button type="button" class="btn btn-secondary-soft" id="btn-back-menu-3">Retour au menu</button>
+  </div>
+
+</div>
+
+<div class="modal-backdrop" id="qr-modal">
+  <div class="modal-window">
+    <span class="hero-badge">Flash & Entraîne-toi</span>
+    <h2 style="font-size: 1.3rem; margin: 8px 0;">Scannez avec votre téléphone</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">
+      Ouvrez l'appareil photo du smartphone pour ouvrir le quiz directement.
+    </p>
+    
+    <div id="qrcode-box"></div>
+
+    <div style="margin-top: 8px; text-align: left;">
+      <label style="font-size: 0.75rem; font-weight: 700; color: #64748b;">URL encodée dans le QR Code :</label>
+      <input type="text" id="qr-custom-url" class="input-styled" style="font-size: 0.8rem; padding: 6px 8px; margin-top: 4px;" oninput="refreshQrCodeFromInput()">
+      <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+        💡 <em>Si vous êtes en local, collez ici l'adresse web hébergée de votre formation.</em>
+      </p>
+    </div>
+
+    <div class="btn-row" style="margin-top: 14px;">
+      <button type="button" class="btn btn-primary" onclick="closeQrModalAndStart()">Démarrer en mode local</button>
+      <button type="button" class="btn btn-secondary-soft" onclick="document.getElementById('qr-modal').style.display='none'">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div id="certificate-printable">
+  <div class="cert-frame">
+    <h1 style="color: #0369a1; font-size: 26pt; margin-bottom: 8px;">ATTESTATION DE FORMATION</h1>
+    <h3 style="color: #64748b; font-size: 14pt; font-weight: normal; margin-bottom: 30px;">Évaluation des Connaissances & Gestes d'Urgence (AFGSU)</h3>
+    
+    <p style="font-size: 13pt; margin-bottom: 15px;">Délivrée à :</p>
+    <h2 id="cert-trainee-display" style="font-size: 22pt; color: #0f172a; text-decoration: underline; margin-bottom: 25px;">[Nom de l'apprenant]</h2>
+    
+    <p style="font-size: 12pt; line-height: 1.8; max-width: 650px; margin: 0 auto 30px auto;">
+      A validé avec succès l'évaluation réflexe portant sur les <strong>Urgences Vitales, l'approche ABCDE, le Damage Control, le Risque Infectieux et les Situations Sanitaires Exceptionnelles</strong>.
+    </p>
+
+    <div style="font-size: 14pt; font-weight: bold; margin-bottom: 40px;">
+      Score obtenu : <span id="cert-score-display" style="color: #0284c7;">0%</span>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 50px; padding: 0 40px; font-size: 11pt;">
+      <div><p>Date : <strong id="cert-date-display">--/--/----</strong></p></div>
+      <div>
+        <p>Visa du Formateur AFGSU :</p>
+        <div style="margin-top: 25px; border-bottom: 1px solid #000; width: 160px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================= SCHÉMAS VECTORIELS SVG =================
+const SVG_DIAGRAMS = {
+  garrot: `
+    <div class="illustration-box">
+      <svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="42" width="360" height="16" rx="8" fill="#cbd5e1"/>
+        <circle cx="310" cy="50" r="14" fill="#ef4444" opacity="0.9"/>
+        <text x="310" y="53" font-size="9" fill="white" font-weight="bold" text-anchor="middle">PLAIE</text>
+        <rect x="180" y="25" width="22" height="50" rx="4" fill="#0284c7"/>
+        <text x="191" y="20" font-size="10" font-weight="bold" fill="#0284c7" text-anchor="middle">GARROT (5-7 cm en amont)</text>
+        <line x1="191" y1="82" x2="310" y2="82" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4"/>
+        <text x="250" y="94" font-size="9" fill="#64748b" text-anchor="middle">Hors articulation</text>
+      </svg>
+      <div class="illustration-caption">Pose du Garrot Tourniquet en amont de la plaie</div>
+    </div>
+  `,
+  heimlich: `
+    <div class="illustration-box">
+      <svg viewBox="0 0 380 90" xmlns="http://www.w3.org/2000/svg">
+        <rect x="30" y="15" width="140" height="60" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+        <text x="100" y="38" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">1 à 5 CLAQUES</text>
+        <text x="100" y="55" font-size="9" fill="#0284c7" text-anchor="middle">Entre les omoplates</text>
+        <text x="190" y="48" font-size="16" font-weight="bold" fill="#94a3b8">➔</text>
+        <rect x="210" y="15" width="140" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="280" y="38" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">1 à 5 COMPRESSIONS</text>
+        <text x="280" y="55" font-size="9" fill="#d97706" text-anchor="middle">Abdominales (Heimlich)</text>
+      </svg>
+      <div class="illustration-caption">Algorithme d'obstruction aiguë des voies aériennes</div>
+    </div>
+  `,
+  pediatrique: `
+    <div class="illustration-box">
+      <svg viewBox="0 0 380 90" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="70" cy="45" r="28" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+        <text x="70" y="43" font-size="12" font-weight="bold" fill="#1d4ed8" text-anchor="middle">5</text>
+        <text x="70" y="55" font-size="7" font-weight="bold" fill="#1d4ed8" text-anchor="middle">INSUFFLATIONS</text>
+        <text x="135" y="48" font-size="16" font-weight="bold" fill="#64748b">➔</text>
+        <rect x="170" y="20" width="170" height="50" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="255" y="42" font-size="12" font-weight="bold" fill="#047857" text-anchor="middle">15 COMPRESSIONS</text>
+        <text x="255" y="56" font-size="10" font-weight="bold" fill="#059669" text-anchor="middle">: 2 INSUFFLATIONS</text>
+      </svg>
+      <div class="illustration-caption">Protocole RCP Enfant & Nourrisson</div>
+    </div>
+  `,
+  chest_seal: `
+    <div class="illustration-box">
+      <svg viewBox="0 0 380 90" xmlns="http://www.w3.org/2000/svg">
+        <rect x="120" y="10" width="140" height="65" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+        <line x1="120" y1="10" x2="260" y2="10" stroke="#ef4444" stroke-width="4"/>
+        <line x1="120" y1="10" x2="120" y2="75" stroke="#ef4444" stroke-width="4"/>
+        <line x1="260" y1="10" x2="260" y2="75" stroke="#ef4444" stroke-width="4"/>
+        <line x1="120" y1="75" x2="260" y2="75" stroke="#10b981" stroke-width="3" stroke-dasharray="4"/>
+        <text x="190" y="42" font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">Pansement 3 côtés</text>
+        <text x="190" y="62" font-size="8" fill="#10b981" font-weight="bold" text-anchor="middle">Évacuation d'air à l'expiration</text>
+      </svg>
+      <div class="illustration-caption">Plaie soufflante du thorax (Valve unidirectionnelle)</div>
+    </div>
+  `
+};
+
+// ================= BANQUE DE QUESTIONS PAR DÉFAUT =================
+let questionBank = [
+  {
+    id: "m1_1",
+    module: "Module 1 : Urgences Vitales",
+    diagram: "garrot",
+    question: "Face à une hémorragie externe abondante au membre supérieur qui ne s'arrête pas par compression manuelle, quelle est l'action prioritaire ?",
+    options: [
+      "Poser un pansement compressif simple sans serrer",
+      "Poser un garrot tourniquet homologué en amont de la lésion",
+      "Élever le membre et appliquer des compresses froides",
+      "Rincer la plaie avec du sérum physiologique"
+    ],
+    answer: 1,
+    explanation: "En cas d'échec de compression ou d'hémorragie massive, poser immédiatement un garrot 5 à 7 cm en amont de la lésion (hors articulation) et noter l'heure."
+  },
+  {
+    id: "m1_2",
+    module: "Module 1 : Urgences Vitales",
+    diagram: "heimlich",
+    question: "Une victime consciente s'étouffe brutalement : elle ne peut plus parler, ne tousse pas et porte ses mains à son cou. Quelle séquence réflexe appliquer ?",
+    options: [
+      "Lui donner immédiatement un verre d'eau",
+      "1 à 5 claques dans le dos puis alterner avec 1 à 5 compressions abdominales (Heimlich)",
+      "Réaliser immédiatement 30 compressions thoraciques",
+      "L'allonger en position latérale de sécurité"
+    ],
+    answer: 1,
+    explanation: "Obstruction totale = 1 à 5 claques vigoureuses entre les omoplates. En cas d'échec, réaliser 1 à 5 compressions abdominales au creux épigastrique."
+  },
+  {
+    id: "m1_3",
+    module: "Module 1 : Urgences Vitales",
+    question: "Une victime inconsciente émet des bruits respiratoires lents, irréguliers et bruyants (gasps). Comment interpréter ce tableau ?",
+    options: [
+      "C'est une respiration normale de récupération",
+      "C'est un arrêt cardio-respiratoire, il faut débuter la RCP et poser le DAE",
+      "C'est une crise d'angoisse bénigne",
+      "Il faut surélever ses jambes"
+    ],
+    answer: 1,
+    explanation: "Les gasps ne constituent pas une respiration efficace mais le signe d'un arrêt cardio-respiratoire immédiat."
+  },
+  {
+    id: "m2_1",
+    module: "Module 2 : Urgences Potentielles",
+    question: "Quels sont les signes cardinaux d'alerte d'un AVC résumés par l'acronyme FAST / VITE ?",
+    options: [
+      "Fièvre élevée, raideur de nuque, toux",
+      "Visage dévié, inertie/faiblesse d'un membre, trouble de la parole",
+      "Douleur thoracique irradiant dans le bras gauche",
+      "Douleur abdominale aiguë"
+    ],
+    answer: 1,
+    explanation: "Visage déformé, Inertie d'un membre, Trouble de la parole = Appel du 15 immédiat en relevant l'heure précise d'apparition."
+  },
+  {
+    id: "m3_1",
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Face à une menace terroriste ou intrusion armée en milieu clos, quel est le triptyque réflexe ?",
+    options: [
+      "Observer, Analyser, Négocier",
+      "S'échapper, Se cacher / Se confiner, Alerter (17/112)",
+      "Attendre sur place les lumières allumées",
+      "Sortir en groupe dans les couloirs"
+    ],
+    answer: 1,
+    explanation: "Les 3 piliers opérationnels : 1. S'échapper si possible, 2. Se confiner/barricader en silence si fuite impossible, 3. Alerter les forces de l'ordre."
+  },
+  {
+    id: "m4_1",
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    diagram: "pediatrique",
+    question: "Quelle est la séquence de RCP recommandée chez l'enfant et le nourrisson ?",
+    options: [
+      "30 compressions thoraciques puis 2 insufflations",
+      "5 insufflations initiales de sauvetage puis cycle 15 compressions : 2 insufflations",
+      "Compressions continues sans insufflation",
+      "1 insufflation puis 5 compressions"
+    ],
+    answer: 1,
+    explanation: "L'origine étant presque toujours hypoxique chez l'enfant, on débute par 5 insufflations initiales puis on applique le ratio 15:2."
+  },
+  {
+    id: "m5_1",
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "En cas d'Accident d'Exposition au Sang (AES) par piqûre avec une aiguille souillée, quelle est la conduite locale immédiate ?",
+    options: [
+      "Faire saigner fortement en pressant fort",
+      "Laver à l'eau et savon, rincer, puis désinfecter au moins 5 min (Dakin/alcool 70°)",
+      "Poser un pansement sec sans rincer",
+      "Attendre la fin de journée pour désinfecter"
+    ],
+    answer: 1,
+    explanation: "Lavage immédiat sans écraser les tissus, suivi d'une désinfection de contact prolongée (≥ 5 min) au Dakin ou à l'alcool 70°."
+  },
+  {
+    id: "m6_1",
+    module: "Module 6 : Damage Control & Plaies Graves",
+    diagram: "chest_seal",
+    question: "Face à une plaie thoracique soufflante par arme blanche, quel pansement d'urgence appliquer ?",
+    options: [
+      "Pansement hermétique occlusif 4 côtés",
+      "Pansement 3 côtés (effet valve) ou pansement thoracique à valve",
+      "Méchage en force de la cavité",
+      "Garrot de poitrine"
+    ],
+    answer: 1,
+    explanation: "Le pansement 3 côtés évite la constitution d'un pneumothorax sous tension en laissant l'air s'échapper à l'expiration."
+  },
+  {
+    id: "m7_1",
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Patient présentant sueurs, pâleur, FC 128 bpm, TRC > 3s et PA à 85/55 mmHg. Quelle est la défaillance ABCDE principale ?",
+    options: [
+      "Défaillance des voies aériennes (A)",
+      "Détresse circulatoire / État de choc (C)",
+      "Défaillance neurologique isolée (D)",
+      "Hypothermie sévère (E)"
+    ],
+    answer: 1,
+    explanation: "Tachycardie, hypotension et temps de recoloration cutanée allongé traduisent un choc circulatoire (C). Alerte médicale immédiate."
+  }
+];
+
+// ================= GESTION DU STOCKAGE =================
+const Storage = {
+  getBank() {
+    try {
+      const b = localStorage.getItem('afgsu_custom_bank');
+      return b ? JSON.parse(b) : questionBank;
+    } catch(e) { return questionBank; }
+  },
+  saveBank(bank) {
+    try { localStorage.setItem('afgsu_custom_bank', JSON.stringify(bank)); } catch(e) {}
+  },
+  getMistakes() {
+    try { return JSON.parse(localStorage.getItem('afgsu_mistakes_v3')) || []; } catch(e) { return []; }
+  },
+  saveMistake(id, question) {
+    try {
+      let list = this.getMistakes();
+      if (!list.some(m => m.id === id)) {
+        list.push({ id, question });
+        localStorage.setItem('afgsu_mistakes_v3', JSON.stringify(list));
+      }
+    } catch(e) {}
+  },
+  removeMistake(id) {
+    try {
+      let list = this.getMistakes().filter(m => m.id !== id);
+      localStorage.setItem('afgsu_mistakes_v3', JSON.stringify(list));
+    } catch(e) {}
+  },
+  getHistory() {
+    try { return JSON.parse(localStorage.getItem('afgsu_history_v3')) || []; } catch(e) { return []; }
+  },
+  addHistory(entry) {
+    try {
+      let h = this.getHistory();
+      h.unshift(entry);
+      if (h.length > 20) h.pop();
+      localStorage.setItem('afgsu_history_v3', JSON.stringify(h));
+    } catch(e) {}
+  },
+  clearAll() {
+    try {
+      localStorage.removeItem('afgsu_mistakes_v3');
+      localStorage.removeItem('afgsu_history_v3');
+    } catch(e) {}
+  }
+};
+
+// ================= GESTION DU QR CODE =================
+let qrcodeInstance = null;
+
+function displayStandardQrCode(targetUrl) {
+  const container = document.getElementById('qrcode-box');
+  container.innerHTML = ''; // Nettoyage
+  
+  if (typeof QRCode !== 'undefined') {
+    qrcodeInstance = new QRCode(container, {
+      text: targetUrl,
+      width: 200,
+      height: 200,
+      colorDark: "#0f172a",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  } else {
+    container.innerHTML = `<p style="color:red; font-size:0.8rem;">Module QRCode en cours de chargement...</p>`;
+  }
+}
+
+function refreshQrCodeFromInput() {
+  const customUrl = document.getElementById('qr-custom-url').value.trim();
+  if (customUrl) {
+    displayStandardQrCode(customUrl);
+  }
+}
+
+function selectAppMode(mode) {
+  selectedAppMode = mode;
+  document.getElementById('card-mode-presenter').classList.toggle('selected', mode === 'PRESENTER');
+  document.getElementById('card-mode-qr').classList.toggle('selected', mode === 'QR_CODE');
+}
+
+function handleStartButton() {
+  if (selectedAppMode === 'QR_CODE') {
+    let currentUrl = window.location.href;
+    // Si ouvert en file:///, proposer une URL modèle
+    if (currentUrl.startsWith('file:///')) {
+      currentUrl = "https://mon-centre-formation.fr/afgsu";
+    }
+    document.getElementById('qr-custom-url').value = currentUrl;
+    displayStandardQrCode(currentUrl);
+    document.getElementById('qr-modal').style.display = 'flex';
+  } else {
+    startQuiz(false);
+  }
+}
+
+function closeQrModalAndStart() {
+  document.getElementById('qr-modal').style.display = 'none';
+  startQuiz(false);
+}
+
+// ================= ÉTAT DU QUIZ =================
+let selectedAppMode = 'PRESENTER';
+let activeQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let wrongAnswers = [];
+let isMistakeMode = false;
+let isTimerActive = false;
+let timerInterval = null;
+let timeLeft = 25;
+const QUESTION_TIME_LIMIT = 25;
+
+function updateMistakesButton() {
+  const count = Storage.getMistakes().length;
+  const btn = document.getElementById('review-mistakes-btn');
+  const countEl = document.getElementById('mistakes-count');
+  if (btn && countEl) {
+    countEl.textContent = count;
+    btn.style.display = count > 0 ? 'flex' : 'none';
+  }
+}
+
+function startQuiz(mistakesOnly) {
+  isMistakeMode = mistakesOnly;
+  isTimerActive = document.getElementById('timer-toggle').checked;
+  const bank = Storage.getBank();
+
+  if (isMistakeMode) {
+    const mistakeIds = Storage.getMistakes().map(m => m.id);
+    activeQuestions = bank.filter(q => mistakeIds.includes(q.id));
+  } else {
+    const selectedMod = document.getElementById('module-filter').value;
+    activeQuestions = (selectedMod === "ALL") ? [...bank] : bank.filter(q => q.module === selectedMod);
+  }
+
+  if (activeQuestions.length === 0) {
+    alert("Aucune question disponible pour cette sélection.");
+    return;
+  }
+
+  activeQuestions = activeQuestions.sort(() => Math.random() - 0.5);
+  currentIndex = 0;
+  score = 0;
+  wrongAnswers = [];
+
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('dashboard-screen').style.display = 'none';
+  document.getElementById('io-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+
+  document.getElementById('timer-box').style.display = isTimerActive ? 'block' : 'none';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  clearInterval(timerInterval);
+  const q = activeQuestions[currentIndex];
+
+  const pct = (currentIndex / activeQuestions.length) * 100;
+  document.getElementById('progress-fill').style.width = `${pct}%`;
+  document.getElementById('q-counter').textContent = `Question ${currentIndex + 1} / ${activeQuestions.length}`;
+  document.getElementById('score-counter').textContent = `Score : ${score}`;
+
+  document.getElementById('category-badge').textContent = q.module;
+  document.getElementById('question-text').textContent = q.question;
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('next-btn').style.display = 'none';
+
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt-card';
+    btn.innerHTML = `<span>${opt}</span> <span style="opacity:0.3;">➜</span>`;
+    btn.addEventListener('click', () => selectAnswer(idx));
+    container.appendChild(btn);
+  });
+
+  if (isTimerActive) {
+    timeLeft = QUESTION_TIME_LIMIT;
+    updateTimerBar();
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerBar();
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        timeOutAction();
+      }
+    }, 1000);
+  } else {
+    document.getElementById('timer-display').textContent = '';
+  }
+}
+
+function updateTimerBar() {
+  const percent = (timeLeft / QUESTION_TIME_LIMIT) * 100;
+  const bar = document.getElementById('timer-fill');
+  bar.style.width = `${percent}%`;
+  bar.style.background = timeLeft > 10 ? 'var(--success)' : (timeLeft > 5 ? 'var(--warning)' : 'var(--danger)');
+  document.getElementById('timer-display').textContent = `⏱️ ${timeLeft}s`;
+}
+
+function timeOutAction() {
+  const q = activeQuestions[currentIndex];
+  const buttons = document.querySelectorAll('.opt-card');
+  buttons.forEach(b => b.disabled = true);
+  buttons[q.answer].classList.add('correct');
+
+  wrongAnswers.push({
+    question: q.question,
+    userChoice: "Temps dépassé",
+    correctChoice: q.options[q.answer],
+    explanation: q.explanation
+  });
+  Storage.saveMistake(q.id, q.question);
+
+  const diagramHtml = (q.diagram && SVG_DIAGRAMS[q.diagram]) ? SVG_DIAGRAMS[q.diagram] : '';
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `
+    <strong style="color: var(--danger);">⏱️ Temps écoulé !</strong><br><br>
+    ${diagramHtml}
+    <strong>Rappel réflexe :</strong> ${q.explanation}
+  `;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'flex';
+}
+
+function selectAnswer(idx) {
+  clearInterval(timerInterval);
+  const q = activeQuestions[currentIndex];
+  const buttons = document.querySelectorAll('.opt-card');
+  buttons.forEach(b => b.disabled = true);
+
+  if (idx === q.answer) {
+    buttons[idx].classList.add('correct');
+    score++;
+    if (isMistakeMode) Storage.removeMistake(q.id);
+  } else {
+    buttons[idx].classList.add('wrong');
+    buttons[q.answer].classList.add('correct');
+    wrongAnswers.push({
+      question: q.question,
+      userChoice: q.options[idx],
+      correctChoice: q.options[q.answer],
+      explanation: q.explanation
+    });
+    Storage.saveMistake(q.id, q.question);
+  }
+
+  document.getElementById('score-counter').textContent = `Score : ${score}`;
+  
+  const diagramHtml = (q.diagram && SVG_DIAGRAMS[q.diagram]) ? SVG_DIAGRAMS[q.diagram] : '';
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `
+    ${diagramHtml}
+    <strong>Rappel réflexe :</strong> ${q.explanation}
+  `;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'flex';
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < activeQuestions.length) loadQuestion();
+  else showResults();
+}
+
+function showResults() {
+  clearInterval(timerInterval);
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+
+  document.getElementById('final-score').textContent = `${score}/${activeQuestions.length}`;
+  const pct = Math.round((score / activeQuestions.length) * 100);
+  
+  const msg = document.getElementById('score-message');
+  if (pct >= 80) {
+    msg.innerHTML = "🌟 <strong>Félicitations !</strong> Objectifs de prise en charge validés selon les référentiels.";
+    document.getElementById('cert-generator-box').style.display = 'block';
+  } else {
+    msg.innerHTML = "⚠️ <strong>Révision conseillée.</strong> Certains réflexes nécessitent une consolidation.";
+    document.getElementById('cert-generator-box').style.display = 'none';
+  }
+
+  const modName = isMistakeMode ? "Révision Erreurs" : document.getElementById('module-filter').value;
+  Storage.addHistory({
+    date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
+    module: modName,
+    score: score,
+    total: activeQuestions.length,
+    percentage: pct
+  });
+
+  const reviewBox = document.getElementById('review-container');
+  reviewBox.innerHTML = '';
+  if (wrongAnswers.length > 0) {
+    const title = document.createElement('h3');
+    title.style.cssText = "font-size: 0.95rem; text-align: left; margin: 14px 0 8px 0;";
+    title.textContent = "Points à retravailler :";
+    reviewBox.appendChild(title);
+
+    wrongAnswers.forEach(w => {
+      const d = document.createElement('div');
+      d.className = 'review-box';
+      d.innerHTML = `
+        <strong>${w.question}</strong><br>
+        <span style="color: var(--danger);">✖ Réponse donnée : ${w.userChoice}</span><br>
+        <span style="color: var(--success);">✔ Réponse attendue : ${w.correctChoice}</span><br>
+        <em style="color: var(--text-muted);">${w.explanation}</em>
+      `;
+      reviewBox.appendChild(d);
+    });
+  }
+  updateMistakesButton();
+}
+
+// ================= GESTION DU CERTIFICAT PDF =================
+function generateCertificatePdf() {
+  const name = document.getElementById('trainee-name').value.trim();
+  if (!name) {
+    alert("Veuillez saisir le nom et prénom de l'apprenant.");
+    return;
+  }
+  const pct = Math.round((score / activeQuestions.length) * 100);
+  document.getElementById('cert-trainee-display').textContent = name;
+  document.getElementById('cert-score-display').textContent = `${pct}% (${score}/${activeQuestions.length})`;
+  document.getElementById('cert-date-display').textContent = new Date().toLocaleDateString('fr-FR');
+  window.print();
+}
+
+// ================= TABLEAU DE BORD =================
+function showDashboard() {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('dashboard-screen').style.display = 'block';
+
+  const history = Storage.getHistory();
+  const mistakes = Storage.getMistakes();
+
+  document.getElementById('stat-sessions').textContent = history.length;
+  document.getElementById('stat-mistakes').textContent = mistakes.length;
+
+  if (history.length > 0) {
+    const avg = Math.round(history.reduce((a, b) => a + b.percentage, 0) / history.length);
+    document.getElementById('stat-avg').textContent = `${avg}%`;
+  } else {
+    document.getElementById('stat-avg').textContent = '0%';
+  }
+
+  const list = document.getElementById('history-container');
+  list.innerHTML = '';
+  if (history.length === 0) {
+    list.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem; padding: 10px 0;">Aucun historique enregistré.</p>';
+  } else {
+    history.forEach(h => {
+      const item = document.createElement('div');
+      item.style.cssText = "padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.82rem;";
+      item.innerHTML = `
+        <div><strong>${h.module}</strong><br><span style="color: var(--text-muted);">${h.date}</span></div>
+        <div style="font-weight: 700; color: ${h.percentage >= 80 ? 'var(--success)' : 'var(--danger)'}; align-self: center;">
+          ${h.score}/${h.total} (${h.percentage}%)
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  }
+}
+
+// ================= IMPORT / EXPORT =================
+function showIoScreen() {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('io-screen').style.display = 'block';
+}
+
+function exportQuestionsJson() {
+  const bank = Storage.getBank();
+  const blob = new Blob([JSON.stringify(bank, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `banque_afgsu_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importQuestionsJson() {
+  const fileInput = document.getElementById('input-import-file');
+  if (!fileInput.files.length) {
+    alert("Veuillez sélectionner un fichier .json");
+    return;
+  }
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (Array.isArray(imported) && imported.length > 0 && imported[0].question) {
+        Storage.saveBank(imported);
+        alert(`Succès ! ${imported.length} questions importées avec succès.`);
+        backToHome();
+      } else {
+        alert("Format JSON invalide. Vérifiez la structure des questions.");
+      }
+    } catch(err) {
+      alert("Erreur lors de la lecture du fichier JSON.");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function backToHome() {
+  clearInterval(timerInterval);
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('dashboard-screen').style.display = 'none';
+  document.getElementById('io-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+  updateMistakesButton();
+}
+
+// ================= INITIALISATION =================
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('btn-start-action').addEventListener('click', handleStartButton);
+  document.getElementById('review-mistakes-btn').addEventListener('click', () => startQuiz(true));
+  document.getElementById('btn-show-dashboard').addEventListener('click', showDashboard);
+  document.getElementById('btn-show-io').addEventListener('click', showIoScreen);
+  document.getElementById('next-btn').addEventListener('click', nextQuestion);
+  document.getElementById('btn-generate-pdf').addEventListener('click', generateCertificatePdf);
+
+  document.getElementById('btn-export-json').addEventListener('click', exportQuestionsJson);
+  document.getElementById('btn-import-json').addEventListener('click', importQuestionsJson);
+
+  document.getElementById('btn-back-menu-1').addEventListener('click', backToHome);
+  document.getElementById('btn-back-menu-2').addEventListener('click', backToHome);
+  document.getElementById('btn-back-menu-3').addEventListener('click', backToHome);
+
+  document.getElementById('btn-clear-data').addEventListener('click', () => {
+    if (confirm("Réinitialiser l'ensemble des données d'évaluation ?")) {
+      Storage.clearAll();
+      showDashboard();
+      updateMistakesButton();
+    }
+  });
+
+  updateMistakesButton();
+});
+</script>
+
+</body>
+</html>
