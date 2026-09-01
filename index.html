@@ -228,7 +228,7 @@
       </div>
     </div>
 
-    <!-- 2 BOUTONS D'ACTION CLAIRS -->
+    <!-- 2 Boutons Formateur -->
     <button type="button" class="btn btn-success" id="btn-trainer-start-live" style="font-size:1.05rem; padding:15px; margin-top:20px;">
       📱 Lancer la Session Live Interactive (<span id="btn-count">0</span> participant(s))
     </button>
@@ -321,8 +321,7 @@ const SVG_DIAGRAMS = {
   garrot: `<div class="illustration-box"><svg viewBox="0 0 400 90"><rect x="20" y="38" width="360" height="14" rx="7" fill="#cbd5e1"/><circle cx="310" cy="45" r="14" fill="#ef4444"/><rect x="180" y="20" width="22" height="50" rx="4" fill="#0284c7"/><text x="191" y="16" font-size="10" font-weight="bold" fill="#0284c7" text-anchor="middle">GARROT (5-7 cm en amont)</text></svg></div>`,
   heimlich: `<div class="illustration-box"><svg viewBox="0 0 380 80"><rect x="20" y="15" width="150" height="50" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/><text x="95" y="38" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">1 à 5 CLAQUES</text><text x="95" y="52" font-size="9" fill="#0284c7" text-anchor="middle">Entre les omoplates</text><text x="190" y="45" font-size="16" font-weight="bold" fill="#94a3b8">➔</text><rect x="210" y="15" width="150" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/><text x="285" y="38" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">1 à 5 COMPRESSIONS</text><text x="285" y="52" font-size="9" fill="#d97706" text-anchor="middle">Abdominales (Heimlich)</text></svg></div>`,
   pediatrique: `<div class="illustration-box"><svg viewBox="0 0 380 80"><circle cx="70" cy="40" r="26" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="70" y="38" font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">5</text><text x="70" y="50" font-size="7" font-weight="bold" fill="#1d4ed8" text-anchor="middle">INSUFFLATIONS</text><text x="135" y="44" font-size="16" font-weight="bold" fill="#64748b">➔</text><rect x="170" y="15" width="170" height="50" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="255" y="38" font-size="11" font-weight="bold" fill="#047857" text-anchor="middle">15 COMPRESSIONS</text><text x="255" y="52" font-size="10" font-weight="bold" fill="#059669" text-anchor="middle">: 2 INSUFFLATIONS</text></svg></div>`,
-  chest_seal: `<div class="illustration-box"><svg viewBox="0 0 380 80"><rect x="120" y="10" width="140" height="60" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="2"/><line x1="120" y1="10" x2="260" y2="10" stroke="#ef4444" stroke-width="4"/><line x1="120" y1="10" x2="120" y2="70" stroke="#ef4444" stroke-width="4"/><line x1="260" y1="10" x2="260" y2="70" stroke="#ef4444" stroke-width="4"/><line x1="120" y1="70" x2="260" y2="70" stroke="#10b981" stroke-width="3" stroke-dasharray="4"/>
-  <text x="190" y="40" font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">Pansement 3 côtés</text><text x="190" y="56" font-size="8" fill="#10b981" font-weight="bold" text-anchor="middle">Évacuation d'air</text></svg></div>`
+  chest_seal: `<div class="illustration-box"><svg viewBox="0 0 380 80"><rect x="120" y="10" width="140" height="60" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="2"/><line x1="120" y1="10" x2="260" y2="10" stroke="#ef4444" stroke-width="4"/><line x1="120" y1="10" x2="120" y2="70" stroke="#ef4444" stroke-width="4"/><line x1="260" y1="10" x2="260" y2="70" stroke="#ef4444" stroke-width="4"/><line x1="120" y1="70" x2="260" y2="70" stroke="#10b981" stroke-width="3" stroke-dasharray="4"/><text x="190" y="40" font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">Pansement 3 côtés</text><text x="190" y="56" font-size="8" fill="#10b981" font-weight="bold" text-anchor="middle">Évacuation d'air</text></svg></div>`
 };
 
 // ================= BANQUE COMPLÈTE DE 70 QUESTIONS =================
@@ -715,40 +714,140 @@ function showGameOverScreen() {
   }
 }
 
-// ================= ATTESTATION PDF & EMAIL =================
+// ================= ATTESTATION PDF HAUT DE GAMME DESIGN =================
 function generateAttestationPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
   const pct = Math.round((userScore / activeQuestions.length) * 100);
   const dateStr = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
 
-  doc.setDrawColor(2, 132, 199); doc.setLineWidth(2); doc.rect(10, 10, 277, 190);
-  doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(15, 23, 42);
-  doc.text("ATTESTATION DE RÉUSSITE - SESSION LIVE AFGSU", 148.5, 40, { align: "center" });
+  // 1. Fond & Double Encadrement Diplôme
+  doc.setFillColor(248, 250, 252);
+  doc.rect(0, 0, 297, 210, 'F');
 
-  doc.setFontSize(13); doc.setFont("helvetica", "normal"); doc.setTextColor(51, 65, 85);
-  doc.text("Délivrée à :", 148.5, 70, { align: "center" });
+  // Bordure Bleue Principale
+  doc.setDrawColor(2, 132, 199);
+  doc.setLineWidth(2.5);
+  doc.rect(10, 10, 277, 190);
 
-  doc.setFontSize(22); doc.setFont("helvetica", "bold"); doc.setTextColor(2, 132, 199);
-  doc.text(traineeName || "Stagiaire AFGSU", 148.5, 84, { align: "center" });
+  // Liseré intérieur Rouge Urgence & Or
+  doc.setDrawColor(239, 68, 68);
+  doc.setLineWidth(0.8);
+  doc.rect(13, 13, 271, 184);
 
-  doc.setFontSize(14); doc.setTextColor(15, 23, 42);
-  doc.text(`Score obtenu : ${userScore} / ${activeQuestions.length} (${pct}%)`, 148.5, 120, { align: "center" });
+  // 2. Bandeau Supérieur Médical Bicolore
+  doc.setFillColor(3, 105, 161);
+  doc.rect(14, 14, 269, 22, 'F');
+  
+  doc.setFillColor(239, 68, 68);
+  doc.rect(14, 36, 269, 2, 'F');
 
-  doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Fait le ${dateStr}`, 30, 160);
-  doc.setFont("helvetica", "bold"); doc.setFontSize(11);
-  doc.text("Alain VALARCHER", 215, 153, { align: "center" });
-  doc.setFont("helvetica", "normal"); doc.setFontSize(8.5);
-  doc.text("Formateur AFGSU | CESU 94 | Croix-Rouge Française", 215, 159, { align: "center" });
-  doc.text("Ambulancier SMUR – SAMU 91", 215, 164, { align: "center" });
+  // Croix de Secours Stylisée en en-tête
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(26, 18, 14, 14, 2, 2, 'F');
+  doc.setFillColor(239, 68, 68);
+  doc.rect(31.5, 20.5, 3, 9, 'F');
+  doc.rect(28.5, 23.5, 9, 3, 'F');
 
+  // Titres En-tête
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(255, 255, 255);
+  doc.text("FORMATION AUX GESTES ET SOINS D'URGENCE", 148.5, 24, { align: "center" });
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(224, 242, 254);
+  doc.text("RÉFÉRENTIEL NATIONAL • CESU 94 • CROIX-ROUGE FRANÇAISE • SAMU 91", 148.5, 31, { align: "center" });
+
+  // 3. Titre Officiel Attestation
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.setTextColor(15, 23, 42);
+  doc.text("ATTESTATION DE RÉUSSITE & RÉFLEXES D'URGENCE", 148.5, 52, { align: "center" });
+
+  // Badge d'accréditation
+  doc.setFillColor(236, 253, 245);
+  doc.roundedRect(83, 58, 131, 8, 4, 4, 'F');
+  doc.setDrawColor(16, 185, 129);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(83, 58, 131, 8, 4, 4, 'D');
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.setTextColor(5, 150, 105);
+  doc.text("✓ COMPÉTENCES THÉORIQUES & RÉFLEXES CLINIQUES VALIDÉS", 148.5, 63.5, { align: "center" });
+
+  // 4. Attribution Stagiaire
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.setTextColor(71, 85, 105);
+  doc.text("La présente attestation est décernée à :", 148.5, 78, { align: "center" });
+
+  // Nom du Stagiaire avec soulignement dynamique
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.setTextColor(2, 132, 199);
+  doc.text(traineeName || "Stagiaire AFGSU", 148.5, 90, { align: "center" });
+
+  doc.setDrawColor(2, 132, 199);
+  doc.setLineWidth(1);
+  doc.line(90, 93, 207, 93);
+
+  // 5. Cadre du Résultat et Score
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(68, 102, 161, 30, 4, 4, 'F');
+  doc.setDrawColor(226, 232, 240);
+  doc.setLineWidth(0.8);
+  doc.roundedRect(68, 102, 161, 30, 4, 4, 'D');
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10.5);
+  doc.setTextColor(100, 116, 139);
+  doc.text("Évaluation continue sur simulateur interactif", 148.5, 110, { align: "center" });
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(15);
+  doc.setTextColor(15, 23, 42);
+  doc.text(`Score Final : ${userScore} / ${activeQuestions.length}  (${pct} % de réussite)`, 148.5, 122, { align: "center" });
+
+  // 6. Pied de page & Signature
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9.5);
+  doc.setTextColor(100, 116, 139);
+  doc.text(`Délivré le ${dateStr}`, 32, 160);
+  doc.text("Identifiant de session : " + (roomId || "AFGSU-LIVE"), 32, 166);
+
+  // Signature Alain VALARCHER avec tampon stylisé
+  doc.setFillColor(241, 245, 249);
+  doc.roundedRect(165, 145, 95, 36, 3, 3, 'F');
+  doc.setDrawColor(2, 132, 199);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(165, 145, 95, 36, 3, 3, 'D');
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(15, 23, 42);
+  doc.text("Alain VALARCHER", 212.5, 153, { align: "center" });
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(71, 85, 105);
+  doc.text("Formateur AFGSU • CESU 94 • Croix-Rouge Française", 212.5, 159, { align: "center" });
+  doc.text("Ambulancier SMUR – SAMU 91", 212.5, 164, { align: "center" });
+
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(7.5);
+  doc.setTextColor(16, 185, 129);
+  doc.text("✓ Validation Pédagogique Conforme", 212.5, 172, { align: "center" });
+
+  // Téléchargement
   doc.save(`Attestation_AFGSU_${(traineeName || "Stagiaire").replace(/\s+/g, '_')}.pdf`);
 }
 
 function sendAttestationByEmail() {
   const pct = Math.round((userScore / activeQuestions.length) * 100);
   const subject = encodeURIComponent(`Attestation AFGSU - ${traineeName || 'Stagiaire'}`);
-  const body = encodeURIComponent(`Bonjour,\n\nVoici mon résultat au quiz live AFGSU :\n• Stagiaire : ${traineeName}\n• Score : ${userScore}/${activeQuestions.length} (${pct}%)\n• Formateur : Alain VALARCHER (CESU 94 / Croix-Rouge / SAMU 91)`);
+  const body = encodeURIComponent(`Bonjour,\n\nVoici mon résultat officiel à l'évaluation AFGSU :\n• Stagiaire : ${traineeName}\n• Score : ${userScore}/${activeQuestions.length} (${pct}%)\n• Formateur : Alain VALARCHER (CESU 94 / Croix-Rouge Française / SAMU 91)\n\nL'attestation PDF a été générée lors de la session.`);
   window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
 </script>
