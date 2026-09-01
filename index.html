@@ -11,7 +11,7 @@
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230284c7'/%3E%3Crect x='216' y='110' width='80' height='292' rx='16' fill='%23ffffff'/%3E%3Crect x='110' y='216' width='292' height='80' rx='16' fill='%23ffffff'/%3E%3Ccircle cx='256' cy='256' r='38' fill='%23ef4444'/%3E%3C/svg%3E">
 
-  <!-- Moteur P2P Temps Réel (PeerJS), QR Code, PDF & Confettis -->
+  <!-- PeerJS, QRCode, jsPDF, Confetti -->
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -103,7 +103,7 @@
     .btn-secondary { background: #f1f5f9; color: #334155; }
     .btn-secondary:hover { background: #e2e8f0; }
 
-    /* Lobby Stagiaires */
+    /* Lobby */
     .lobby-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -124,6 +124,7 @@
       border: 2px dashed var(--border);
       border-radius: 12px;
       align-content: flex-start;
+      min-height: 100px;
     }
     .trainee-pill {
       background: var(--primary-light);
@@ -139,7 +140,7 @@
     }
     @keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-    /* Questions & Options */
+    /* Jeu */
     .q-title { font-size: 1.15rem; font-weight: 700; color: #0f172a; margin: 14px 0; }
     .answers-grid { display: flex; flex-direction: column; gap: 9px; }
     .opt-card {
@@ -188,18 +189,18 @@
 
 <div class="app-card">
 
-  <!-- ================= 1. FORMATEUR : CONFIGURATION & SALLE D'ATTENTE ================= -->
+  <!-- ================= 1. FORMATEUR : LOBBY & CONFIGURATION ================= -->
   <div id="screen-trainer-config" style="display: none;">
     <div style="text-align: center; margin-bottom: 16px;">
-      <span class="hero-badge">Session Live Formateur</span>
-      <h1 class="hero-title">Lobby Interactif</h1>
-      <p class="hero-sub">Projetez cet écran. Les stagiaires rejoignent la session en direct.</p>
+      <span class="hero-badge">Console Formateur</span>
+      <h1 class="hero-title">Lobby Live AFGSU</h1>
+      <p class="hero-sub">Projetez cet écran. Les stagiaires scannent pour rejoindre.</p>
     </div>
 
-    <label style="font-size:0.85rem; font-weight:700; color:#334155;">Thème du Quiz :</label>
+    <label style="font-size:0.85rem; font-weight:700; color:#334155;">Thème de l'évaluation :</label>
     <select id="trainer-module-select" class="select-styled">
-      <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions)</option>
-      <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions)</option>
+      <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions aléatoires)</option>
+      <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions aléatoires)</option>
       <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales</option>
       <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles</option>
       <option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & Collectifs</option>
@@ -218,44 +219,44 @@
       <div>
         <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:6px;">
           <span>Participants connectés :</span>
-          <span id="connected-count" style="color:var(--primary);">0</span>
+          <span id="connected-count" style="color:var(--primary); font-size:1.1rem;">0</span>
         </div>
         <div class="trainees-badge-grid" id="trainees-list-box">
-          <span style="font-size:0.8rem; color:var(--text-muted); font-style:italic;">En attente de connexion des stagiaires...</span>
+          <span id="waiting-msg" style="font-size:0.8rem; color:var(--text-muted); font-style:italic;">En attente de connexion des stagiaires...</span>
         </div>
       </div>
     </div>
 
     <button type="button" class="btn btn-success" id="btn-trainer-start-live" style="font-size:1.05rem; padding:16px; margin-top:20px;">
-      🚀 Lancer la session pour tous (<span id="btn-count">0</span> participants)
+      🚀 Lancer la session pour tous (<span id="btn-count">0</span> participant(s))
     </button>
   </div>
 
-  <!-- ================= 2. STAGIAIRE : ÉCRAN D'ACCUEIL MOBILE ================= -->
+  <!-- ================= 2. STAGIAIRE : CONNEXION ================= -->
   <div id="screen-trainee-join" style="display: none; text-align: center;">
     <span class="hero-badge">AFGSU Live</span>
-    <h1 class="hero-title" style="margin: 10px 0;">Connexion au Quiz</h1>
-    <p class="hero-sub">Entrez votre nom pour participer sur grand écran.</p>
+    <h1 class="hero-title" style="margin: 10px 0;">Rejoindre la Session</h1>
+    <p class="hero-sub">Entrez votre nom pour participer en direct sur grand écran.</p>
 
     <div style="margin: 20px 0; text-align: left;">
       <label style="font-size:0.85rem; font-weight:700; color:#334155;">Votre Prénom & Nom :</label>
       <input type="text" id="input-trainee-name" class="input-styled" placeholder="Ex: Sarah B." maxlength="25">
     </div>
 
-    <button type="button" class="btn btn-primary" id="btn-trainee-join-room" style="padding:16px;">
+    <button type="button" class="btn btn-primary" id="btn-trainee-join-room" style="padding:16px; font-size:1.05rem;">
       Rejoindre la salle
     </button>
   </div>
 
-  <!-- ================= 3. STAGIAIRE : SALLE D'ATTENTE ================= -->
+  <!-- ================= 3. STAGIAIRE : ATTENTE ================= -->
   <div id="screen-trainee-waiting" style="display: none; text-align: center; padding: 20px 0;">
     <div style="font-size: 3rem; margin-bottom: 10px;">⏳</div>
     <h2 style="font-size: 1.4rem;">Vous êtes connecté !</h2>
-    <p style="color: var(--text-muted); margin-top: 8px;">Regardez le tableau. Le formateur va lancer la première question...</p>
+    <p style="color: var(--text-muted); margin-top: 8px;">Regardez l'écran du formateur. La session va démarrer...</p>
     <div style="margin-top: 20px; font-weight: 700; color: var(--primary);" id="trainee-confirmed-name"></div>
   </div>
 
-  <!-- ================= 4. ÉCRAN DE JEU SYNCHRONISÉ (GRAND ÉCRAN & MOBILE) ================= -->
+  <!-- ================= 4. JEU SYNCHRONISÉ ================= -->
   <div id="screen-live-game" style="display: none;">
     <div class="live-status-bar">
       <span id="game-q-counter">Question 1 / X</span>
@@ -275,15 +276,15 @@
     </div>
   </div>
 
-  <!-- ================= 5. PODIUM & RÉSULTATS ================= -->
+  <!-- ================= 5. RÉSULTATS ================= -->
   <div id="screen-game-over" style="display: none; text-align: center;">
     <span class="hero-badge">Session Terminée</span>
-    <h1 class="hero-title" style="margin: 10px 0;">Fin du Quiz Live</h1>
+    <h1 class="hero-title" style="margin: 10px 0;">Bilan du Quiz Live</h1>
     
     <div class="score-circle" id="end-score-display" style="width:90px; height:90px; background:var(--primary-light); color:var(--primary-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:800; margin:16px auto;">0/0</div>
     <p id="end-message" style="color:var(--text-muted); font-size:0.95rem; margin-bottom:16px;"></p>
 
-    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+    <div id="trainee-actions-box" style="display: none; flex-direction: column; gap: 8px; margin-bottom: 12px;">
       <button type="button" class="btn btn-success" id="btn-live-pdf" style="font-size: 1rem; margin-top: 0;">
         📄 Télécharger mon Attestation (PDF)
       </button>
@@ -292,13 +293,14 @@
       </button>
     </div>
 
-    <button type="button" class="btn btn-secondary" onclick="location.href=location.pathname">Nouvelle Session</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='https://alaincool-19583.github.io/FORMATION-AFGSU-QUIZ/'">Nouvelle Session</button>
   </div>
 
 </div>
 
 <script>
-// ================= DONNÉES PÉDAGOGIQUES (EXTRAIT BANQUE AFGSU) =================
+const BASE_URL = "https://alaincool-19583.github.io/FORMATION-AFGSU-QUIZ/";
+
 const SVG_DIAGRAMS = {
   garrot: `<div class="illustration-box"><svg viewBox="0 0 400 90"><rect x="20" y="38" width="360" height="14" rx="7" fill="#cbd5e1"/><circle cx="310" cy="45" r="14" fill="#ef4444"/><rect x="180" y="20" width="22" height="50" rx="4" fill="#0284c7"/><text x="191" y="16" font-size="10" font-weight="bold" fill="#0284c7" text-anchor="middle">GARROT (5-7 cm en amont)</text></svg></div>`
 };
@@ -311,7 +313,6 @@ const defaultQuestions = [
   { module: "Module 6 : Damage Control & Plaies Graves", question: "Face à une plaie thoracique ouverte et soufflante, quel pansement privilégier ?", options: ["Pansement occlusif 4 côtés étanche", "Pansement 3 côtés (effet valve) ou pansement à valve", "Garrot thoracique", "Méchage compressif"], answer: 1, explanation: "Le pansement 3 côtés laisse l'air sous pression s'échapper à l'expiration." }
 ];
 
-// ================= GESTION DU RÉSEAU TEMPS RÉEL (PEERJS) =================
 let isTrainer = false;
 let peer = null;
 let roomId = "";
@@ -331,13 +332,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const joinRoom = urlParams.get('room');
 
   if (joinRoom) {
-    // Mode Stagiaire (rejoint la salle créée par le formateur)
+    // STAGIAIRE (présence du paramètre room)
     isTrainer = false;
     roomId = joinRoom;
     document.getElementById('screen-trainee-join').style.display = 'block';
+    document.getElementById('screen-trainer-config').style.display = 'none';
   } else {
-    // Mode Formateur (crée la salle)
+    // FORMATEUR (aucun paramètre room)
     isTrainer = true;
+    document.getElementById('screen-trainer-config').style.display = 'block';
+    document.getElementById('screen-trainee-join').style.display = 'none';
     initTrainerRoom();
   }
 
@@ -349,17 +353,18 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-live-email').addEventListener('click', sendAttestationByEmail);
 });
 
-// ================= INITIALISATION FORMATEUR =================
+// ================= LOGIQUE FORMATEUR =================
 function initTrainerRoom() {
-  document.getElementById('screen-trainer-config').style.display = 'block';
   roomId = "afgsu-" + Math.random().toString(36).substring(2, 8);
-  
   peer = new Peer(roomId);
 
   peer.on('open', (id) => {
-    const joinUrl = `${window.location.origin}${window.location.pathname}?room=${id}`;
+    // Construction de l'URL absolue pour les stagiaires
+    const origin = (window.location.protocol.startsWith('http'))
+      ? window.location.origin + window.location.pathname
+      : BASE_URL;
+    const joinUrl = `${origin}?room=${id}`;
     
-    // Génération du QR Code
     const qrb = document.getElementById('qrcode-box');
     qrb.innerHTML = '';
     new QRCode(qrb, { text: joinUrl, width: 170, height: 170, colorDark: "#0f172a", colorLight: "#ffffff" });
@@ -386,6 +391,9 @@ function updateTraineesLobby() {
   document.getElementById('btn-count').textContent = participants.length;
   
   const box = document.getElementById('trainees-list-box');
+  const wMsg = document.getElementById('waiting-msg');
+  if (wMsg) wMsg.remove();
+  
   box.innerHTML = '';
   participants.forEach(p => {
     const pill = document.createElement('div');
@@ -395,7 +403,7 @@ function updateTraineesLobby() {
   });
 }
 
-// ================= CONNEXION STAGIAIRE =================
+// ================= LOGIQUE STAGIAIRE =================
 function joinLiveSession() {
   const name = document.getElementById('input-trainee-name').value.trim();
   if (!name) return alert("Veuillez entrer votre prénom/nom.");
@@ -432,7 +440,7 @@ function joinLiveSession() {
   });
 }
 
-// ================= DÉROULEMENT DU JEU SYNCHRONISÉ =================
+// ================= DÉROULEMENT DU QUIZ =================
 function startLiveGame() {
   if (participants.length === 0) return alert("Attendez qu'au moins un stagiaire se connecte !");
   
@@ -443,7 +451,6 @@ function startLiveGame() {
 
   qIndex = 0;
   
-  // Notification de tous les téléphones
   traineeConnections.forEach(conn => {
     conn.send({
       type: 'START_GAME',
@@ -481,7 +488,6 @@ function renderQuestionLive(q, isTrainerHost) {
     btn.className = 'opt-card';
     btn.innerHTML = `<span>${opt}</span> <span>➜</span>`;
     
-    // Le stagiaire clique pour voter
     btn.addEventListener('click', () => {
       if (userSelectedOption !== null) return;
       userSelectedOption = idx;
@@ -507,7 +513,6 @@ function renderQuestionLive(q, isTrainerHost) {
 function revealAnswer() {
   const q = activeQuestions[qIndex];
   
-  // Broadcast aux stagiaires
   traineeConnections.forEach(conn => {
     conn.send({
       type: 'REVEAL',
@@ -567,6 +572,10 @@ function showGameOverScreen() {
     ? "🌟 <strong>Félicitations !</strong> Objectifs AFGSU validés." 
     : "⚠️ <strong>Révision conseillée</strong> sur certains réflexes.";
 
+  if (!isTrainer) {
+    document.getElementById('trainee-actions-box').style.display = 'flex';
+  }
+
   if (pct >= 80 && typeof confetti === 'function') {
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
   }
@@ -592,7 +601,6 @@ function generateAttestationPDF() {
   doc.setFontSize(14); doc.setTextColor(15, 23, 42);
   doc.text(`Score obtenu : ${userScore} / ${activeQuestions.length} (${pct}%)`, 148.5, 120, { align: "center" });
 
-  // Signature Alain VALARCHER
   doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Fait le ${dateStr}`, 30, 160);
   doc.setFont("helvetica", "bold"); doc.setFontSize(11);
   doc.text("Alain VALARCHER", 215, 153, { align: "center" });
