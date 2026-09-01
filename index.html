@@ -121,7 +121,7 @@
     .progress-fill-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
 
     .q-title {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-weight: 700;
       color: #0f172a;
       line-height: 1.4;
@@ -243,14 +243,14 @@
 
     <label class="field-label" for="trainer-module-select">Module de formation à projeter :</label>
     <select id="trainer-module-select" class="select-styled">
-      <option value="ALL">🌐 Tous les modules (Évaluation globale)</option>
-      <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales (Hémorragies, Obstructions...)</option>
-      <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles (AVC, Douleurs...)</option>
-      <option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & NRBC</option>
-      <option value="Module 4 : Urgences Pédiatriques & Maternité">👶 Module 4 : Urgences Pédiatriques & Maternité</option>
-      <option value="Module 5 : Risque Infectieux & AES">💉 Module 5 : Risque Infectieux & AES</option>
-      <option value="Module 6 : Damage Control & Plaies Graves">🩹 Module 6 : Damage Control & Plaies Graves</option>
-      <option value="Module 7 : Cas Cliniques & ABCDE">📋 Module 7 : Cas Cliniques & ABCDE</option>
+      <option value="ALL">🌐 Tous les modules (Évaluation globale - 70 questions)</option>
+      <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales (10 questions)</option>
+      <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles (10 questions)</option>
+      <option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & Collectifs (10 questions)</option>
+      <option value="Module 4 : Urgences Pédiatriques & Maternité">👶 Module 4 : Urgences Pédiatriques & Maternité (10 questions)</option>
+      <option value="Module 5 : Risque Infectieux & AES">💉 Module 5 : Risque Infectieux & AES (10 questions)</option>
+      <option value="Module 6 : Damage Control & Plaies Graves">🩹 Module 6 : Damage Control & Plaies Graves (10 questions)</option>
+      <option value="Module 7 : Cas Cliniques & ABCDE">📋 Module 7 : Cas Cliniques & ABCDE (10 questions)</option>
     </select>
 
     <button type="button" class="btn btn-primary" id="btn-show-qr" style="padding: 16px; font-size: 1.05rem;">
@@ -331,7 +331,7 @@
 </div>
 
 <script>
-// ================= DONNÉES PÉDAGOGIQUES =================
+// ================= DIAGRAMMES SVG =================
 const SVG_DIAGRAMS = {
   garrot: `
     <div class="illustration-box">
@@ -389,118 +389,864 @@ const SVG_DIAGRAMS = {
   `
 };
 
+// ================= BANQUE COMPLÈTE : 10 QUESTIONS PAR MODULE (70 QUESTIONS) =================
 const defaultQuestions = [
+  // ================= MODULE 1 : URGENCES VITALES (10 Q) =================
   {
     module: "Module 1 : Urgences Vitales",
     diagram: "garrot",
-    question: "Face à une hémorragie externe abondante au membre supérieur qui ne s'arrête pas par compression, quelle est l'action prioritaire ?",
+    question: "Face à une hémorragie externe abondante au membre supérieur qui ne s'arrête pas par compression directe, quelle est la priorité absolue ?",
     options: [
       "Poser un pansement compressif simple sans serrer",
-      "Poser un garrot tourniquet homologué en amont de la lésion",
+      "Poser immédiatement un garrot tourniquet 5 à 7 cm en amont de la lésion",
       "Élever le membre et appliquer des compresses froides",
-      "Rincer la plaie avec du sérum physiologique"
+      "Nettoyer la plaie à grande eau"
     ],
     answer: 1,
-    explanation: "En cas d'échec de compression ou d'hémorragie massive, poser immédiatement un garrot 5 à 7 cm en amont de la lésion (hors articulation) et noter l'heure."
+    explanation: "En cas d'échec de la compression directe ou d'hémorragie cataclysmique, la pose immédiate d'un garrot en amont (hors articulation) avec notation de l'heure est vitale."
   },
   {
     module: "Module 1 : Urgences Vitales",
     diagram: "heimlich",
-    question: "Une victime consciente s'étouffe brutalement : elle ne peut plus parler ni tousser. Quelle séquence appliquer ?",
+    question: "Victime adulte consciente présentant une obstruction totale et brutale des voies aériennes (incapable de parler ou tousser). Quel geste débuter ?",
     options: [
-      "Lui donner immédiatement un verre d'eau",
-      "1 à 5 claques dans le dos puis alterner avec 1 à 5 compressions abdominales (Heimlich)",
-      "Réaliser immédiatement 30 compressions thoraciques",
+      "Donner immédiatement 1 à 5 claques vigoureuses entre les omoplates",
+      "Lui faire boire rapidement un verre d'eau",
+      "Pratiquer directement 30 compressions thoraciques",
       "L'allonger en position latérale de sécurité"
     ],
-    answer: 1,
-    explanation: "Obstruction totale = 1 à 5 claques vigoureuses entre les omoplates. En cas d'échec, 1 à 5 compressions abdominales."
+    answer: 0,
+    explanation: "La séquence réflexe chez l'adulte conscient débute par 1 à 5 claques dorsales vigoureuses entre les omoplates, relayées en cas d'échec par 1 à 5 compressions abdominales."
   },
   {
     module: "Module 1 : Urgences Vitales",
-    question: "Une victime inconsciente émet des gasps (respiration lente et irrégulière). Comment agir ?",
+    question: "Une victime inconsciente émet des bruits respiratoires lents, agoniques et inefficaces (gasps). Quelle est la conduite à tenir ?",
     options: [
-      "La mettre en position latérale de sécurité",
-      "Considérer qu'elle est en arrêt cardio-respiratoire, débuter la RCP et poser le DAE",
-      "Attendre 5 minutes pour réévaluer",
-      "Surélever ses membres inférieurs"
+      "La placer immédiatement en PLS et la surveiller",
+      "Reconnaître l'arrêt cardiaque, alerter le 15, débuter la RCP et utiliser le DAE",
+      "Lui administrer de l'oxygène sans masser",
+      "Surélever les jambes pour favoriser le retour veineux"
     ],
     answer: 1,
-    explanation: "Les gasps sont les témoins directs d'un arrêt cardio-respiratoire. Alerte immédiate (15), RCP et DAE."
+    explanation: "Les gasps ne sont pas une respiration normale. Inconscience + absence de respiration ou gasps = Arrêt Cardio-Respiratoire (ACR)."
+  },
+  {
+    module: "Module 1 : Urgences Vitales",
+    question: "Chez l'adulte en arrêt cardio-respiratoire, quel est le ratio compressions thoraciques / insufflations recommandé ?",
+    options: [
+      "15 compressions pour 2 insufflations",
+      "30 compressions pour 2 insufflations",
+      "5 compressions pour 1 insufflation",
+      "Compressions continues sans jamais insuffler"
+    ],
+    answer: 1,
+    explanation: "Chez l'adulte, la réanimation cardio-pulmonaire standardisée repose sur un ratio de 30 compressions pour 2 insufflations (fréquence 100 à 120/min)."
+  },
+  {
+    module: "Module 1 : Urgences Vitales",
+    question: "Lors de l'utilisation d'un Défibrillateur Automatisé Externe (DAE), quelle consigne de sécurité est cruciale pendant l'analyse du rythme ?",
+    options: [
+      "Maintenir fermement la tête de la victime en arrière",
+      "Ne pas toucher la victime et faire écarter tout le monde",
+      "Poursuivre impérativement le massage cardiaque sans s'arrêter",
+      "Retirer les électrodes"
+    ],
+    answer: 1,
+    explanation: "Pendant l'analyse et avant la délivrance du choc, personne ne doit toucher la victime afin de ne pas fausser le tracé ni risquer une électrisation."
+  },
+  {
+    module: "Module 1 : Urgences Vitales",
+    question: "Une victime inconsciente respire normalement et régulièrement. Quelle est l'action prioritaire ?",
+    options: [
+      "Laisser la victime sur le dos et surveiller de loin",
+      "Mettre la victime en Position Latérale de Sécurité (PLS) et surveiller la respiration en continu",
+      "Lui faire respirer des sels",
+      "Débuter immédiatement un massage cardiaque"
+    ],
+    answer: 1,
+    explanation: "La mise en PLS libère les voies aériennes et empêche l'inhalation bronchique en cas de vomissements chez la victime inconsciente qui respire."
+  },
+  {
+    module: "Module 1 : Urgences Vitales",
+    question: "À quelle profondeur doit-on comprimer le sternum lors de la RCP chez un adulte ?",
+    options: [
+      "Entre 2 et 3 cm",
+      "Entre 5 et 6 cm au centre de la poitrine",
+      "Au moins 8 à 10 cm",
+      "Le moins profondément possible pour éviter les fractures de côtes"
+    ],
+    answer: 1,
+    explanation: "La profondeur efficace recommandée chez l'adulte est de 5 à 6 cm, en laissant le thorax se décomprimer totalement entre chaque compression."
+  },
+  {
+    module: "Module 1 : Urgences Vitales",
+    question: "Quelle est la fréquence de compression thoracique recommandée lors d'une RCP ?",
+    options: [
+      "60 à 80 compressions par minute",
+      "100 à 120 compressions par minute",
+      "140 à 160 compressions par minute",
+      "Le plus vite possible sans compter"
+    ],
+    answer: 1,
+    explanation: "Le rythme de compression thoracique optimal se situe entre 100 et 120 par minute."
+  },
+  {
+    module: "Module 1 : Urgences Vitales",
+    question: "Si un corps étranger persiste dans la gorge d'une victime qui perd connaissance lors d'une fausse route, que faut-il faire ?",
+    options: [
+      "Tenter d'extraire le corps étranger à l'aveugle avec les doigts",
+      "Allonger la victime au sol, alerter les secours et débuter immédiatement la RCP par 30 compressions",
+      "Lui administrer des claques sur le ventre",
+      "Lui injecter de l'adrénaline"
+    ],
+    answer: 1,
+    explanation: "Dès la perte de connaissance suite à une fausse route, allonger la victime, alerter le SAMU (15) et débuter le protocole RCP standardisé (30 compressions)."
+  },
+  {
+    module: "Module 1 : Urgences Vitales",
+    question: "Après la pose d'un garrot tourniquet hémostatique, que ne faut-il JAMAIS faire sans avis médical ?",
+    options: [
+      "Noter l'heure de pose sur le garrot",
+      "Desserrer ou retirer le garrot",
+      "Couvrir la victime pour éviter l'hypothermie",
+      "Surveiller l'arrêt effectif du saignement"
+    ],
+    answer: 1,
+    explanation: "Un garrot posé ne doit JAMAIS être desserré ni retiré, sauf sur ordre médical formel, en raison du risque de reprise hémorragique et de choc."
+  },
+
+  // ================= MODULE 2 : URGENCES POTENTIELLES (10 Q) =================
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Quels sont les trois signes cardinaux d'alerte d'un Accident Vasculaire Cérébral (AVC / acronyme VITE) ?",
+    options: [
+      "Fièvre aiguë, céphalée modérée, frissons",
+      "Visage déformé/asymétrique, Inertie/faiblesse d'un membre, Trouble de la parole",
+      "Douleur épigastrique, nausées, vertiges",
+      "Toux sèche, dyspnée sifflante, sueurs"
+    ],
+    answer: 1,
+    explanation: "L'apparition brutale d'une asymétrie faciale, d'une faiblesse motrice d'un membre ou d'une anomalie du langage impose un appel immédiat du SAMU 15 avec l'heure exacte de début."
   },
   {
     module: "Module 2 : Urgences Potentielles",
-    question: "Quels sont les signes d'alerte majeurs d'un AVC (acronyme FAST / VITE) ?",
+    question: "Un patient se plaint d'une douleur thoracique rétro-sternale constrictive irradiant dans la mâchoire et le bras gauche. Que faire en priorité ?",
     options: [
-      "Fièvre élevée et toux",
-      "Visage dévié, faiblesse d'un membre, trouble de la parole",
-      "Douleur thoracique médiane irradiant au bras",
-      "Douleur abdominale brutale"
+      "Lui faire faire des flexions pour tester son coeur",
+      "L'asseoir ou le mettre au repos strict, appeler le 15 immédiatement et le surveiller",
+      "Lui donner un analgésique sans avis médical",
+      "Lui conseiller d'aller chez son médecin traitant en marchant"
     ],
     answer: 1,
-    explanation: "Visage asymétrique, Inertie d'un bras/jambe, Trouble de la parole = Alerte 15 sans délai en précisant l'heure."
+    explanation: "Toute douleur thoracique constrictive est suspecte de syndrome coronarien aigu : repos strict absolu, appel immédiat du SAMU 15 et préparation du DAE."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "En présence d'un patient conscient présentant des sueurs froides, des tremblements et une glycémie capillaire à 2,5 mmol/L (0,45 g/L), que faut-il faire ?",
+    options: [
+      "Lui administrer de l'insuline",
+      "Lui faire consommer 3 à 4 morceaux de sucre ou une boisson sucrée (resucrage oral)",
+      "L'inciter à courir pour éliminer le sucre",
+      "Le forcer à vomir"
+    ],
+    answer: 1,
+    explanation: "En cas d'hypoglycémie chez un patient conscient, administrer 15 g de glucides d'absorption rapide (3 morceaux de sucre ou jus de fruits) par voie orale."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Face à une détresse respiratoire aiguë chez un patient asthmatique assis, quelle position adopter ?",
+    options: [
+      "Position allongée strictement à plat dos",
+      "Position demi-assise ou assise avec buste relevé",
+      "Position déclive (tête en bas)",
+      "Position ventrale"
+    ],
+    answer: 1,
+    explanation: "La position demi-assise est la position de confort respiratoire qui libère la cage thoracique et facilite le travail du diaphragme."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Quels sont les symptômes caractéristiques d'une réaction anaphylactique grave (choc allergique) ?",
+    options: [
+      "Simple démangeaison légère au niveau du poignet",
+      "Oedème du visage/langue (oedème de Quincke), difficultés respiratoires et hypotension brutale",
+      "Fièvre isolée sans éruption",
+      "Douleur musculaire du mollet"
+    ],
+    answer: 1,
+    explanation: "L'anaphylaxie associe atteinte cutanéo-muqueuse, détresse respiratoire (sifflements, bronchospasme) et défaillance hémodynamique (choc). Urgence vitale absolue."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Quelle est la règle de premier secours immédiate pour une brûlure thermique cutanée récente ?",
+    options: [
+      "Appliquer de l'huile ou du dentifrice sur les cloques",
+      "Refroidir à l'eau courante tempérée (15-20°C) pendant 10 à 15 minutes",
+      "Percer immédiatement toutes les cloques",
+      "Frotter énergiquement avec de l'alcool"
+    ],
+    answer: 1,
+    explanation: "Le refroidissement immédiat à l'eau tempérée arrête la progression thermique en profondeur et soulage la douleur. Ne jamais appliquer de corps gras."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Face à une personne en crise convulsive tonico-clonique généralisée, que faut-il faire ?",
+    options: [
+      "Lui introduire d'urgence une cuillère ou les doigts dans la bouche",
+      "Protéger la tête, écarter les objets dangereux, ne rien mettre dans la bouche et noter l'heure",
+      "La maintenir de force par les bras et les jambes pour stopper les secousses",
+      "Lui donner immédiatement à boire"
+    ],
+    answer: 1,
+    explanation: "Ne jamais entraver les mouvements ni introduire quoi que ce soit dans la bouche. Protéger la victime des traumatismes et placer en PLS dès la fin des convulsions."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Plusieurs personnes dans une même pièce présentent brutalement des céphalées, nausées et vertiges en présence d'un chauffage d'appoint. Quel est le réflexe prioritaire ?",
+    options: [
+      "Penser à une intoxication au monoxyde de carbone (CO), aérer, évacuer les lieux et alerter les secours hors de la zone",
+      "Leur donner une aspirine et les laisser se reposer dans la pièce fermée",
+      "Fermer toutes les fenêtres pour conserver la chaleur",
+      "Attendre que les symptômes disparaissent d'eux-mêmes"
+    ],
+    answer: 0,
+    explanation: "Le monoxyde de carbone est un gaz inodore et mortel. Évacuation immédiate de l'ensemble des personnes, aération et appel des secours depuis l'extérieur."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Devant une suspicion de traumatisme crânien avec perte de connaissance initiale, quelle surveillance est primordiale ?",
+    options: [
+      "Faire marcher le patient pour tester son équilibre",
+      "Surveiller régulièrement l'état de conscience (score AVPU ou Glasgow), la réponse aux ordres et les pupilles",
+      "Donner un somnifère au patient",
+      "Le renvoyer immédiatement à domicile sans consigne"
+    ],
+    answer: 1,
+    explanation: "La dégradation secondaire de l'état de conscience et l'asymétrie pupillaire (anisocorie) sont des signes majeurs de complication neurochirurgicale."
+  },
+  {
+    module: "Module 2 : Urgences Potentielles",
+    question: "Que signifie l'évaluation pupillaire en AFGSU ?",
+    options: [
+      "Vérifier la couleur de l'iris",
+      "Rechercher la symétrie, la taille (myosis/mydriase) et la réactivité à la lumière",
+      "Mesurer la pression intra-oculaire au doigt",
+      "Vérifier si le patient a besoin de lunettes"
+    ],
+    answer: 1,
+    explanation: "Une asymétrie pupillaire (anisocorie) ou des pupilles en mydriase aréactive bilatérale sont des signes critiques de souffrance cérébrale."
+  },
+
+  // ================= MODULE 3 : RISQUES SANITAIRES & COLLECTIFS (10 Q) =================
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Face à une situation d'attaque armée ou attentat en milieu clos, quel est le triptyque réflexe à appliquer ?",
+    options: [
+      "Négocier, Observer, Avancer",
+      "S'échapper si possible, sinon Se cacher / Se confiner, puis Alerter (17/112)",
+      "Prendre des photos et filmer pour témoigner",
+      "Allumer toutes les lumières et crier"
+    ],
+    answer: 1,
+    explanation: "Les consignes de sécurité nationales sont : 1. S'échapper si issue sûre, 2. Se cacher / Se barricader en silence si fuite impossible, 3. Alerter dès que l'on est en sécurité."
   },
   {
     module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Face à une menace terroriste ou intrusion armée en intérieur, quelle est la conduite à tenir ?",
+    question: "En cas d'accident avec contamination chimique toxique (NRBC-E), quelle est la première mesure de protection ?",
     options: [
-      "Observer et tenter de négocier",
-      "S'échapper si possible, sinon Se cacher / Se confiner, puis Alerter (17/112)",
-      "Rester dans les couloirs pour guider les secours",
-      "Allumer toutes les lumières"
+      "Courir vers la source pour identifier le produit",
+      "S'éloigner rapidement de la zone perpendiculairement au vent et ne pas toucher aux victimes sans EPI adapté",
+      "Boire l'eau des caniveaux",
+      "Enlever son masque de protection"
     ],
     answer: 1,
-    explanation: "Triptyque réflexe validé : 1. S'échapper, 2. Se cacher / Se confiner, 3. Alerter dès que l'on est en sécurité."
+    explanation: "La sécurité des intervenants prime : se positionner hors de danger, en amont du vent, sans entrer en contact direct avec les agents contaminants."
   },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Dans le cadre d'un afflux massif de victimes en milieu hospitalier, comment s'intitule le plan d'urgence interne mobilisé ?",
+    options: [
+      "Le Plan Vigipirate simple",
+      "Le Plan Blanc d'établissement (intégré dans le dispositif ORSAN)",
+      "Le Plan Canicule",
+      "Le Plan Bleu"
+    ],
+    answer: 1,
+    explanation: "Le Plan Blanc hospitalier permet de mobiliser l'ensemble des moyens humains et matériels de l'établissement pour faire face à un afflux massif de blessés."
+  },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Lors d'un tri initial de victimes multiples (catastrophe), quelle victime est classée en Urgence Absolue (UA) ?",
+    options: [
+      "Une victime indemne très angoissée",
+      "Une victime inconsciente ou présentant une hémorragie cataclysmique ou une détresse respiratoire aiguë",
+      "Une victime présentant une fracture fermée du poignet marchant seule",
+      "Une victime décédée avec lésions incompatibles avec la vie"
+    ],
+    answer: 1,
+    explanation: "Les Urgences Absolues (UA = Urgence Vitale Immédiate / Déchoquage) regroupent les victimes dont le pronostic vital est engagé sans prise en charge immédiate."
+  },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Que permet le système d'identification des victimes SINUS en situation de catastrophe ?",
+    options: [
+      "Traiter les dossiers de remboursement d'assurance",
+      "Garantir la traçabilité médicale, l'identification unique et le suivi des blessés du terrain aux hôpitaux",
+      "Prendre des rendez-vous en ligne",
+      "Réserver les repas des soignants"
+    ],
+    answer: 1,
+    explanation: "Le système SINUS (bracelets code-barres) assure le suivi, le dénombrement et la régulation précise des victimes lors d'événements majeurs."
+  },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "En cas d'alerte à la bombe ou colis suspect, quelle attitude adopter ?",
+    options: [
+      "Ouvrir le colis pour vérifier son contenu",
+      "Ne pas toucher l'objet, faire évacuer la zone calmement, établir un périmètre de sécurité et composer le 17",
+      "Mettre le colis dans une poubelle",
+      "Le secouer pour écouter les bruits"
+    ],
+    answer: 1,
+    explanation: "Ne jamais manipuler un objet suspect, évacuer sans panique et transmettre l'alerte aux forces de l'ordre."
+  },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Face à une alerte au gaz toxique de type chlore ou sarin avec syndrome toxidrome myotique, quel service médical coordonne la réponse ?",
+    options: [
+      "Le SAMU / Centre 15 en lien avec les cellules spécialisées NRBC",
+      "La médecine du travail",
+      "L'assurance maladie",
+      "Le bureau des admissions"
+    ],
+    answer: 0,
+    explanation: "Le SAMU / Centre 15 coordonne la régulation médicale et l'engagement des équipes spécialisées SMUR-NRBC."
+  },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Quel principe fondamental permet de réduire l'exposition lors d'un accident avec rayonnement radiologique (Nucléaire) ?",
+    options: [
+      "Temps (le plus court), Distance (la plus grande), Écran (blindage/protection)",
+      "Respirer profondément pour habituer les poumons",
+      "S'approcher au maximum pour éteindre la source",
+      "Boire du lait en grande quantité"
+    ],
+    answer: 0,
+    explanation: "La radioprotection repose sur la triade : limiter le TEMPS d'exposition, maximiser la DISTANCE avec la source et interposer un ÉCRAN protecteur."
+  },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "Que signifie le sigle NRBC-E en gestion de crise ?",
+    options: [
+      "Nucléaire, Radiologique, Biologique, Chimique et Explosif",
+      "Nouveau Répertoire Biologique des Cliniques Européennes",
+      "Norme Régionale des Bâtiments Collectifs d'Enseignement",
+      "Niveau de Risque Brûlure et Contamination Élevé"
+    ],
+    answer: 0,
+    explanation: "NRBC-E désigne les menaces et risques d'origine Nucléaire, Radiologique, Biologique, Chimique et Explosive."
+  },
+  {
+    module: "Module 3 : Risques Sanitaires & Collectifs",
+    question: "En cas de décontamination d'urgence d'une victime atteinte d'un liquide toxique, quelle action immédiate réduit de 80 à 90% la toxicité cutanée ?",
+    options: [
+      "Le déshabillage d'urgence complet de la victime sans frotter",
+      "L'application de pommade hydratante",
+      "La prise d'antibiotiques par la bouche",
+      "Le brossage à sec à l'aide d'une brosse métallique"
+    ],
+    answer: 0,
+    explanation: "Le déshabillage rapide et précautionneux des vêtements souillés élimine la très grande majorité de la charge toxique superficielle."
+  },
+
+  // ================= MODULE 4 : URGENCES PÉDIATRIQUES & MATERNITÉ (10 Q) =================
   {
     module: "Module 4 : Urgences Pédiatriques & Maternité",
     diagram: "pediatrique",
-    question: "Quelle est la séquence de RCP recommandée chez l'enfant et le nourrisson ?",
+    question: "Quelle est la séquence de réanimation cardio-pulmonaire recommandée chez le nourrisson et l'enfant ?",
     options: [
       "30 compressions puis 2 insufflations",
-      "5 insufflations initiales de sauvetage puis cycle 15 compressions : 2 insufflations",
-      "Compressions seules sans jamais insuffler",
+      "5 insufflations initiales de sauvetage puis cycle de 15 compressions : 2 insufflations",
+      "Compressions seules sans aucune insufflation",
       "1 insufflation puis 5 compressions"
     ],
     answer: 1,
-    explanation: "L'origine étant hypoxique, on commence par 5 insufflations de sauvetage avant d'enchaîner le rythme 15:2."
+    explanation: "L'origine de l'arrêt étant quasi-exclusivement hypoxique chez l'enfant, on débute impérativement par 5 insufflations initiales puis on applique le ratio 15:2."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Un nourrisson de 6 mois présente une obstruction brutale des voies aériennes par corps étranger. Quelle manœuvre effectuer ?",
+    options: [
+      "Compressions abdominales violentes de type Heimlich",
+      "5 claques dans le dos (tête basse le long de l'avant-bras) relayées par 5 compressions thoraciques (Manoeuvre de Mofenson)",
+      "Lui secouer les pieds en le tenant la tête en bas",
+      "Aller chercher le corps étranger avec une pince à épiler au fond de la gorge"
+    ],
+    answer: 1,
+    explanation: "Chez le nourrisson (< 1 an), la manœuvre de Heimlich abdominale est formellement contre-indiquée : on applique la manœuvre de Mofenson (5 claques dorsales + 5 compressions thoraciques)."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Comment réaliser les compressions thoraciques chez un nourrisson de moins de 1 an ?",
+    options: [
+      "Avec les deux mains superposées à bras tendus",
+      "Avec 2 doigts (ou la technique des 2 pouces encerclants) sur la moitié inférieure du sternum",
+      "En appuyant sur le creux de l'estomac",
+      "En massant uniquement le côté gauche des côtes"
+    ],
+    answer: 1,
+    explanation: "Le massage cardiaque du nourrisson se pratique avec 2 doigts sur le bas du sternum (dépression d'environ un tiers du diamètre antéro-postérieur du thorax, soit 4 cm)."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Face à une crise convulsive fébrile chez un jeune enfant, que faut-il faire ?",
+    options: [
+      "Lui donner un bain d'eau glacée pour faire chuter brutalement la fièvre",
+      "Le protéger des traumatismes, le dévêtir sans le brusquer, vérifier la liberté des voies aériennes et appeler le 15",
+      "Le forcer à avaler un sirop pendant les secousses",
+      "Lui plaquer un linge mouillé sur le visage"
+    ],
+    answer: 1,
+    explanation: "Les bains froids sont proscrits (risque de choc thermique et noyade). Sécuriser l'enfant, le déshabiller légèrement, surveiller sa conscience et contacter le 15."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Lors d'un accouchement inopiné extra-hospitalier, dès la sortie complète du nouveau-né, quelle est la priorité ?",
+    options: [
+      "Le laver immédiatement à l'eau froide",
+      "Le sécher vigoureusement avec un linge propre, le couvrir (bonnet, peau à peau) et stimuler sa respiration",
+      "Lui donner un biberon d'eau",
+      "Tirer fermement sur le cordon ombilical"
+    ],
+    answer: 1,
+    explanation: "Le nouveau-né perd très vite sa chaleur : séchage immédiat, mise au chaud en peau à peau et surveillance de la première respiration/cri."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Chez une femme enceinte au 3e trimestre en détresse ou en arrêt cardiaque, quelle précaution anatomique est recommandée ?",
+    options: [
+      "Laisser la patiente strictement à plat dos sans rien toucher",
+      "Déplacer manuellement l'utérus vers la gauche (ou incliner le bassin à gauche) pour lever la compression de la veine cave inférieure",
+      "La positionner tête en bas",
+      "L'asseoir obligatoirement les jambes croisées"
+    ],
+    answer: 1,
+    explanation: "Le refoulement utérin à gauche lève la compression foeto-placentaire sur la veine cave inférieure et restaure le retour veineux vers le cœur."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Quels sont les 5 éléments évalués par le score d'Apgar chez le nouveau-né ?",
+    options: [
+      "Taille, Poids, Périmètre crânien, Température, Vue",
+      "Fréquence cardiaque, Respiration, Tonus musculaire, Réactivité, Coloration cutanée",
+      "Glycémie, Tension artérielle, Température, Diurèse, Sommeil",
+      "Groupe sanguin, Rhesus, Hématocrite, Plaquettes, Bilirubine"
+    ],
+    answer: 1,
+    explanation: "Le score d'Apgar évalue à 1, 5 et 10 minutes : le Cœur, la Respiration, le Tonus, les Réflexes et la Couleur de la peau."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Qu'est-ce qu'une éclampsie chez la femme enceinte ?",
+    options: [
+      "Une simple nausée matinale sans gravité",
+      "Une complication hypertensive grave associant crises convulsives et menace vitale materno-fœtale",
+      "Une carence bénigne en fer",
+      "Une infection urinaire sans fièvre"
+    ],
+    answer: 1,
+    explanation: "L'éclampsie est une urgence obstétricale et neurologique majeure caractérisée par des convulsions dans un contexte de pré-éclampsie/hypertension artérielle."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Face à une mort inattendue du nourrisson (MIN) constatée au domicile, quelle est la conduite à tenir ?",
+    options: [
+      "Considérer qu'il n'y a plus rien à faire et attendre",
+      "Alerter le SAMU 15, débuter immédiatement la réanimation pédiatrique (5 insufflations puis 15:2) et préserver l'environnement",
+      "Secouer le bébé vigoureusement",
+      "Lui administrer un bain chaud"
+    ],
+    answer: 1,
+    explanation: "Alerte immédiate du 15, début immédiat des gestes de RCP pédiatrique et préservation scrupuleuse des éléments de la chambre pour l'enquête clinique."
+  },
+  {
+    module: "Module 4 : Urgences Pédiatriques & Maternité",
+    question: "Quelle taille d'électrodes DAE doit-on privilégier chez un enfant de moins de 8 ans ou moins de 25 kg ?",
+    options: [
+      "Toujours des électrodes adulte sans modulateur de puissance",
+      "Des électrodes pédiatriques (avec réducteur d'énergie) ou positionnées en antéro-postérieur si risque de chevauchement",
+      "Aucun DAE n'est autorisé chez l'enfant",
+      "Des électrodes appliquées uniquement sur les bras"
+    ],
+    answer: 1,
+    explanation: "Utiliser les électrodes/atténuateur pédiatrique. Si indisponibles, utiliser le DAE adulte en veillant à ce que les électrodes ne se touchent pas (position antéro-postérieure si nécessaire)."
+  },
+
+  // ================= MODULE 5 : RISQUE INFECTIEUX & AES (10 Q) =================
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "En cas d'Accident d'Exposition au Sang (AES) par piqûre avec une aiguille souillée, quelle est la première action locale immédiate ?",
+    options: [
+      "Faire saigner la plaie en pressant très fort les tissus",
+      "Laver immédiatement à l'eau courante et au savon, rincer abondamment, puis désinfecter pendant au moins 5 minutes (Dakin, eau de Javel diluée ou alcool à 70°)",
+      "Mettre un pansement étanche sans désinfecter",
+      "Attendre la fin de sa garde pour nettoyer la plaie"
+    ],
+    answer: 1,
+    explanation: "Nettoyer sans faire saigner (le traumatisme tissulaire aggrave la pénétration virale), puis maintenir un contact antiseptique trempé pendant au moins 5 minutes."
   },
   {
     module: "Module 5 : Risque Infectieux & AES",
-    question: "En cas d'Accident d'Exposition au Sang (AES) par piqûre, quel est le geste immédiat ?",
+    question: "Dans quel délai maximal doit être initié un Traitement Post-Exposition (TPE) en cas de risque avéré de transmission du VIH ?",
     options: [
-      "Faire saigner abondamment la plaie",
-      "Laver à l'eau et savon, rincer, puis désinfecter au moins 5 min (Dakin ou alcool 70°)",
-      "Poser un pansement occlusif sans désinfecter",
-      "Appliquer de la glace"
+      "Idéalement dans les 4 heures (et au plus tard dans les 48 heures)",
+      "Dans les 7 jours suivant l'accident",
+      "Dans le mois suivant après réception des sérologies",
+      "Le TPE n'a aucune efficacité démontrée"
+    ],
+    answer: 0,
+    explanation: "Le TPE est une urgence thérapeutique : son efficacité maximale est obtenue s'il est débuté dans les 4 premières heures, sans dépasser 48 heures."
+  },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "Face à une projection de liquide biologique sur l'œil ou les muqueuses, quel est le geste immédiat ?",
+    options: [
+      "Frotter énergiquement les yeux avec ses mains",
+      "Rincer abondamment et immédiatement au sérum physiologique ou à l'eau courante pendant au moins 5 minutes",
+      "Instiller un collyre antibiotique sans rincer",
+      "Mettre un bandeau noir sans laver"
     ],
     answer: 1,
-    explanation: "Lavage sans écraser la plaie, puis temps de contact désinfectant prolongé (≥ 5 min)."
+    explanation: "Rinçage immédiat et prolongé à l'eau ou au sérum physiologique pour diluer et éliminer le fluide contaminant des muqueuses."
   },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "Quelle est la règle d'or pour l'élimination des objets piquants, coupants ou tranchants (OPCT) ?",
+    options: [
+      "Recapuchonner systématiquement les aiguilles à deux mains après utilisation",
+      "Ne jamais recapuchonner les aiguilles et les éliminer immédiatement dans un collecteur pour Déchets d'Activités de Soins à Risques Infectieux (DASRI)",
+      "Jeter les aiguilles dans la corbeille à papier ordinaire",
+      "Les plier avec les doigts avant de les jeter"
+    ],
+    answer: 1,
+    explanation: "Le recapuchonnage des aiguilles est la première cause d'AES : il est formellement proscrit. Élimination directe dans le collecteur jaune adapté."
+  },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "Dans le cadre des précautions standard d'hygiène, quelle est la technique de référence pour l'hygiène des mains sur mains non souillées ?",
+    options: [
+      "Le savonnage simple de 5 secondes",
+      "La friction hydro-alcoolique (FHA) pendant 20 à 30 secondes sur peau sèche",
+      "L'essuyage sur sa blouse de travail",
+      "Le rinçage à l'eau chaude seule"
+    ],
+    answer: 1,
+    explanation: "La friction hydro-alcoolique est le standard d'efficacité antimicrobienne en milieu de soins en l'absence de souillure visible."
+  },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "Quels sont les trois principaux virus transmissibles par voie sanguine lors d'un AES ?",
+    options: [
+      "Grippe, Rougeole, Varicelle",
+      "VIH, Virus de l'Hépatite B (VHB), Virus de l'Hépatite C (VHC)",
+      "Rotavirus, Norovirus, Gale",
+      "Tétanos, Rage, Paludisme"
+    ],
+    answer: 1,
+    explanation: "Les 3 cibles virales majeures suivies lors du protocole médical AES sont le VIH, l'Hépatite B et l'Hépatite C."
+  },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "Quel vaccin est obligatoire pour l'ensemble des professionnels de santé exerçant en établissement de soins en France ?",
+    options: [
+      "Le vaccin contre la fièvre jaune",
+      "Le vaccin contre l'Hépatite B (avec contrôle du taux d'anticorps anti-HBs)",
+      "Le vaccin contre le choléra",
+      "Le vaccin contre la rage"
+    ],
+    answer: 1,
+    explanation: "L'immunisation contre le virus de l'hépatite B est légalement obligatoire pour exercer en secteur hospitalier et médical."
+  },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "Face à un patient suspect de tuberculose pulmonaire bacillifère contagieuse, quel masque de protection respiratoire le soignant doit-il porter ?",
+    options: [
+      "Un masque chirurgical en papier",
+      "Un appareil de protection respiratoire de type masque FFP2",
+      "Une visière simple sans masque",
+      "Une écharpe en laine"
+    ],
+    answer: 1,
+    explanation: "La transmission de la tuberculose se faisant par microgouttelettes aéroportées (aérosols), le soignant doit porter un masque de type FFP2 étanche."
+  },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "Que doit faire immédiatement la victime d'un AES après les soins locaux d'urgence ?",
+    options: [
+      "Déclarer l'accident de travail sous 24 à 48h et consulter un médecin référent (médecine du travail / urgences)",
+      "Garder l'accident secret pour ne pas inquiéter l'équipe",
+      "Attendre 6 mois avant d'en parler",
+      "Prendre un antalgique et reprendre le travail"
+    ],
+    answer: 0,
+    explanation: "La déclaration administrative d'accident de travail et la consultation médicale immédiate (évaluation du statut du patient source et avis TPE) sont obligatoires."
+  },
+  {
+    module: "Module 5 : Risque Infectieux & AES",
+    question: "En présence d'une gale profuse ou d'une infection à Bactérie Hautement Résistante (BHRe), quel équipement de protection individuel s'impose en plus de l'hygiène des mains ?",
+    options: [
+      "Une blouse ou surblouse à manches longues et des gants à usage unique lors des contacts directs",
+      "Des lunettes de soleil",
+      "Un gilet pare-balles",
+      "Aucune protection particulière"
+    ],
+    answer: 0,
+    explanation: "Les précautions complémentaires de type 'Contact' imposent le port systématique d'une surblouse et de gants lors de tout contact avec le patient ou son environnement."
+  },
+
+  // ================= MODULE 6 : DAMAGE CONTROL & PLAIES GRAVES (10 Q) =================
   {
     module: "Module 6 : Damage Control & Plaies Graves",
     diagram: "chest_seal",
-    question: "Face à une plaie thoracique soufflante, quel dispositif privilégier ?",
+    question: "Face à une plaie thoracique ouverte et soufflante (effet d'aspiration d'air), quel dispositif de pansement faut-il appliquer ?",
     options: [
-      "Pansement hermétique occlusif 4 côtés",
-      "Pansement 3 côtés (effet valve) ou pansement à valve",
-      "Garrot compressif",
-      "Méchage compressif profond"
+      "Un pansement totalement occlusif et étanche sur les 4 côtés",
+      "Un pansement occlusif 3 côtés (faisant valve) ou un pansement thoracique à valve anti-retour (Chest Seal)",
+      "Un garrot compressif autour du thorax",
+      "Un méchage compressif en profondeur dans la cavité pleurale"
     ],
     answer: 1,
-    explanation: "Le pansement 3 côtés permet à l'air de s'échapper à l'expiration pour éviter le pneumothorax compressif."
+    explanation: "Le pansement à valve ou 3 côtés permet à l'air sous pression de sortir à l'expiration tout en empêchant l'air extérieur d'entrer à l'inspiration, évitant le pneumothorax suffocant."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Qu'est-ce que le 'packing' ou méchage d'une plaie hémorragique jonctionnelle (pli de l'aine, aisselle) où un garrot ne peut pas être posé ?",
+    options: [
+      "Verser de l'alcool dans la plaie",
+      "Bourrer fermement la cavité de la plaie avec une gaze hémostatique jusqu'à saturation et maintenir une pression forte 3 minutes",
+      "Recoudre la plaie sur place sans matériel stérile",
+      "Couvrir simplement avec une serviette propre sans appuyer"
+    ],
+    answer: 1,
+    explanation: "Le packing consiste à remplir la cavité au contact direct du vaisseau qui saigne avec une bande hémostatique puis à comprimer fortement."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Quels sont les trois éléments constituant la redoutable 'triade létale' du blessé hémorragique grave en Damage Control ?",
+    options: [
+      "Fièvre, Hypertension, Bradypnée",
+      "Hypothermie, Acidose métabolique et Coagulopathie",
+      "Hyperglycémie, Hypercalcémie, Déshydratation",
+      "Toux, Céphalée, Courbatures"
+    ],
+    answer: 1,
+    explanation: "La triade d'aggravation du choc hémorragique associe Hypothermie, Coagulopathie (le sang ne coagule plus) et Acidose. La lutte contre l'hypothermie est une priorité."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Face à une éviscération abdominale aiguë consécutive à une plaie par arme blanche, quelle est la conduite à tenir ?",
+    options: [
+      "Tenter de réintégrer immédiatement les anses intestinales à l'intérieur du ventre",
+      "Couvrir les viscères sans les réintégrer avec des champs stériles humidifiés au sérum physiologique et protéger du froid",
+      "Mettre de la glace directement sur les intestins",
+      "Faire boire la victime pour hydrater les organes"
+    ],
+    answer: 1,
+    explanation: "Ne jamais tenter de réintégrer les viscères extériorisés. Emballage stérile humide (sérum physiologique) et couverture isotherme."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Une victime présente une section traumatique complète de la main. Comment conditionner le membre amputé ?",
+    options: [
+      "Plonger directement la main coupée dans un bac d'eau glacée en contact direct avec la glace",
+      "Envelopper la main dans un tissu stérile, la placer dans un sac plastique étanche, puis déposer ce sac dans un récipient contenant de l'eau et de la glace",
+      "Laisser la main à l'air libre sans protection",
+      "La congeler au congélateur"
+    ],
+    answer: 1,
+    explanation: "Le segment amputé ne doit JAMAIS être en contact direct avec la glace (risque de brûlure thermique et nécrose tissulaire). Sac étanche entouré d'eau et de glace."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Dans le concept de 'Damage Control Resuscitation', quel est l'objectif tensionnel toléré chez un blessé hémorragique sans traumatisme crânien (hypotension permissive) ?",
+    options: [
+      "Maintenir une pression artérielle systolique (PAS) très élevée > 160 mmHg",
+      "Tolérer une PAS entre 80 et 90 mmHg (pouls radial tout juste palpable) pour ne pas déloger le caillot hémostatique",
+      "Faire chuter la tension en dessous de 40 mmHg",
+      "La tension artérielle n'a aucune importance"
+    ],
+    answer: 1,
+    explanation: "L'hypotension permissive évite l'hyperpression qui détruirait les caillots sanguins nouvellement formés avant la prise en charge chirurgicale."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Face à une plaie par arme blanche avec un couteau toujours fiché dans la cuisse, que faut-il faire ?",
+    options: [
+      "Retirer immédiatement le couteau pour voir la profondeur de la lésion",
+      "Laisser impérativement le corps étranger en place, le stabiliser avec des pansements et poser un garrot si une hémorragie majeure survient",
+      "Enfoncer le couteau plus profondément",
+      "Tourner le couteau pour couper le saignement"
+    ],
+    answer: 1,
+    explanation: "Ne jamais retirer un corps étranger empalé : il fait actuellement office de tampon hémostatique sur les vaisseaux sous-jacents."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Quelle est la cause de mortalité évitable numéro 1 sur le terrain lors d'un attentat ou d'une blessure par projectile ?",
+    options: [
+      "L'infection cutanée tardive",
+      "L'hémorragie massive externe des membres non contrôlée",
+      "La luxation d'épaule",
+      "La crise de panique"
+    ],
+    answer: 1,
+    explanation: "L'hémorragie externe cataclysmique tue en quelques minutes. Sa maîtrise immédiate par garrot ou packing est la première action de Damage Control."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Face à une suspicion d'hémorragie interne pelvienne par fracture instable du bassin, quel dispositif stabilise le volume pelvien ?",
+    options: [
+      "Une ceinture de contention pelvienne (Pelvic Binder)",
+      "Un garrot au niveau du cou",
+      "Un bandage sur les orteils",
+      "Une poche de glace sur le front"
+    ],
+    answer: 0,
+    explanation: "La ceinture pelvienne referme l'anneau pelvien fracturé, réduisant le volume du petit bassin et limitant l'expansion du saignement rétro-péritonéal."
+  },
+  {
+    module: "Module 6 : Damage Control & Plaies Graves",
+    question: "Pourquoi la couverture de survie et la protection thermique sont-elles indispensables chez tout blessé grave hémorragique ?",
+    options: [
+      "Uniquement pour lui faire plaisir",
+      "Parce que la baisse de température corporelle même modérée (< 35°C) bloque l'activité des facteurs de coagulation et aggrave l'hémorragie",
+      "Pour cacher les blessures aux passants",
+      "Pour remplacer une perfusion"
+    ],
+    answer: 1,
+    explanation: "L'hypothermie altère profondément les enzymes de la cascade de coagulation sanguine, transformant une hémorragie contrôlable en saignement incoercible."
+  },
+
+  // ================= MODULE 7 : CAS CLINIQUES & ABCDE (10 Q) =================
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Dans l'approche standardisée d'évaluation clinique ABCDE, à quoi correspond l'étape 'A' ?",
+    options: [
+      "Airway : Contrôle et liberté des voies aériennes avec protection du rachis cervical",
+      "Analyse biologique de laboratoire",
+      "Administration de médicaments",
+      "Arrêt cardiaque"
+    ],
+    answer: 0,
+    explanation: "A = Airway (Voies aériennes). On vérifie la perméabilité immédiate des voies respiratoires et l'absence de corps étranger."
   },
   {
     module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Patient avec pâleur, sueurs, pouls à 125 bpm et TA à 80/50 mmHg. Quelle est l'atteinte ABCDE prioritaire ?",
+    question: "Lors de l'étape 'B' (Breathing) de l'ABCDE, quels paramètres cliniques évalue-t-on prioritairement ?",
     options: [
-      "Atteinte des voies aériennes (A)",
-      "Détresse circulatoire / État de choc (C)",
-      "Défaillance neurologique isolée (D)",
-      "Exposition thermique (E)"
+      "La fréquence respiratoire, l'amplitude, les bruits surajoutés, la symétrie auscultatoire et la saturation (SpO2)",
+      "La glycémie capillaire",
+      "La motricité des membres inférieurs",
+      "La température rectale"
+    ],
+    answer: 0,
+    explanation: "B = Breathing (Ventilation). Évaluation de la fréquence (eupnée, tachypnée, bradypnée), de la mécanique ventilatoire et de l'oxygénation."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Cas clinique : Patient présentant pâleur, marbrures aux genoux, FC à 130 bpm, PA à 80/50 mmHg et TRC > 3s. Quel diagnostic syndromique poser à l'étape 'C' ?",
+    options: [
+      "Détresse respiratoire isolée",
+      "État de choc circulatoire / Défaillance hémodynamique sévère",
+      "Crise d'anxiété sans gravité",
+      "Coma éthylique"
     ],
     answer: 1,
-    explanation: "Tachycardie et hypotension traduisent un choc circulatoire (C)."
+    explanation: "Tachycardie, hypotension artérielle, marbrures et allongement du Temps de Recoloration Cutanée (TRC > 2s) signent une défaillance circulatoire aiguë (C)."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Que signifie l'acronyme simplifié d'évaluation de la conscience 'AVPU' utilisé à l'étape 'D' (Disability) ?",
+    options: [
+      "Alerte, Verbal (réagit à la voix), Pain (réagit à la douleur), Unresponsive (inconscient)",
+      "Appareillage, Ventilation, Pouls, Urgence",
+      "Antécédents, Végétation, Pression, Ulcère",
+      "Analgésie, Vitesse, Perfusion, Unité"
+    ],
+    answer: 0,
+    explanation: "L'échelle AVPU permet une classification ultra-rapide de l'état neurologique : Alerte (A), Vocal (V), Pain/Douleur (P), Unresponsive/Aréactif (U)."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "À l'étape 'D' de l'approche ABCDE, quel examen biologique capillaire instantané est systématique devant tout trouble neurologique ?",
+    options: [
+      "La glycémie capillaire (recherche d'une hypoglycémie)",
+      "Le cholestérol",
+      "Le dosage de l'acide urique",
+      "La formule sanguine complète"
+    ],
+    answer: 0,
+    explanation: "Une hypoglycémie aiguë mime parfaitement un AVC ou un coma. Le contrôle de la glycémie est obligatoire à l'étape D."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Que comprend l'étape 'E' (Exposure / Environment) de la démarche ABCDE ?",
+    options: [
+      "Déshabillement ciblé pour rechercher des lésions cachées, prévention active de l'hypothermie et respect de la pudeur",
+      "Évacuation immédiate sans bilan",
+      "Écoute de musique relaxante",
+      "Écriture du dossier administratif"
+    ],
+    answer: 0,
+    explanation: "E = Exposure/Environment : inspection corporelle complète pour repérer traumatismes ou éruptions, tout en protégeant immédiatement la température corporelle."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Cas clinique : Patient présentant bradypnée à 6/min, pupilles en myosis serré bilatéral ('en tête d'épingle') et inconscience après injection. Quelle intoxication suspecter ?",
+    options: [
+      "Surdosage aux opioïdes / toxidrome opioïde (Overdose)",
+      "Intoxication au paracétamol",
+      "Carence en vitamine C",
+      "Insolation simple"
+    ],
+    answer: 0,
+    explanation: "La triade coma + bradypnée sévère/apnée + myosis punctiforme est la signature pathognomonique du surdosage aux opioïdes (indication de la Naloxone)."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Lors de la transmission du bilan d'urgence au médecin régulateur du SAMU (Centre 15), quel ordre synthétique garantit la meilleure efficacité ?",
+    options: [
+      "Donner son avis personnel puis raccrocher",
+      "Identification de l'appelant/lieu, Motif d'appel, Constat ABCDE chiffré, Antécédents/Traitements et gestes déjà effectués",
+      "Donner uniquement le nom et l'âge sans aucun chiffre",
+      "Parler du planning des gardes de l'hôpital"
+    ],
+    answer: 1,
+    explanation: "Une transmission médicale structurée (type SAED ou ABCDE) transmet des données quantifiées claires permettant au régulateur d'envoyer le vecteur adapté (SMUR, hélicoptère)."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Cas clinique : Victime inconsciente suite à un accident de la voie publique à haute énergie. Quelle précaution technique doit accompagner la libération des voies aériennes (A) ?",
+    options: [
+      "Effectuer une hyperflexion maximale de la nuque",
+      "Maintien de l'axe tête-cou-tronc en position neutre sans flexion ni rotation (subluxation de la mandibule)",
+      "Tourner vigoureusement la tête à droite et à gauche",
+      "Secouer la tête pour voir si le cou est fracturé"
+    ],
+    answer: 1,
+    explanation: "Chez tout polytraumatisé, l'axe rachidien cervical est présumé lésé : maintien en rectitude stricte de la tête et subluxation mandibulaire sans hyperextension."
+  },
+  {
+    module: "Module 7 : Cas Cliniques & ABCDE",
+    question: "Pourquoi réévalue-t-on régulièrement la séquence ABCDE chez un patient pris en charge ?",
+    options: [
+      "Pour passer le temps",
+      "Parce que l'état d'un patient en urgence est dynamique : toute dégradation impose de recommencer l'analyse depuis le 'A'",
+      "Ce n'est pas nécessaire si le premier bilan était bon",
+      "Uniquement à la demande du patient"
+    ],
+    answer: 1,
+    explanation: "La méthode ABCDE est une boucle itérative : toute modification clinique ou geste thérapeutique nécessite une réévaluation complète à partir de A."
   }
 ];
 
@@ -519,7 +1265,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const mode = urlParams.get('mode');
 
   if (mode === 'stagiaire') {
-    // MODE STAGIAIRE PUR
     isTrainee = true;
     currentModule = urlParams.get('module') || "ALL";
 
@@ -529,7 +1274,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const modText = (currentModule === "ALL") ? "Évaluation Globale" : currentModule;
     document.getElementById('trainee-assigned-module').textContent = modText;
   } else {
-    // MODE FORMATEUR
     isTrainee = false;
     document.getElementById('view-trainer').style.display = 'block';
     document.getElementById('view-trainee-welcome').style.display = 'none';
@@ -566,8 +1310,6 @@ window.addEventListener('DOMContentLoaded', () => {
 // ================= GÉNÉRATION DU QR CODE =================
 function generateAndShowQR() {
   const mod = document.getElementById('trainer-module-select').value;
-  
-  // URL absolue vers GitHub Pages avec les paramètres
   const baseUrl = window.location.href.split('?')[0];
   const targetUrl = `${baseUrl}?mode=stagiaire&module=${encodeURIComponent(mod)}`;
 
@@ -582,7 +1324,7 @@ function generateAndShowQR() {
     correctLevel: QRCode.CorrectLevel.H
   });
 
-  const label = (mod === "ALL") ? "Tous les modules" : mod;
+  const label = (mod === "ALL") ? "Tous les modules (70 Q)" : mod;
   document.getElementById('qr-modal-info').textContent = `Module : ${label}`;
   document.getElementById('qr-modal').style.display = 'flex';
 }
