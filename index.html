@@ -4,7 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AFGSU Master - Évaluation & Réflexes d'Urgence</title>
+
+  <!-- Balises PWA & Icônes pour écran d'accueil smartphone -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AFGSU Master">
+  <meta name="theme-color" content="#0284c7">
+  
+  <!-- Icône Urgence / Caducée vectorielle intégrée (SVG autonome) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230284c7'/%3E%3Cpath d='M256 70 L286 160 L378 160 L304 214 L332 304 L256 250 L180 304 L208 214 L134 160 L226 160 Z' fill='%23ffffff' opacity='0.15'/%3E%3Crect x='216' y='110' width='80' height='292' rx='16' fill='%23ffffff'/%3E%3Crect x='110' y='216' width='292' height='80' rx='16' fill='%23ffffff'/%3E%3Ccircle cx='256' cy='256' r='38' fill='%23ef4444'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230284c7'/%3E%3Crect x='216' y='110' width='80' height='292' rx='16' fill='%23ffffff'/%3E%3Crect x='110' y='216' width='292' height='80' rx='16' fill='%23ffffff'/%3E%3Ccircle cx='256' cy='256' r='38' fill='%23ef4444'/%3E%3C/svg%3E">
+
+  <!-- Librairie QR Code -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- Librairie jsPDF pour la génération d'attestations PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Librairie Confetti pour animation de réussite -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --primary: #0284c7;
@@ -15,6 +32,7 @@
       --danger: #ef4444;
       --danger-bg: #fef2f2;
       --warning: #f59e0b;
+      --warning-bg: #fffbeb;
       --bg: #0f172a;
       --card-bg: #ffffff;
       --text-main: #1e293b;
@@ -98,6 +116,11 @@
       color: white;
       box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
     }
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
     .btn-secondary { background: #f1f5f9; color: #334155; }
     .btn-secondary:hover { background: #e2e8f0; }
 
@@ -142,7 +165,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      transition: transform 0.1s, border-color 0.15s, background-color 0.15s;
     }
+    .opt-card:active { transform: scale(0.98); }
     .opt-card:hover:not(:disabled) {
       border-color: var(--primary);
       background: var(--primary-light);
@@ -175,7 +200,7 @@
     .illustration-box svg { max-width: 100%; height: 90px; }
     .illustration-caption { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
 
-    /* Modal QR */
+    /* Modales */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -189,8 +214,10 @@
     }
     .modal-window {
       background: white;
-      max-width: 440px;
+      max-width: 580px;
       width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
       border-radius: 20px;
       padding: 24px;
       text-align: center;
@@ -228,12 +255,43 @@
       margin-bottom: 8px;
       font-size: 0.85rem;
     }
+
+    /* Stats Table */
+    .stats-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .kpi-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .kpi-num { font-size: 1.3rem; font-weight: 800; color: var(--primary-dark); }
+    .kpi-lbl { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      text-align: left;
+      margin-top: 10px;
+    }
+    .stats-table th, .stats-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-table th { background: #f1f5f9; color: #475569; font-weight: 700; }
   </style>
 </head>
 <body>
 
 <div class="app-card">
 
+  <!-- ================= 1. VUE FORMATEUR ================= -->
   <div id="view-trainer" style="display: none;">
     <div class="hero-header">
       <span class="hero-badge">Console Formateur</span>
@@ -245,6 +303,7 @@
     <select id="trainer-module-select" class="select-styled">
       <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions aléatoires - Conseillé)</option>
       <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions aléatoires)</option>
+      <option value="SCENARIOS_CAS">🩺 Cas Cliniques Immersifs à Embranchements</option>
       <option value="ALL">🌐 Entraînement Intégral (Toutes les 70 questions)</option>
       <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales (10 questions)</option>
       <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles (10 questions)</option>
@@ -259,11 +318,17 @@
       📱 Afficher le QR Code Stagiaires
     </button>
 
-    <button type="button" class="btn btn-secondary" id="btn-trainer-play">
-      💻 Lancer le quiz sur cet écran (Mode Grand Écran)
-    </button>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+      <button type="button" class="btn btn-secondary" id="btn-trainer-play" style="margin: 0;">
+        💻 Grand Écran
+      </button>
+      <button type="button" class="btn btn-secondary" id="btn-open-stats" style="margin: 0;">
+        📊 Statistiques (<span id="stats-badge-count">0</span>)
+      </button>
+    </div>
   </div>
 
+  <!-- ================= 2. VUE STAGIAIRE ================= -->
   <div id="view-trainee-welcome" style="display: none; text-align: center;">
     <span class="hero-badge">AFGSU • Évaluation Stagiaire</span>
     <h1 class="hero-title" style="margin: 10px 0;">Entraînement Réflexe</h1>
@@ -274,8 +339,8 @@
     </div>
 
     <div style="text-align: left; margin: 16px 0;">
-      <label class="field-label" for="trainee-initials">Vos Initiales ou Prénom :</label>
-      <input type="text" id="trainee-initials" class="input-styled" placeholder="Ex: AC ou Alain" maxlength="15">
+      <label class="field-label" for="trainee-initials">Nom et Prénom (pour l'attestation) :</label>
+      <input type="text" id="trainee-initials" class="input-styled" placeholder="Ex: Jean Dupont" maxlength="30">
     </div>
 
     <button type="button" class="btn btn-primary" id="btn-start-trainee-quiz" style="padding: 16px; font-size: 1.05rem;">
@@ -283,6 +348,7 @@
     </button>
   </div>
 
+  <!-- ================= 3. VUE QUIZ ================= -->
   <div id="view-quiz" style="display: none;">
     <div class="quiz-meta">
       <span id="quiz-user-tag" style="color: var(--primary-dark); font-weight: 800;"></span>
@@ -300,6 +366,7 @@
     <button type="button" class="btn btn-primary" id="btn-next-question" style="display: none;">Question Suivante ➔</button>
   </div>
 
+  <!-- ================= 4. VUE RÉSULTATS ================= -->
   <div id="view-result" style="display: none; text-align: center;">
     <span class="hero-badge">Session Terminée</span>
     <h1 style="font-size: 1.5rem; margin: 10px 0;" id="result-user-title">Bilan de l'évaluation</h1>
@@ -307,13 +374,29 @@
     <div class="score-circle" id="final-score">0/0</div>
     <p id="score-msg" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px;"></p>
 
+    <!-- Bouton Partage / Copie du Score -->
+    <button type="button" class="btn btn-primary" id="btn-share-score" style="margin-bottom: 8px;">
+      📋 Partager / Copier mon score
+    </button>
+
+    <!-- Actions Attestation (Téléchargement PDF + Envoi Mail) -->
+    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+      <button type="button" class="btn btn-success" id="btn-download-pdf" style="font-size: 1rem; margin-top: 0;">
+        📄 Télécharger mon Attestation de Réussite (PDF)
+      </button>
+      <button type="button" class="btn btn-secondary" id="btn-email-attestation" style="font-size: 0.95rem; margin-top: 0;">
+        ✉️ M'envoyer le récapitulatif par e-mail
+      </button>
+    </div>
+
     <div id="review-container"></div>
 
-    <button type="button" class="btn btn-primary" id="btn-restart">Recommencer</button>
+    <button type="button" class="btn btn-secondary" id="btn-restart">Recommencer une session</button>
   </div>
 
 </div>
 
+<!-- ================= MODALE QR CODE (FORMATEUR) ================= -->
 <div class="modal-backdrop" id="qr-modal">
   <div class="modal-window">
     <span class="hero-badge">Scan Stagiaires</span>
@@ -323,12 +406,62 @@
     <div id="qrcode-box"></div>
 
     <p style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">
-      Le stagiaire saisira ses initiales et démarrera directement son quiz.
+      Le stagiaire saisira son nom et démarrera directement son évaluation.
     </p>
 
     <button type="button" class="btn btn-secondary" onclick="document.getElementById('qr-modal').style.display='none'">
       Fermer
     </button>
+  </div>
+</div>
+
+<!-- ================= MODALE STATISTIQUES (FORMATEUR) ================= -->
+<div class="modal-backdrop" id="stats-modal">
+  <div class="modal-window" style="text-align: left;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="font-size: 1.25rem;">📊 Statistiques & Historique</h2>
+      <button type="button" style="background:none; border:none; font-size: 1.4rem; cursor:pointer;" onclick="document.getElementById('stats-modal').style.display='none'">&times;</button>
+    </div>
+    
+    <div class="stats-kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-num" id="kpi-total-tests">0</div>
+        <div class="kpi-lbl">Sessions</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num" id="kpi-avg-score">0%</div>
+        <div class="kpi-lbl">Moyenne</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num" id="kpi-success-rate">0%</div>
+        <div class="kpi-lbl">Réussite (&ge;80%)</div>
+      </div>
+    </div>
+
+    <div style="max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px;">
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Stagiaire</th>
+            <th>Module</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody id="stats-table-body">
+          <tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Aucune session enregistrée</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display: flex; gap: 8px; margin-top: 14px;">
+      <button type="button" class="btn btn-secondary" id="btn-clear-stats" style="color: var(--danger); font-size: 0.85rem; margin: 0;">
+        🗑️ Effacer l'historique
+      </button>
+      <button type="button" class="btn btn-primary" onclick="document.getElementById('stats-modal').style.display='none'" style="margin: 0;">
+        Fermer
+      </button>
+    </div>
   </div>
 </div>
 
@@ -1252,6 +1385,46 @@ const defaultQuestions = [
   }
 ];
 
+// ================= CAS CLINIQUES IMMERSIFS (SCÉNARIOS DYNAMIQUES) =================
+const scenarioQuestions = [
+  {
+    module: "Cas Clinique Immersif 1",
+    question: "Étape 1 : Vous intervenez en salle de réveil. Un patient opéré présente une pâleur brutale, des sueurs et une dyspnée bruyante. Quelle est votre première action selon l'approche ABCDE ?",
+    options: [
+      "Libérer immédiatement les voies aériennes (A) et évaluer la respiration (B)",
+      "Poser un pansement compressif sur le ventre",
+      "Lui faire boire un verre d'eau sucrée",
+      "Attendre 10 minutes pour voir l'évolution"
+    ],
+    answer: 0,
+    explanation: "La démarche ABCDE commence toujours par la liberté des voies aériennes (Airway) et le contrôle ventilatoire (Breathing)."
+  },
+  {
+    module: "Cas Clinique Immersif 1",
+    question: "Étape 2 : Les voies aériennes sont libres, mais le patient est encombré avec une SpO2 à 84 % et un tirage intercostal. Quelle décision prenez-vous ?",
+    options: [
+      "Aspirer les sécrétions, positionner en demi-assis et administrer de l'O2 à haut débit au masque",
+      "Allonger le patient strictement à plat dos sans oxygène",
+      "Faire marcher le patient dans le couloir",
+      "Poser un garrot au membre inférieur"
+    ],
+    answer: 0,
+    explanation: "Détresse respiratoire aiguë = désobstruction, position demi-assise et oxygénothérapie à haut débit immédiate."
+  },
+  {
+    module: "Cas Clinique Immersif 1",
+    question: "Étape 3 : La SpO2 remonte à 96 %, mais la tension artérielle chute à 75/40 mmHg avec une fréquence cardiaque à 135 bpm. Le pansement chirurgical abdominal est saturé de sang frais. Quelle est la priorité ?",
+    options: [
+      "Alerter l'anesthésiste-réanimateur/SAMU, comprimer manuellement la zone hémorragique et lutter contre l'hypothermie",
+      "Retirer le pansement pour laver la plaie à l'eau",
+      "Asseoir le patient debout",
+      "Administrer un somnifère"
+    ],
+    answer: 0,
+    explanation: "Choc hémorragique post-opératoire : alerte médicale immédiate, hémostase externe et réchauffement (prévention de la triade létale)."
+  }
+];
+
 // ================= GESTION DE L'ÉTAT =================
 let isTrainee = false;
 let currentModule = "RANDOM_20";
@@ -1265,15 +1438,77 @@ function getModuleLabel(key) {
   switch (key) {
     case "RANDOM_20": return "⚡ Quiz Rapide Global (20 questions)";
     case "RANDOM_30": return "🎯 Quiz Bilan Global (30 questions)";
+    case "SCENARIOS_CAS": return "🩺 Cas Cliniques Immersifs à Embranchements";
     case "ALL": return "🌐 Entraînement Intégral (70 questions)";
     default: return key;
   }
+}
+
+// ================= STATISTIQUES LOCALES =================
+function getStats() {
+  try {
+    return JSON.parse(localStorage.getItem('afgsu_quiz_stats') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveResultToStats(result) {
+  const stats = getStats();
+  stats.unshift(result);
+  localStorage.setItem('afgsu_quiz_stats', JSON.stringify(stats));
+  updateStatsBadge();
+}
+
+function updateStatsBadge() {
+  const stats = getStats();
+  const badge = document.getElementById('stats-badge-count');
+  if (badge) badge.textContent = stats.length;
+}
+
+function renderStatsModal() {
+  const stats = getStats();
+  const total = stats.length;
+  document.getElementById('kpi-total-tests').textContent = total;
+
+  if (total === 0) {
+    document.getElementById('kpi-avg-score').textContent = "0%";
+    document.getElementById('kpi-success-rate').textContent = "0%";
+    document.getElementById('stats-table-body').innerHTML = `
+      <tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 12px;">Aucune session enregistrée</td></tr>
+    `;
+    return;
+  }
+
+  const sumPct = stats.reduce((acc, s) => acc + s.percentage, 0);
+  const avgPct = Math.round(sumPct / total);
+  const successCount = stats.filter(s => s.percentage >= 80).length;
+  const successRate = Math.round((successCount / total) * 100);
+
+  document.getElementById('kpi-avg-score').textContent = `${avgPct}%`;
+  document.getElementById('kpi-success-rate').textContent = `${successRate}%`;
+
+  const tbody = document.getElementById('stats-table-body');
+  tbody.innerHTML = '';
+  stats.forEach(s => {
+    const tr = document.createElement('tr');
+    const color = s.percentage >= 80 ? 'var(--success)' : 'var(--danger)';
+    tr.innerHTML = `
+      <td>${s.date}</td>
+      <td><strong>${s.name}</strong></td>
+      <td style="font-size:0.75rem;">${s.moduleShort}</td>
+      <td style="color:${color}; font-weight:bold;">${s.score}/${s.total} (${s.percentage}%)</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 // ================= INITIALISATION =================
 window.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const mode = urlParams.get('mode');
+
+  updateStatsBadge();
 
   if (mode === 'stagiaire') {
     isTrainee = true;
@@ -1297,15 +1532,32 @@ window.addEventListener('DOMContentLoaded', () => {
     startQuiz();
   });
 
+  // Modal Stats
+  document.getElementById('btn-open-stats').addEventListener('click', () => {
+    renderStatsModal();
+    document.getElementById('stats-modal').style.display = 'flex';
+  });
+
+  document.getElementById('btn-clear-stats').addEventListener('click', () => {
+    if (confirm("Voulez-vous vraiment effacer tout l'historique des résultats ?")) {
+      localStorage.removeItem('afgsu_quiz_stats');
+      renderStatsModal();
+      updateStatsBadge();
+    }
+  });
+
   // Stagiaire
   document.getElementById('btn-start-trainee-quiz').addEventListener('click', () => {
     const input = document.getElementById('trainee-initials').value.trim();
-    traineeName = input ? input.toUpperCase() : "Stagiaire";
+    traineeName = input ? input : "Stagiaire";
     startQuiz();
   });
 
   // Quiz
   document.getElementById('btn-next-question').addEventListener('click', nextQuestion);
+  document.getElementById('btn-share-score').addEventListener('click', shareOrCopyScore);
+  document.getElementById('btn-download-pdf').addEventListener('click', generateAttestationPDF);
+  document.getElementById('btn-email-attestation').addEventListener('click', sendAttestationByEmail);
   document.getElementById('btn-restart').addEventListener('click', () => {
     if (isTrainee) {
       document.getElementById('view-result').style.display = 'none';
@@ -1343,20 +1595,27 @@ function startQuiz() {
   let pool = [];
 
   if (currentModule === "RANDOM_20") {
-    // Tirage aléatoire de 20 questions parmi les 70
     pool = [...defaultQuestions].sort(() => Math.random() - 0.5).slice(0, 20);
   } else if (currentModule === "RANDOM_30") {
-    // Tirage aléatoire de 30 questions parmi les 70
     pool = [...defaultQuestions].sort(() => Math.random() - 0.5).slice(0, 30);
+  } else if (currentModule === "SCENARIOS_CAS") {
+    pool = [...scenarioQuestions];
   } else if (currentModule === "ALL") {
-    // Les 70 questions mélangées
     pool = [...defaultQuestions].sort(() => Math.random() - 0.5);
   } else {
-    // Les 10 questions du module spécifique
     pool = defaultQuestions.filter(q => q.module === currentModule).sort(() => Math.random() - 0.5);
   }
 
-  questions = pool;
+  // Préparation des questions avec mélange des options
+  questions = pool.map(q => {
+    const correctText = q.options[q.answer];
+    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+    return {
+      ...q,
+      shuffledOptions: shuffledOptions,
+      shuffledAnswer: shuffledOptions.indexOf(correctText)
+    };
+  });
 
   if (questions.length === 0) {
     alert("Aucune question trouvée pour ce choix.");
@@ -1393,7 +1652,7 @@ function renderQuestion() {
   document.getElementById('quiz-feedback').innerHTML = '';
   document.getElementById('btn-next-question').style.display = 'none';
 
-  q.options.forEach((opt, idx) => {
+  q.shuffledOptions.forEach((opt, idx) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'opt-card';
@@ -1408,16 +1667,16 @@ function chooseAnswer(idx) {
   const buttons = document.querySelectorAll('.opt-card');
   buttons.forEach(b => b.disabled = true);
 
-  if (idx === q.answer) {
+  if (idx === q.shuffledAnswer) {
     buttons[idx].classList.add('correct');
     score++;
   } else {
     buttons[idx].classList.add('wrong');
-    buttons[q.answer].classList.add('correct');
+    buttons[q.shuffledAnswer].classList.add('correct');
     wrongs.push({
       question: q.question,
-      user: q.options[idx],
-      correct: q.options[q.answer],
+      user: q.shuffledOptions[idx],
+      correct: q.shuffledOptions[q.shuffledAnswer],
       explanation: q.explanation
     });
   }
@@ -1453,9 +1712,32 @@ function finishQuiz() {
   const msg = document.getElementById('score-msg');
   if (pct >= 80) {
     msg.innerHTML = "🌟 <strong>Félicitations !</strong> Objectifs AFGSU atteints.";
+    // Lancement des confettis de réussite
+    if (typeof confetti === 'function') {
+      confetti({
+        particleCount: 90,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+  } else if (pct >= 60) {
+    msg.innerHTML = "👍 <strong>Bon travail !</strong> Quelques révisions conseillées pour consolider vos réflexes.";
   } else {
-    msg.innerHTML = "⚠️ <strong>Révision conseillée</strong> sur certains points clés.";
+    msg.innerHTML = "⚠️ <strong>Révision vivement conseillée</strong> sur les points clés.";
   }
+
+  // Enregistrement dans les statistiques
+  const now = new Date();
+  const dateStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  saveResultToStats({
+    date: dateStr,
+    name: traineeName || "Anonyme",
+    module: getModuleLabel(currentModule),
+    moduleShort: currentModule.replace('Module ', 'M'),
+    score: score,
+    total: questions.length,
+    percentage: pct
+  });
 
   const review = document.getElementById('review-container');
   review.innerHTML = '';
@@ -1477,6 +1759,150 @@ function finishQuiz() {
       review.appendChild(d);
     });
   }
+}
+
+// ================= PARTAGE / COPIE DU SCORE =================
+function shareOrCopyScore() {
+  const pct = Math.round((score / questions.length) * 100);
+  const textSummary = `📋 Résultat AFGSU : ${traineeName || 'Stagiaire'}\n🎯 Session : ${getModuleLabel(currentModule)}\n🏆 Score : ${score}/${questions.length} (${pct}%)\n📅 Date : ${new Date().toLocaleDateString('fr-FR')}`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Mon Résultat AFGSU',
+      text: textSummary
+    }).catch(() => copyToClipboard(textSummary));
+  } else {
+    copyToClipboard(textSummary);
+  }
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-share-score');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '✔ Résultat copié dans le presse-papier !';
+    btn.style.background = 'var(--success)';
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.style.background = '';
+    }, 2500);
+  }).catch(() => {
+    alert("Copie impossible. Voici votre résultat :\n\n" + text);
+  });
+}
+
+// ================= ENVOI DE L'ATTESTATION PAR EMAIL =================
+function sendAttestationByEmail() {
+  const pct = Math.round((score / questions.length) * 100);
+  const subject = encodeURIComponent(`Attestation de Réussite AFGSU - ${traineeName || 'Stagiaire'}`);
+  const body = encodeURIComponent(
+    `Bonjour,\n\n` +
+    `Voici mon bilan d'évaluation AFGSU :\n\n` +
+    `• Stagiaire : ${traineeName || 'Stagiaire'}\n` +
+    `• Module : ${getModuleLabel(currentModule)}\n` +
+    `• Résultat : ${score} / ${questions.length} (${pct}%)\n` +
+    `• Date : ${new Date().toLocaleDateString('fr-FR')}\n` +
+    `• Formateur : Alain VALARCHER (CESU 94 / Croix-Rouge Française / SAMU 91)\n\n` +
+    `L'attestation PDF officielle a été générée lors de la session.`
+  );
+
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+// ================= GÉNÉRATION DU PDF (ATTESTATION) =================
+function generateAttestationPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({
+    orientation: 'landscape',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  const pct = Math.round((score / questions.length) * 100);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  // Bordure & Fond
+  doc.setDrawColor(2, 132, 199);
+  doc.setLineWidth(2);
+  doc.rect(10, 10, 277, 190);
+
+  doc.setDrawColor(226, 232, 240);
+  doc.setLineWidth(0.5);
+  doc.rect(14, 14, 269, 182);
+
+  // En-tête
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(2, 132, 199);
+  doc.text("FORMATION AUX GESTES ET SOINS D'URGENCE (AFGSU)", 148.5, 26, { align: "center" });
+
+  doc.setFontSize(22);
+  doc.setTextColor(15, 23, 42);
+  doc.text("ATTESTATION DE RÉUSSITE AU QUIZ D'ÉVALUATION", 148.5, 42, { align: "center" });
+
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(100, 116, 139);
+  doc.text("Délivrée dans le cadre du contrôle continu et de l'entraînement aux réflexes d'urgence", 148.5, 50, { align: "center" });
+
+  // Ligne décorative
+  doc.setDrawColor(2, 132, 199);
+  doc.setLineWidth(1);
+  doc.line(80, 56, 217, 56);
+
+  // Nom du stagiaire
+  doc.setFontSize(13);
+  doc.setTextColor(51, 65, 85);
+  doc.text("Ce document atteste que le stagiaire :", 148.5, 72, { align: "center" });
+
+  doc.setFontSize(20);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(2, 132, 199);
+  doc.text(traineeName || "Stagiaire AFGSU", 148.5, 84, { align: "center" });
+
+  // Détails de la session
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(51, 65, 85);
+  doc.text(`A validé avec succès la session d'évaluation suivante :`, 148.5, 98, { align: "center" });
+
+  doc.setFont("helvetica", "bold");
+  doc.text(`${getModuleLabel(currentModule)}`, 148.5, 106, { align: "center" });
+
+  // Cadre du Résultat
+  doc.setFillColor(241, 245, 249);
+  doc.roundedRect(88, 116, 121, 26, 4, 4, "F");
+  
+  doc.setFontSize(13);
+  doc.setTextColor(15, 23, 42);
+  doc.text(`Score obtenu : ${score} / ${questions.length} (${pct}%)`, 148.5, 132, { align: "center" });
+
+  // Pied de page / Signature personnalisée (Option 2)
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(100, 116, 139);
+  doc.text(`Fait le ${dateStr}`, 30, 160);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(15, 23, 42);
+  doc.text("Alain VALARCHER", 215, 153, { align: "center" });
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(71, 85, 105);
+  doc.text("Formateur AFGSU | CESU 94 | Croix-Rouge Française", 215, 159, { align: "center" });
+  doc.text("Ambulancier SMUR – SAMU 91", 215, 164, { align: "center" });
+
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(8);
+  doc.setTextColor(148, 163, 184);
+  doc.text("Validation pédagogique", 215, 171, { align: "center" });
+
+  // Téléchargement
+  const cleanName = (traineeName || "Stagiaire").replace(/[^a-zA-Z0-9]/g, "_");
+  doc.save(`Attestation_AFGSU_${cleanName}.pdf`);
 }
 </script>
 
