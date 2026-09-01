@@ -238,12 +238,14 @@
     <div class="hero-header">
       <span class="hero-badge">Console Formateur</span>
       <h1 class="hero-title">Diffusion du Quiz AFGSU</h1>
-      <p class="hero-sub">Sélectionnez le module à faire passer aux stagiaires.</p>
+      <p class="hero-sub">Sélectionnez le mode ou le module à faire passer aux stagiaires.</p>
     </div>
 
-    <label class="field-label" for="trainer-module-select">Module de formation à projeter :</label>
+    <label class="field-label" for="trainer-module-select">Mode d'évaluation ou Module :</label>
     <select id="trainer-module-select" class="select-styled">
-      <option value="ALL">🌐 Tous les modules (Évaluation globale - 70 questions)</option>
+      <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions aléatoires - Conseillé)</option>
+      <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions aléatoires)</option>
+      <option value="ALL">🌐 Entraînement Intégral (Toutes les 70 questions)</option>
       <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales (10 questions)</option>
       <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles (10 questions)</option>
       <option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & Collectifs (10 questions)</option>
@@ -267,7 +269,7 @@
     <h1 class="hero-title" style="margin: 10px 0;">Entraînement Réflexe</h1>
     
     <div style="background: #f1f5f9; border-radius: 10px; padding: 10px; margin: 14px 0;">
-      <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Module assigné</span>
+      <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Session sélectionnée</span>
       <p id="trainee-assigned-module" style="font-weight: 700; color: var(--primary-dark); font-size: 1rem; margin-top: 2px;">Chargement...</p>
     </div>
 
@@ -389,9 +391,9 @@ const SVG_DIAGRAMS = {
   `
 };
 
-// ================= BANQUE COMPLÈTE : 10 QUESTIONS PAR MODULE (70 QUESTIONS) =================
+// ================= BANQUE COMPLÈTE DE 70 QUESTIONS =================
 const defaultQuestions = [
-  // ================= MODULE 1 : URGENCES VITALES (10 Q) =================
+  // MODULE 1 : URGENCES VITALES (10 Q)
   {
     module: "Module 1 : Urgences Vitales",
     diagram: "garrot",
@@ -515,7 +517,7 @@ const defaultQuestions = [
     explanation: "Un garrot posé ne doit JAMAIS être desserré ni retiré, sauf sur ordre médical formel, en raison du risque de reprise hémorragique et de choc."
   },
 
-  // ================= MODULE 2 : URGENCES POTENTIELLES (10 Q) =================
+  // MODULE 2 : URGENCES POTENTIELLES (10 Q)
   {
     module: "Module 2 : Urgences Potentielles",
     question: "Quels sont les trois signes cardinaux d'alerte d'un Accident Vasculaire Cérébral (AVC / acronyme VITE) ?",
@@ -637,7 +639,7 @@ const defaultQuestions = [
     explanation: "Une asymétrie pupillaire (anisocorie) ou des pupilles en mydriase aréactive bilatérale sont des signes critiques de souffrance cérébrale."
   },
 
-  // ================= MODULE 3 : RISQUES SANITAIRES & COLLECTIFS (10 Q) =================
+  // MODULE 3 : RISQUES SANITAIRES & COLLECTIFS (10 Q)
   {
     module: "Module 3 : Risques Sanitaires & Collectifs",
     question: "Face à une situation d'attaque armée ou attentat en milieu clos, quel est le triptyque réflexe à appliquer ?",
@@ -759,7 +761,7 @@ const defaultQuestions = [
     explanation: "Le déshabillage rapide et précautionneux des vêtements souillés élimine la très grande majorité de la charge toxique superficielle."
   },
 
-  // ================= MODULE 4 : URGENCES PÉDIATRIQUES & MATERNITÉ (10 Q) =================
+  // MODULE 4 : URGENCES PÉDIATRIQUES & MATERNITÉ (10 Q)
   {
     module: "Module 4 : Urgences Pédiatriques & Maternité",
     diagram: "pediatrique",
@@ -882,7 +884,7 @@ const defaultQuestions = [
     explanation: "Utiliser les électrodes/atténuateur pédiatrique. Si indisponibles, utiliser le DAE adulte en veillant à ce que les électrodes ne se touchent pas (position antéro-postérieure si nécessaire)."
   },
 
-  // ================= MODULE 5 : RISQUE INFECTIEUX & AES (10 Q) =================
+  // MODULE 5 : RISQUE INFECTIEUX & AES (10 Q)
   {
     module: "Module 5 : Risque Infectieux & AES",
     question: "En cas d'Accident d'Exposition au Sang (AES) par piqûre avec une aiguille souillée, quelle est la première action locale immédiate ?",
@@ -1004,7 +1006,7 @@ const defaultQuestions = [
     explanation: "Les précautions complémentaires de type 'Contact' imposent le port systématique d'une surblouse et de gants lors de tout contact avec le patient ou son environnement."
   },
 
-  // ================= MODULE 6 : DAMAGE CONTROL & PLAIES GRAVES (10 Q) =================
+  // MODULE 6 : DAMAGE CONTROL & PLAIES GRAVES (10 Q)
   {
     module: "Module 6 : Damage Control & Plaies Graves",
     diagram: "chest_seal",
@@ -1127,7 +1129,7 @@ const defaultQuestions = [
     explanation: "L'hypothermie altère profondément les enzymes de la cascade de coagulation sanguine, transformant une hémorragie contrôlable en saignement incoercible."
   },
 
-  // ================= MODULE 7 : CAS CLINIQUES & ABCDE (10 Q) =================
+  // MODULE 7 : CAS CLINIQUES & ABCDE (10 Q)
   {
     module: "Module 7 : Cas Cliniques & ABCDE",
     question: "Dans l'approche standardisée d'évaluation clinique ABCDE, à quoi correspond l'étape 'A' ?",
@@ -1252,12 +1254,21 @@ const defaultQuestions = [
 
 // ================= GESTION DE L'ÉTAT =================
 let isTrainee = false;
-let currentModule = "ALL";
+let currentModule = "RANDOM_20";
 let traineeName = "";
 let questions = [];
 let qIndex = 0;
 let score = 0;
 let wrongs = [];
+
+function getModuleLabel(key) {
+  switch (key) {
+    case "RANDOM_20": return "⚡ Quiz Rapide Global (20 questions)";
+    case "RANDOM_30": return "🎯 Quiz Bilan Global (30 questions)";
+    case "ALL": return "🌐 Entraînement Intégral (70 questions)";
+    default: return key;
+  }
+}
 
 // ================= INITIALISATION =================
 window.addEventListener('DOMContentLoaded', () => {
@@ -1266,20 +1277,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (mode === 'stagiaire') {
     isTrainee = true;
-    currentModule = urlParams.get('module') || "ALL";
+    currentModule = urlParams.get('module') || "RANDOM_20";
 
     document.getElementById('view-trainer').style.display = 'none';
     document.getElementById('view-trainee-welcome').style.display = 'block';
 
-    const modText = (currentModule === "ALL") ? "Évaluation Globale" : currentModule;
-    document.getElementById('trainee-assigned-module').textContent = modText;
+    document.getElementById('trainee-assigned-module').textContent = getModuleLabel(currentModule);
   } else {
     isTrainee = false;
     document.getElementById('view-trainer').style.display = 'block';
     document.getElementById('view-trainee-welcome').style.display = 'none';
   }
 
-  // Événements Formateur
+  // Formateur
   document.getElementById('btn-show-qr').addEventListener('click', generateAndShowQR);
   document.getElementById('btn-trainer-play').addEventListener('click', () => {
     currentModule = document.getElementById('trainer-module-select').value;
@@ -1287,7 +1297,7 @@ window.addEventListener('DOMContentLoaded', () => {
     startQuiz();
   });
 
-  // Événements Stagiaire
+  // Stagiaire
   document.getElementById('btn-start-trainee-quiz').addEventListener('click', () => {
     const input = document.getElementById('trainee-initials').value.trim();
     traineeName = input ? input.toUpperCase() : "Stagiaire";
@@ -1324,25 +1334,35 @@ function generateAndShowQR() {
     correctLevel: QRCode.CorrectLevel.H
   });
 
-  const label = (mod === "ALL") ? "Tous les modules (70 Q)" : mod;
-  document.getElementById('qr-modal-info').textContent = `Module : ${label}`;
+  document.getElementById('qr-modal-info').textContent = `Session : ${getModuleLabel(mod)}`;
   document.getElementById('qr-modal').style.display = 'flex';
 }
 
 // ================= DÉROULEMENT DU QUIZ =================
 function startQuiz() {
-  if (currentModule === "ALL") {
-    questions = [...defaultQuestions];
+  let pool = [];
+
+  if (currentModule === "RANDOM_20") {
+    // Tirage aléatoire de 20 questions parmi les 70
+    pool = [...defaultQuestions].sort(() => Math.random() - 0.5).slice(0, 20);
+  } else if (currentModule === "RANDOM_30") {
+    // Tirage aléatoire de 30 questions parmi les 70
+    pool = [...defaultQuestions].sort(() => Math.random() - 0.5).slice(0, 30);
+  } else if (currentModule === "ALL") {
+    // Les 70 questions mélangées
+    pool = [...defaultQuestions].sort(() => Math.random() - 0.5);
   } else {
-    questions = defaultQuestions.filter(q => q.module === currentModule);
+    // Les 10 questions du module spécifique
+    pool = defaultQuestions.filter(q => q.module === currentModule).sort(() => Math.random() - 0.5);
   }
 
+  questions = pool;
+
   if (questions.length === 0) {
-    alert("Aucune question trouvée pour ce module.");
+    alert("Aucune question trouvée pour ce choix.");
     return;
   }
 
-  questions = questions.sort(() => Math.random() - 0.5);
   qIndex = 0;
   score = 0;
   wrongs = [];
