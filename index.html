@@ -302,6 +302,96 @@ progress::-moz-progress-bar {background:#0369a1;}
 }
 @media(prefers-reduced-motion:reduce) {*,*::before,*::after {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
 
+/* Parcours, projection et révision */
+:root {--ink:#15374c;--soft:#f3f7fa;--brand:#08769a;}
+body {background:linear-gradient(160deg,#eaf2f7,#f7fafc);}
+.app-card {max-width:1000px;padding:30px 36px;}
+h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus {outline:none;}
+.welcome-heading {margin:22px 0 30px;text-align:left;}
+.welcome-heading .hero-title {font-size:2.3rem;color:var(--ink);}
+.welcome-heading .hero-sub {margin:10px 0 0;}
+.choice-fieldset {border:0;margin:0;padding:0;}
+.choice-fieldset legend {font-size:.9rem;font-weight:650;color:#334b60;margin-bottom:12px;}
+.format-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.choice-card {position:relative;display:flex;flex-direction:column;gap:8px;background:white;border:2px solid #e1e9ef;border-radius:15px;padding:18px;cursor:pointer;min-width:0;}
+.choice-card:hover {border-color:#8cbbc9;}
+.choice-card:focus-within {outline:3px solid #0284c7;outline-offset:3px;}
+.choice-card.is-selected {border-color:var(--brand);background:#f0f9fc;}
+.choice-card input {position:absolute;right:14px;top:16px;width:18px;height:18px;accent-color:var(--brand);}
+.choice-card strong {font-size:1rem;color:var(--ink);}
+.choice-card>span:not(.choice-mark) {font-size:.84rem;line-height:1.6;color:#52657a;}
+.choice-mark {height:36px;width:36px;display:flex;align-items:center;justify-content:center;color:#075985;background:#dfedf4;border-radius:10px;font-weight:800;margin-bottom:3px;}
+.format-settings {margin-top:16px;padding:16px;background:var(--soft);border-radius:12px;}
+.format-settings label {display:block;font-size:.9rem;font-weight:600;margin-bottom:8px;}
+.format-settings select {margin:0;background:white;}
+.selection-summary {color:#075985;font-size:.84rem;margin-top:12px;}
+.mode-fieldset {margin-top:24px;}
+.mode-grid {display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mode-card {padding:16px;padding-right:42px;}
+.lobby-container {grid-template-columns:230px 1fr;}
+.qr-panel {text-align:center;}
+#qrcode-box {background:white;display:inline-block;border:1px solid var(--border);border-radius:12px;padding:12px;}
+#qrcode-box img,#qrcode-box canvas {display:block;}
+.participants-heading {display:flex;align-items:center;justify-content:space-between;font-size:.9rem;margin-bottom:10px;}
+#connected-count {font-size:1.4rem;color:#075985;font-weight:800;}
+.launch-panel {margin-top:24px;padding:20px;background:#f2f7fa;border-radius:16px;}
+.launch-panel .step-title {margin:0 0 14px;}.launch-panel .ranking-choice {margin-top:0;}
+body.projection-setup.config-active #connection-status {display:none;}
+.practice-active #connection-status[data-state="ready"] {display:none;}
+.quiz-active .brand-line,.practice-active .brand-line {padding-bottom:10px;margin-bottom:10px;font-size:.8rem;}
+.quiz-active #connection-status[data-state="ready"],.local-quiz.quiz-active #connection-status {display:none;}
+.quiz-active .footer-note,.practice-active .footer-note {display:none;}
+.quiz-active .app-card {padding:18px 28px;}
+.quiz-active .toolbar {float:right;margin:0 0 8px 16px;}
+.quiz-active .toolbar .btn {margin:0;min-height:32px;padding:6px 12px;}
+.quiz-active .live-status-bar {min-height:32px;align-items:center;font-size:.8rem;margin-bottom:10px;}
+.quiz-active #quiz-progress {height:6px;margin-bottom:16px;clear:both;}
+.quiz-active .hero-badge {margin-bottom:4px;font-size:.7rem;}
+.quiz-active .q-title {font-size:1.5rem;margin:10px 0 18px;line-height:1.45;}
+.presenting .opt-card {font-size:1.05rem;padding:14px;line-height:1.5;}
+#trainer-controls {position:sticky;bottom:8px;z-index:5;border:1px solid #d3e0e9;border-radius:14px;padding:10px;background:#fffffff5;box-shadow:0 5px 24px #15374c18;margin-top:18px!important;}
+#trainer-controls .btn {margin:0;min-height:48px;}
+#game-feedback-box {margin-top:18px!important;font-size:1rem!important;}
+.distribution-item {margin:14px 0;}.distribution-heading {display:flex;align-items:flex-start;justify-content:space-between;gap:12px;font-size:.86rem;line-height:1.55;}
+.distribution-amount {white-space:nowrap;font-weight:800;color:#15374c;}
+.distribution-item progress {display:block;width:100%;margin-top:7px;height:10px;}
+.distribution-item.expected strong {color:#047857;font-size:.8rem;white-space:nowrap;}
+.distribution-item.expected progress {accent-color:#047857;}
+.distribution-item.expected progress::-webkit-progress-value {background:#047857;}
+.distribution-item.expected progress::-moz-progress-bar {background:#047857;}
+.distribution-absence {border-top:1px solid var(--border);padding-top:10px;font-size:.82rem;color:var(--text-muted);}
+#single-score-box {align-items:center;gap:24px;padding:24px;margin:24px 0;text-align:left;background:#edf7fb;border:1px solid #d7eaf3;border-radius:20px;}
+#end-score-display {width:110px!important;height:110px!important;flex-shrink:0;margin:0!important;font-size:2rem!important;background:white!important;}
+#score-percentage {font-size:1.4rem;font-weight:800;color:var(--ink);margin-bottom:8px;}
+#end-message {line-height:1.6;margin:0!important;}
+#result-humor {padding:14px 18px;font-size:.93rem;line-height:1.6;background:#fffaee;color:#755520;border:1px solid #f0e2bc;border-radius:12px;margin:16px 0;text-align:left;}
+#result-themes {text-align:left;padding:20px;border:1px solid var(--border);border-radius:16px;margin:24px 0;}
+#result-themes h2 {font-size:1.1rem;margin-bottom:18px;color:var(--ink);}
+.theme-result {display:grid;grid-template-columns:1fr auto;gap:8px 18px;margin-top:14px;font-size:.9rem;}
+.theme-result progress {grid-column:1/-1;width:100%;height:7px;}
+#result-reviews h2 {color:var(--ink);margin-bottom:20px;}.review-theme {margin-top:18px;}.review-theme h3 {font-size:.94rem;color:#466075;margin-bottom:10px;}
+#result-reviews details {padding:14px;font-size:.92rem;}
+#practice-explainer {text-align:center;}
+.practice-heading {font-size:1.65rem;line-height:1.3;margin:8px 0;}
+.practice-counter {font-size:.85rem;font-weight:700;color:var(--text-muted);margin-top:24px;}
+#practice-progress {width:100%;margin:10px 0 20px;}
+.practice-feedback {padding:18px;background:#f0f7fb;border-left:4px solid #08769a;line-height:1.7;border-radius:10px;margin:18px 0;}
+.practice-complete {padding:24px;background:#f0f8fb;border:1px solid #dceaf2;border-radius:18px;margin-top:24px;line-height:1.65;text-align:center;}
+.practice-score {font-size:2.8rem;color:var(--ink);font-weight:800;margin:16px 0;}
+@media(min-width:1000px) {.presenting .answers-grid {display:grid;grid-template-columns:1fr 1fr;}.presenting .opt-card {align-items:flex-start;}}
+@media(max-width:650px) {
+ .app-card {padding:20px 16px;}.welcome-heading {margin:16px 0 24px;}.welcome-heading .hero-title {font-size:1.8rem;}
+ .format-grid {grid-template-columns:1fr;gap:8px;}.choice-card {padding:14px 40px 14px 62px;gap:4px;min-height:85px;}.choice-mark {position:absolute;left:14px;top:16px;width:32px;height:32px;}
+ .mode-grid {grid-template-columns:1fr;gap:8px;}.mode-card {padding:14px 40px 14px 16px;min-height:70px;}
+ .choice-card>span:not(.choice-mark) br {display:none;}.lobby-container {grid-template-columns:1fr;}
+ .launch-panel {padding:16px;}.room-sharing label {width:100%;}
+ .quiz-active .app-card {padding:14px;}.quiz-active .brand-line span {display:none;}.quiz-active .q-title {font-size:1.18rem;}
+ .quiz-active .live-status-bar {font-size:.74rem;gap:4px;}.quiz-active .toolbar {margin-left:8px;}.quiz-active .toolbar .btn {font-size:.7rem;padding:6px 8px;}
+ .presenting .opt-card {font-size:1rem;padding:12px;}.quiz-active #trainer-controls {bottom:4px;padding:8px;}
+ #single-score-box {padding:18px;gap:16px;}#end-score-display {width:82px!important;height:82px!important;font-size:1.55rem!important;}#score-percentage {font-size:1.08rem;}
+ #result-themes {padding:16px;}.distribution-heading {display:block;}.distribution-amount {display:block;margin-top:3px;}.practice-heading {font-size:1.4rem;}
+}
+
 </style>
 </head>
 <body>
@@ -312,58 +402,55 @@ progress::-moz-progress-bar {background:#0369a1;}
 <button type="button" class="btn btn-secondary" id="retry-connection" hidden>Réessayer la connexion</button>
 
   <!-- ================= 1. FORMATEUR : LOBBY & CONFIGURATION ================= -->
-  <div id="screen-trainer-config" style="display: none;">
-    <div style="text-align: center; margin-bottom: 16px;">
-      <span class="hero-badge">Console Formateur</span>
-      <h1 class="hero-title">Plateforme Pédagogique AFGSU</h1>
-      <p class="hero-sub">Préparez votre session, accueillez les participants et échangez autour des réponses.</p>
+<div id="screen-trainer-config" style="display:none">
+  <header class="welcome-heading">
+    <span class="hero-badge">Espace formateur</span>
+    <h1 class="hero-title">À vous de lancer le déclic.</h1>
+    <p class="hero-sub">Un quiz, des échanges et des connaissances qui restent.</p>
+  </header>
+  <h2 class="step-title"><span>1</span> Composer votre session</h2>
+  <fieldset class="choice-fieldset"><legend>Quel format de quiz ?</legend>
+    <div class="format-grid">
+      <label class="choice-card"><input type="radio" name="quiz-format" value="quick" checked><span class="choice-mark" aria-hidden="true">20</span><strong>Quiz rapide</strong><span>20 questions, tous les thèmes.<br> Pour faire le point ensemble.</span></label>
+      <label class="choice-card"><input type="radio" name="quiz-format" value="bilan"><span class="choice-mark" aria-hidden="true">+</span><strong>Bilan complet</strong><span>30, 50 ou 70 questions.<br> Pour aller plus loin.</span></label>
+      <label class="choice-card"><input type="radio" name="quiz-format" value="theme"><span class="choice-mark" aria-hidden="true">7</span><strong>Un thème précis</strong><span>10 questions ciblées.<br> Pour consolider un module.</span></label>
     </div>
-
-    <h2 class="step-title"><span>1</span> Choisir le thème</h2><label for="trainer-module-select" class="field-help">Questions à proposer au groupe</label>
-    <select id="trainer-module-select" class="select-styled">
-      <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions aléatoires)</option>
-      <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions aléatoires)</option>
-      <option value="RANDOM_50">🏆 Quiz Grand Format (50 questions aléatoires)</option>
-      <option value="ALL">🌐 Entraînement Intégral (Toutes les 70 questions)</option>
-      <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales (10 questions)</option>
-      <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles (10 questions)</option>
-      <option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & Collectifs (10 questions)</option>
-      <option value="Module 4 : Urgences Pédiatriques & Maternité">👶 Module 4 : Urgences Pédiatriques & Maternité (10 questions)</option>
-      <option value="Module 5 : Risque Infectieux & AES">💉 Module 5 : Risque Infectieux & AES (10 questions)</option>
-      <option value="Module 6 : Damage Control & Plaies Graves">🩹 Module 6 : Damage Control & Plaies Graves (10 questions)</option>
-      <option value="Module 7 : Cas Cliniques & ABCDE">📋 Module 7 : Cas Cliniques & ABCDE (10 questions)</option>
-    </select>
-
-    <h2 class="step-title"><span>2</span> Accueillir les participants</h2>
+  </fieldset>
+  <div id="bilan-settings" class="format-settings" hidden><label for="session-length">Combien de questions ?</label><select id="session-length" class="select-styled"><option value="30">30 questions</option><option value="50">50 questions</option><option value="70">70 questions · intégralité</option></select></div>
+  <div id="theme-settings" class="format-settings" hidden><label for="theme-select">Quel thème travailler ?</label><select id="theme-select" class="select-styled"><option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales (10 questions)</option>
+<option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles (10 questions)</option>
+<option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & Collectifs (10 questions)</option>
+<option value="Module 4 : Urgences Pédiatriques & Maternité">👶 Module 4 : Urgences Pédiatriques & Maternité (10 questions)</option>
+<option value="Module 5 : Risque Infectieux & AES">💉 Module 5 : Risque Infectieux & AES (10 questions)</option>
+<option value="Module 6 : Damage Control & Plaies Graves">🩹 Module 6 : Damage Control & Plaies Graves (10 questions)</option>
+<option value="Module 7 : Cas Cliniques & ABCDE">📋 Module 7 : Cas Cliniques & ABCDE (10 questions)</option></select></div>
+  <input id="trainer-module-select" type="hidden" value="RANDOM_20">
+  <p id="selection-summary" class="selection-summary" role="status">Quiz global · 20 questions</p>
+  <fieldset class="choice-fieldset mode-fieldset"><legend>Comment animer la session ?</legend>
+    <div class="mode-grid">
+      <label class="choice-card mode-card"><input type="radio" name="session-mode" value="live" checked><strong>Avec les téléphones</strong><span>Chacun répond, vous guidez le débriefing.</span></label>
+      <label class="choice-card mode-card"><input type="radio" name="session-mode" value="projection"><strong>En projection</strong><span>Un écran commun pour réfléchir ensemble.</span></label>
+    </div>
+  </fieldset>
+  <div id="live-setup">
+    <h2 class="step-title"><span>2</span> Accueillir votre groupe</h2>
     <div class="lobby-container">
-      <div style="text-align: center;">
-        <div id="qrcode-box" style="padding:8px; background:white; border:2px solid var(--border); border-radius:12px; display:inline-block;"></div>
-        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Scannez pour mode Live</p>
-      </div>
-
-      <div>
-        <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:6px;">
-          <span>Participants connectés :</span>
-          <span id="connected-count" style="color:var(--primary); font-size:1.1rem;">0</span>
-        </div>
-        <div class="trainees-badge-grid" id="trainees-list-box">
-          <span id="waiting-msg" style="font-size:0.8rem; color:var(--text-muted); font-style:italic;">En attente de connexion des stagiaires...</span>
-        </div>
-      </div>
+      <div class="qr-panel"><div id="qrcode-box"></div><p class="field-help">Scannez et entrez votre nom.</p></div>
+      <div><div class="participants-heading"><strong>Participants connectés</strong><span id="connected-count">0</span></div><div class="trainees-badge-grid" id="trainees-list-box"><p>Les participants apparaîtront ici après leur connexion.</p></div></div>
     </div>
-
     <div class="room-sharing"><label for="room-link" class="field-help">Lien de la salle</label><input id="room-link" class="input-styled" readonly placeholder="Préparation du lien…"><button type="button" id="copy-room-link" class="btn btn-secondary">Copier le lien</button></div>
-<label class="ranking-choice"><input id="show-ranking" type="checkbox"> Afficher le classement à la fin de la session</label>
-<p class="field-help">Sans classement, chaque participant conserve son score et les points à revoir.</p>
-<h2 class="step-title"><span>3</span> Lancer la session</h2>
-    <button type="button" class="btn btn-success" id="btn-trainer-start-live" disabled style="font-size:1.05rem; padding:15px; margin-top:20px;">
-      Lancer la session Live (<span id="btn-count">0</span> participant(s))
-    </button>
-
-    <button type="button" class="btn btn-secondary" id="btn-trainer-start-local" style="font-size:1rem; padding:13px;">
-      Ouvrir le mode projection
-    </button>
+    <label class="ranking-choice"><input id="show-ranking" type="checkbox"> Afficher le classement à la fin</label>
+    <p class="field-help">Les scores individuels et les révisions restent disponibles dans les deux cas.</p>
   </div>
+  <div class="launch-panel">
+    <h2 class="step-title"><span id="launch-step">3</span> C’est parti</h2>
+    <label class="ranking-choice"><input id="allow-humor" type="checkbox" checked> Une touche d’humour dans le bilan</label>
+    <p class="field-help">Un clin d’œil pour relâcher la pression après le quiz.</p>
+    <button type="button" class="btn btn-primary" id="btn-trainer-start-live" disabled>Lancer la session Live (<span id="btn-count">0</span> participant(s))</button>
+    <button type="button" class="btn btn-primary" id="btn-trainer-start-local" hidden>Ouvrir le mode projection</button>
+  </div>
+</div>
+
 
   <!-- ================= 2. STAGIAIRE : CONNEXION ================= -->
   <div id="screen-trainee-join" style="display: none; text-align: center;">
@@ -373,7 +460,7 @@ progress::-moz-progress-bar {background:#0369a1;}
 
     <div style="margin: 20px 0; text-align: left;">
       <label for="input-trainee-name" class="field-help">Votre nom ou pseudonyme</label>
-      <input type="text" id="input-trainee-name" class="input-styled" placeholder="Ex: Sarah B. 🚑" maxlength="25">
+      <input type="text" id="input-trainee-name" class="input-styled" placeholder="Ex: Sarah B. 🚑" maxlength="70">
     </div>
 
     <p id="join-error" role="alert" class="field-help"></p>
@@ -421,9 +508,11 @@ progress::-moz-progress-bar {background:#0369a1;}
     <!-- Score individuel -->
     <div id="single-score-box">
       <div class="score-circle" id="end-score-display" style="width:85px; height:85px; background:var(--primary-light); color:var(--primary-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800; margin:12px auto;">0/0</div>
-      <p id="end-message" style="color:var(--text-muted); font-size:0.92rem; margin-bottom:12px;"></p>
+      <div><p id="score-percentage"></p><p id="end-message" style="color:var(--text-muted); font-size:0.92rem; margin-bottom:12px;"></p></div>
     </div>
 
+    <p id="result-humor" hidden></p>
+    <div id="result-themes"></div>
     <!-- Bandeau Statistique Groupe -->
     <div class="class-stats-banner" id="class-stats-box" style="display: none;">
       <div class="stat-box">
@@ -458,6 +547,8 @@ progress::-moz-progress-bar {background:#0369a1;}
       </div>
     </div>
 
+    <button type="button" id="start-practice" class="btn btn-primary" hidden>Refaire mes erreurs</button>
+    <p id="practice-explainer" class="field-help" hidden>Une révision personnelle, sans modifier votre score ni le classement.</p>
     <div id="result-reviews"></div>
     <!-- Options Stagiaire -->
     <div id="trainee-actions-box" style="display: none; flex-direction: column; gap: 8px; margin-top: 14px;">
@@ -474,11 +565,35 @@ progress::-moz-progress-bar {background:#0369a1;}
 
     <!-- Option Formateur unique -->
     <div id="trainer-actions-box" style="display: none; margin-top: 14px;">
+      <button type="button" id="local-pdf" class="btn btn-secondary" hidden>Télécharger le bilan (PDF)</button>
       <button type="button" class="btn btn-primary" id="new-session">
         🔄 Créer une nouvelle session
       </button>
     </div>
   </div>
+
+<div id="screen-practice" style="display:none">
+  <span class="hero-badge">Révision personnelle · hors classement</span>
+  <h1 class="hero-title practice-heading">Une deuxième chance pour vos réflexes.</h1>
+  <p class="field-help">À votre rythme. Votre résultat initial et le classement restent inchangés.</p>
+  <div id="practice-question-area">
+    <p id="practice-counter" class="practice-counter"></p>
+    <progress id="practice-progress" max="1" value="0" aria-label="Progression de la révision"></progress>
+    <span id="practice-module" class="hero-badge"></span>
+    <h2 id="practice-question" class="q-title"></h2>
+    <div id="practice-options" class="answers-grid"></div>
+    <div id="practice-feedback" class="practice-feedback" role="status" aria-live="polite" hidden></div>
+    <button type="button" id="practice-next" class="btn btn-primary" disabled>Continuer la révision →</button>
+  </div>
+  <div id="practice-complete" class="practice-complete" hidden>
+    <h2 id="practice-complete-title">Révision terminée</h2>
+    <p id="practice-final-score" class="practice-score"></p>
+    <p id="practice-final-message"></p>
+    <p id="original-score-note" class="field-help"></p>
+  </div>
+  <button type="button" id="practice-pdf" class="btn btn-secondary" hidden>Télécharger le bilan de révision</button>
+  <button type="button" id="practice-return" class="btn btn-secondary">Retour au bilan initial</button>
+</div>
 
 <p class="footer-note">Support d’entraînement AFGSU · Le bilan du quiz ne constitue pas une certification.<br>La session Live nécessite Internet. Gardez la page du formateur ouverte pendant la session.</p>
 </main>
@@ -586,10 +701,14 @@ let isTrainer = false, isLocalOnly = false, peer = null, roomId = '', trainerCon
 let participants = [], activeQuestions = [], qIndex = 0, userScore = 0, userSelectedOption = null, traineeName = '';
 let sessionId = '', phase = 'lobby', localAnswers = [], pendingAnswer = false, joinTimer = null;
 let liveReady = false, joining = false, latestSnapshot = null;
+let sessionDate = '', sessionLabel = '', mainResult = null, practice = null, practiceVisible = false;
 const $ = id => document.getElementById(id);
 const text = (id, value) => { $(id).textContent = value; };
 function showScreen(id) {
   document.querySelectorAll('[id^="screen-"]').forEach(el => el.style.display = el.id === id ? 'block' : 'none');
+  document.body.classList.toggle('quiz-active', id === 'screen-live-game');
+  document.body.classList.toggle('practice-active', id === 'screen-practice');
+  document.body.classList.toggle('config-active', id === 'screen-trainer-config');
   window.scrollTo(0, 0);
   const heading = $(id).querySelector('h1,h2');
   if (heading) { heading.tabIndex = -1; heading.focus({preventScroll:true}); }
@@ -628,12 +747,12 @@ function classStats() {
     passRate:participants.length ? Math.round(100*participants.filter(p => p.score/totalQ >= .8).length/participants.length) : 0};
 }
 function reviewFor(answers) {
-  return activeQuestions.flatMap((q,i) => answers[i] === q.answer ? [] : [{question:q.question,
+  return activeQuestions.flatMap((q,i) => answers[i] === q.answer ? [] : [{module:q.module, options:[...q.options], answer:q.answer, diagram:q.diagram, question:q.question,
     user:Number.isInteger(answers[i]) ? q.options[answers[i]] : 'Sans réponse', correct:q.options[q.answer], explanation:q.explanation}]);
 }
 function snapshotFor(p) {
   const base = {type:'STATE', sessionId, phase, qIndex, total:activeQuestions.length, score:p.score,
-    selected:p.answers[qIndex] ?? null, showRanking:$('show-ranking').checked};
+    selected:p.answers[qIndex] ?? null, showRanking:$('show-ranking').checked, humor:$('allow-humor').checked, moduleLabel:sessionLabel, date:sessionDate};
   if (phase === 'asking' || phase === 'revealed') {
     base.question = publicQuestion(activeQuestions[qIndex]);
     base.key = currentKey();
@@ -641,7 +760,7 @@ function snapshotFor(p) {
       explanation:activeQuestions[qIndex].explanation, diagram:activeQuestions[qIndex].diagram});
   }
   if (phase === 'finished') {
-    base.reviews = reviewFor(p.answers); base.classStats = classStats();
+    base.reviews = reviewFor(p.answers); base.classStats = classStats(); base.themeStats = themeStatsFor(p.answers);
     base.leaderboard = base.showRanking ? participants.map(({name,score}) => ({name,score})).sort((a,b)=>b.score-a.score) : [];
   }
   return base;
@@ -671,7 +790,7 @@ function registerConnection(conn) {
     if (data.type === 'JOIN') {
       if (isLocalOnly) { safeSend(conn,{type:'UNAVAILABLE',message:'Le formateur utilise le mode projection. Attendez le lien d’une nouvelle session Live.'}); return; }
       if (typeof data.name !== 'string' || !data.name.trim()) return;
-      if (!p) { p = {id:conn.peer,name:data.name.trim().slice(0,25),score:0,answers:[],conn,connected:true}; participants.push(p); }
+      if (!p) { p = {id:conn.peer,name:data.name.trim().slice(0,70),score:0,answers:[],conn,connected:true}; participants.push(p); }
       else { p.conn = conn; p.connected = true; }
       updateLobby(); safeSend(conn,snapshotFor(p));
     } else if (data.type === 'ANSWER' && p && p.conn === conn) {
@@ -708,6 +827,7 @@ function initTrainerRoom() {
 }
 function lostConnection() {
   clearTimeout(joinTimer); joining = false; pendingAnswer = false;
+  if (phase === 'finished') {status('Session terminée · votre bilan et vos révisions restent disponibles.','ready'); $('retry-connection').hidden=true; return;}
   status('Connexion interrompue. Vous pouvez tenter de rejoindre la même session.','error');
   $('retry-connection').hidden = false;
   document.querySelectorAll('#game-options-container button').forEach(b=>b.disabled=true);
@@ -745,8 +865,11 @@ function joinLiveSession() {
 }
 function receiveState(data) {
   clearTimeout(joinTimer);joining=false;pendingAnswer=false;latestSnapshot=data;
+  if (practiceVisible && data.phase === 'finished' && data.sessionId === mainResult?.sessionId) return;
+  practiceVisible=false;
   $('retry-connection').hidden=true;status('Connecté à la session','ready');
-  sessionId=data.sessionId;phase=data.phase;qIndex=data.qIndex;userScore=data.score;
+  sessionId=data.sessionId;phase=data.phase;qIndex=data.qIndex;userScore=data.score;sessionDate=data.date;sessionLabel=data.moduleLabel;
+  if(phase !== 'finished') {mainResult=null;practice=null;}
   activeQuestions=Array.from({length:data.total},()=>({})); userSelectedOption=data.selected;
   if (phase === 'lobby') {
     text('trainee-confirmed-name',traineeName);showScreen('screen-trainee-waiting');return;
@@ -759,7 +882,9 @@ function receiveState(data) {
 function startSession(localMode) {
   if (phase !== 'lobby') return;
   if (!localMode && (!liveReady || !participants.some(p=>p.connected))) return;
-  isLocalOnly=localMode;
+  isLocalOnly=localMode;mainResult=null;practice=null;practiceVisible=false;
+  document.body.classList.toggle('local-quiz', localMode);
+  sessionDate=new Date().toISOString();sessionLabel=selectionLabel();
   const mod=$('trainer-module-select').value;
   const pool=mod.startsWith('RANDOM_') ? shuffle(defaultQuestions).slice(0,Number(mod.split('_')[1])) :
     mod === 'ALL' ? shuffle(defaultQuestions) : shuffle(defaultQuestions.filter(q=>q.module===mod));
@@ -801,6 +926,7 @@ function renderQuestionLive(q, host) {
   $('btn-trainer-reveal').style.display=host && phase==='asking'?'flex':'none';
   $('btn-trainer-next-q').style.display=host && phase==='revealed'?'flex':'none';
   text('btn-trainer-next-q',qIndex===activeQuestions.length-1?'Afficher le bilan':'Question suivante →');
+  if(userSelectedOption===null) {window.scrollTo(0,0);const heading=$('game-question-text');heading.tabIndex=-1;heading.focus({preventScroll:true});}
 }
 function revealAnswer() {
   if(!isTrainer || phase!=='asking')return;
@@ -825,18 +951,6 @@ function showFeedbackLive(correctIdx,explanation,diagramKey) {
   const detail=document.createElement('p');detail.textContent=explanation;fb.append(title,detail);fb.style.display='block';
   if(!isTrainer)text('game-answers-count','Correction · attendez la suite du formateur');
 }
-function renderDistribution() {
-  const box=$('answer-distribution');box.replaceChildren();box.hidden=false;
-  const heading=document.createElement('h3');heading.textContent='Répartition des réponses';box.append(heading);
-  activeQuestions[qIndex].options.forEach((_,i)=>{
-    const count=participants.filter(p=>p.answers[qIndex]===i).length;
-    const row=document.createElement('div');row.className='distribution-row';
-    const label=document.createElement('span');label.textContent=String.fromCharCode(65+i);
-    const meter=document.createElement('progress');meter.max=participants.length||1;meter.value=count;meter.setAttribute('aria-label','Réponse '+label.textContent);
-    const value=document.createElement('span');value.textContent=String(count);row.append(label,meter,value);box.append(row);
-  });
-  const absent=document.createElement('p');absent.textContent=`Sans réponse : ${participants.filter(p=>!Number.isInteger(p.answers[qIndex])).length}`;box.append(absent);
-}
 function nextQuestionLive() {
   if(!isTrainer || phase!=='revealed')return;
   if(qIndex+1<activeQuestions.length){qIndex++;phase='asking';userSelectedOption=null;renderQuestionLive(activeQuestions[qIndex],true);if(!isLocalOnly)broadcast();}
@@ -845,36 +959,10 @@ function nextQuestionLive() {
     const board=$('show-ranking').checked ? participants.map(({name,score})=>({name,score})).sort((a,b)=>b.score-a.score):[];
     const reviews=isLocalOnly?reviewFor(localAnswers):activeQuestions.flatMap((q,i)=>{
       const misses=participants.filter(p=>p.answers[i]!==q.answer).length;
-      return misses?[{question:q.question,user:`${misses} participant(s) à accompagner sur ce point`,correct:q.options[q.answer],explanation:q.explanation}]:[];
+      return misses?[{module:q.module, options:[...q.options], answer:q.answer, diagram:q.diagram, question:q.question,user:`${misses} participant(s) à accompagner sur ce point`,correct:q.options[q.answer],explanation:q.explanation}]:[];
     });
     showGameOverScreen(board,isLocalOnly?null:classStats(),reviews);if(!isLocalOnly)broadcast();
   }
-}
-function showGameOverScreen(leaderboard,stats,reviews=[]) {
-  showScreen('screen-game-over');document.body.classList.remove('presenting');
-  text('end-title-text',isTrainer&&!isLocalOnly?'Bilan du groupe':'Votre bilan');
-  $('single-score-box').style.display=!isTrainer||isLocalOnly?'block':'none';
-  text('end-score-display',`${userScore}/${activeQuestions.length}`);
-  const pct=activeQuestions.length?Math.round(userScore/activeQuestions.length*100):0;
-  text('end-message',pct>=80?'Seuil de réussite du quiz atteint. Bravo pour votre travail !':'Voici les points à revoir pour consolider vos connaissances.');
-  $('trainee-actions-box').style.display=!isTrainer?'flex':'none';$('trainer-actions-box').style.display=isTrainer?'block':'none';
-  $('class-stats-box').style.display=stats && stats.total?'flex':'none';
-  if(stats){text('class-avg-score',stats.avg+'%');text('class-total-players',stats.total);text('class-pass-rate',stats.passRate+'%');}
-  $('leaderboard-section').style.display=leaderboard?.length?'block':'none';
-  const tbody=$('leaderboard-body');tbody.replaceChildren();
-  let rank=0;
-  (leaderboard||[]).forEach((p,i)=>{
-    if(i===0 || p.score!==leaderboard[i-1].score)rank=i+1;
-    const tr=document.createElement('tr');
-    [rank,p.name,`${p.score}/${activeQuestions.length}`,p.score/activeQuestions.length>=.8?'Seuil atteint':'À consolider'].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td);});tbody.append(tr);
-  });
-  const box=$('result-reviews');box.replaceChildren();
-  const heading=document.createElement('h2');heading.textContent=reviews.length?'Points à retravailler':'Tous les points ont été réussis';box.append(heading);
-  reviews.forEach(r=>{
-    const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=r.question;details.append(summary);
-    [r.user,'Réponse attendue : '+r.correct,r.explanation].forEach(value=>{const p=document.createElement('p');p.textContent=value;details.append(p);});box.append(details);
-  });
-  if(pct>=80 && (!isTrainer||isLocalOnly) && typeof confetti==='function' && !matchMedia('(prefers-reduced-motion: reduce)').matches)confetti({particleCount:65,spread:65,origin:{y:.6}});
 }
 window.addEventListener('DOMContentLoaded',()=>{
   roomId=new URLSearchParams(location.search).get('room')||'';isTrainer=!roomId;
@@ -891,6 +979,12 @@ window.addEventListener('DOMContentLoaded',()=>{
     try{await navigator.clipboard.writeText($('room-link').value);text('copy-room-link','Lien copié');}
     catch(_){$('room-link').focus();$('room-link').select();status('Le lien est sélectionné : copiez-le avec votre clavier.');}
   });
+  setupChoices();
+  $('start-practice').addEventListener('click',startPractice);
+  $('practice-next').addEventListener('click',nextPractice);
+  $('practice-return').addEventListener('click',returnToResult);
+  $('practice-pdf').addEventListener('click',generateAttestationPDF);
+  $('local-pdf').addEventListener('click',generateAttestationPDF);
   $('new-session').addEventListener('click',()=>{location.href=location.href.split('?')[0];});
   $('fullscreen-toggle').addEventListener('click',async()=>{
     try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}
@@ -901,147 +995,333 @@ window.addEventListener('DOMContentLoaded',()=>{
   else {showScreen('screen-trainee-join');status('Saisissez votre nom pour rejoindre la salle.');}
 });
 
-// ================= ATTESTATION PDF HAUT DE GAMME DESIGN =================
+function selectionLabel() {
+  const key=$('trainer-module-select').value;
+  return key.startsWith('RANDOM_') ? `Quiz global · ${key.split('_')[1]} questions` : key==='ALL'?'Quiz intégral · 70 questions':key;
+}
+function updateChoices() {
+  const format=document.querySelector('input[name="quiz-format"]:checked').value;
+  const mode=document.querySelector('input[name="session-mode"]:checked').value;
+  $('bilan-settings').hidden=format!=='bilan';$('theme-settings').hidden=format!=='theme';
+  const length=$('session-length').value;
+  $('trainer-module-select').value=format==='quick'?'RANDOM_20':format==='bilan'?(length==='70'?'ALL':'RANDOM_'+length):$('theme-select').value;
+  text('selection-summary',selectionLabel());
+  $('live-setup').hidden=mode!=='live';$('btn-trainer-start-live').hidden=mode!=='live';$('btn-trainer-start-local').hidden=mode!=='projection';
+  document.body.classList.toggle('projection-setup',mode==='projection');
+  text('launch-step',mode==='live'?'3':'2');
+  document.querySelectorAll('.choice-card').forEach(card=>card.classList.toggle('is-selected',card.querySelector('input').checked));
+}
+function setupChoices() {
+  document.querySelectorAll('input[name="quiz-format"],input[name="session-mode"]').forEach(input=>input.addEventListener('change',updateChoices));
+  $('session-length').addEventListener('change',updateChoices);$('theme-select').addEventListener('change',updateChoices);updateChoices();
+}
+function themeStatsFor(answers) {
+  const themes=new Map();
+  activeQuestions.forEach((q,i)=>{
+    if(!themes.has(q.module))themes.set(q.module,{module:q.module,correct:0,total:0});
+    const item=themes.get(q.module);item.total++;if(answers[i]===q.answer)item.correct++;
+  });return [...themes.values()];
+}
+function groupThemeStats() {
+  const themes=themeStatsFor([]).map(t=>({...t,total:t.total*participants.length}));
+  for(const p of participants)for(const t of themeStatsFor(p.answers))themes.find(x=>x.module===t.module).correct+=t.correct;
+  return themes;
+}
+function shortModule(value) {return (value||'Révision').replace(/^Module \d+\s*:\s*/,'');}
+function renderDistribution() {
+  const box=$('answer-distribution');box.replaceChildren();box.hidden=false;
+  const heading=document.createElement('h3');heading.textContent='Le groupe a répondu';box.append(heading);
+  const denominator=participants.length;
+  const note=document.createElement('p');note.className='field-help';note.textContent=`Sur ${denominator} participant(s), y compris les absences de réponse.`;box.append(note);
+  activeQuestions[qIndex].options.forEach((option,i)=>{
+    const count=participants.filter(p=>p.answers[qIndex]===i).length, pct=denominator?Math.round(100*count/denominator):0;
+    const row=document.createElement('div');row.className='distribution-item';
+    const heading=document.createElement('div');heading.className='distribution-heading';
+    const label=document.createElement('span');label.textContent=String.fromCharCode(65+i)+' · '+option;
+    if(i===activeQuestions[qIndex].answer){row.classList.add('expected');const badge=document.createElement('strong');badge.textContent=' ✓ Bonne réponse';label.append(badge);}
+    const amount=document.createElement('span');amount.className='distribution-amount';amount.textContent=`${pct} % · ${count}`;
+    heading.append(label,amount);const meter=document.createElement('progress');meter.max=denominator||1;meter.value=count;
+    meter.setAttribute('aria-label',`Réponse ${String.fromCharCode(65+i)} : ${pct} pour cent, ${count} participant(s)`);
+    row.append(heading,meter);box.append(row);
+  });
+  const absent=participants.filter(p=>!Number.isInteger(p.answers[qIndex])).length;
+  const footer=document.createElement('p');footer.className='distribution-absence';footer.textContent=`Sans réponse : ${absent} · ${denominator?Math.round(absent*100/denominator):0} %`;box.append(footer);
+}
+function getDisplayedResult() {return practiceVisible&&practice?.finished?practice.result:mainResult;}
+function makeResult(reviews,themes) {
+  return {name:traineeName||(isLocalOnly?'Animation en projection':'Groupe'),score:userScore,total:activeQuestions.length,
+    moduleLabel:sessionLabel||'Quiz AFGSU',sessionId,date:sessionDate||new Date().toISOString(),
+    themeStats:structuredClone(themes),reviews:structuredClone(reviews),isPractice:false};
+}
+const lightMessages=[
+  'Le quiz est terminé. Votre pouce peut prendre sa pause.',
+  'Les neurones ont travaillé. La pause café peut déposer sa candidature.',
+  'Le bouton « Suivant » vous remercie pour cette belle collaboration.',
+  'Fin du suspense : les questions ont enfin épuisé leur stock de questions.'
+];
+function renderThemes(themes) {
+  const box=$('result-themes');box.replaceChildren();
+  if(!themes.length)return;
+  const title=document.createElement('h2');title.textContent='Vos repères par thème';if(isTrainer&&!isLocalOnly)title.textContent='Les repères du groupe';box.append(title);
+  themes.forEach(t=>{
+    const row=document.createElement('div');row.className='theme-result';
+    const label=document.createElement('span');label.textContent=shortModule(t.module);
+    const value=document.createElement('strong');value.textContent=`${t.correct}/${t.total}`;
+    const meter=document.createElement('progress');meter.max=t.total||1;meter.value=t.correct;meter.setAttribute('aria-label',`${shortModule(t.module)} : ${t.correct} sur ${t.total}`);
+    row.append(label,value,meter);box.append(row);
+  });
+}
+function renderGroupedReviews(reviews) {
+  const box=$('result-reviews');box.replaceChildren();
+  const title=document.createElement('h2');title.textContent=reviews.length?'Votre programme de révision':'Tous les points ont été réussis';
+  if(isTrainer&&!isLocalOnly&&reviews.length)title.textContent='À reprendre avec le groupe';box.append(title);
+  const groups=new Map();for(const r of reviews){const module=r.module||'Révision';if(!groups.has(module))groups.set(module,[]);groups.get(module).push(r);}
+  for(const [module,items] of groups){
+    const group=document.createElement('section');group.className='review-theme';
+    const heading=document.createElement('h3');heading.textContent=`${shortModule(module)} · ${items.length} point${items.length>1?'s':''} à revoir`;group.append(heading);
+    items.forEach(r=>{
+      const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=r.question;details.append(summary);
+      [r.user,'Réponse attendue : '+r.correct,r.explanation].forEach((value,i)=>{const p=document.createElement('p');p.textContent=(i===0?'Réponse : ':'')+value;details.append(p);});group.append(details);
+    });box.append(group);
+  }
+}
+function showGameOverScreen(leaderboard,stats,reviews=[]) {
+  practiceVisible=false;showScreen('screen-game-over');document.body.classList.remove('presenting');
+  const group=isTrainer&&!isLocalOnly;
+  const themes=isTrainer?(isLocalOnly?themeStatsFor(localAnswers):groupThemeStats()):(latestSnapshot?.themeStats||[]);
+  if(!mainResult || mainResult.sessionId!==sessionId) {
+    mainResult=makeResult(reviews,themes);
+    mainResult.humor=(isTrainer?$('allow-humor').checked:latestSnapshot?.humor)?lightMessages[Math.floor(Math.random()*lightMessages.length)]:'';
+  }
+  text('end-title-text',group?'Le bilan de votre groupe':'Un quiz de plus, des repères en tête');
+  $('single-score-box').style.display=group?'none':'flex';
+  text('end-score-display',`${mainResult.score}/${mainResult.total}`);
+  const pct=mainResult.total?Math.round(mainResult.score/mainResult.total*100):0;
+  text('score-percentage',pct+' % de bonnes réponses');
+  text('end-message',pct>=80?'Seuil de réussite du quiz atteint. Bravo pour votre travail !':'Chaque correction est une occasion de consolider vos connaissances.');
+  $('trainee-actions-box').style.display=!isTrainer?'flex':'none';$('trainer-actions-box').style.display=isTrainer?'block':'none';
+  $('local-pdf').hidden=!isLocalOnly;
+  $('class-stats-box').style.display=stats&&stats.total?'flex':'none';
+  if(stats){text('class-avg-score',stats.avg+'%');text('class-total-players',stats.total);text('class-pass-rate',stats.passRate+'%');}
+  $('leaderboard-section').style.display=leaderboard?.length?'block':'none';
+  const tbody=$('leaderboard-body');tbody.replaceChildren();let rank=0;
+  (leaderboard||[]).forEach((p,i)=>{
+    if(i===0||p.score!==leaderboard[i-1].score)rank=i+1;
+    const tr=document.createElement('tr');
+    [rank,p.name,`${p.score}/${mainResult.total}`,p.score/mainResult.total>=.8?'Seuil atteint':'À consolider'].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td);});tbody.append(tr);
+  });
+  $('result-humor').hidden=!mainResult.humor;text('result-humor',mainResult.humor||'');
+  renderThemes(mainResult.themeStats);renderGroupedReviews(mainResult.reviews);
+  $('start-practice').hidden=group||!mainResult.reviews.length;
+  text('start-practice',`Refaire mes erreurs · ${mainResult.reviews.length} question${mainResult.reviews.length>1?'s':''}`);
+  $('practice-explainer').hidden=$('start-practice').hidden;
+  if(pct>=80&&!group&&typeof confetti==='function'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)confetti({particleCount:65,spread:65,origin:{y:.6}});
+}
+function startPractice() {
+  if(practiceVisible)return;
+  if(!mainResult?.reviews.length||isTrainer&&!isLocalOnly)return;
+  const pool=mainResult.reviews.filter(r=>Array.isArray(r.options)&&Number.isInteger(r.answer));
+  if(!pool.length)return;
+  practice={questions:prepareQuestions(pool),index:0,score:0,answers:[],revealed:false,finished:false,result:null};
+  practiceVisible=true;showScreen('screen-practice');renderPractice();
+}
+function renderPractice() {
+  $('practice-complete').hidden=true;$('practice-question-area').hidden=false;$('practice-pdf').hidden=true;
+  const q=practice.questions[practice.index];
+  text('practice-counter',`Révision ${practice.index+1} / ${practice.questions.length}`);text('practice-module',shortModule(q.module));text('practice-question',q.question);
+  $('practice-progress').max=practice.questions.length;$('practice-progress').value=practice.index;
+  const options=$('practice-options');options.replaceChildren();
+  q.options.forEach((option,i)=>{
+    const b=document.createElement('button');b.type='button';b.className='opt-card';
+    const letter=document.createElement('span');letter.className='answer-letter';letter.textContent=String.fromCharCode(65+i);
+    const copy=document.createElement('span');copy.className='answer-copy';copy.textContent=option;b.append(letter,copy);b.addEventListener('click',()=>answerPractice(i));options.append(b);
+  });
+  $('practice-feedback').hidden=true;$('practice-feedback').replaceChildren();$('practice-next').disabled=true;
+  text('practice-next',practice.index+1===practice.questions.length?'Terminer la révision':'Continuer la révision →');
+  $('practice-question').tabIndex=-1;$('practice-question').focus({preventScroll:true});window.scrollTo(0,0);
+}
+function answerPractice(index) {
+  if(!practiceVisible||!practice||practice.finished||practice.revealed)return;
+  const q=practice.questions[practice.index];
+  if(!Number.isInteger(index)||index<0||index>=q.options.length)return;
+  practice.answers[practice.index]=index;practice.revealed=true;if(index===q.answer)practice.score++;
+  $('practice-options').querySelectorAll('button').forEach((b,i)=>{
+    b.disabled=true;if(i===q.answer||i===index){b.classList.add(i===q.answer?'correct':'wrong');const label=document.createElement('small');label.className='answer-status';label.textContent=i===q.answer?'✓ Bonne réponse':'✕ Votre réponse';b.querySelector('.answer-copy').append(label);}
+  });
+  const fb=$('practice-feedback');fb.hidden=false;const heading=document.createElement('strong');heading.textContent='Le réflexe à retenir';const p=document.createElement('p');p.textContent=q.explanation;fb.append(heading,p);
+  $('practice-progress').value=practice.index+1;$('practice-next').disabled=false;
+}
+function nextPractice() {
+  if(!practiceVisible||!practice||practice.finished||!practice.revealed)return;
+  if(practice.index+1<practice.questions.length){practice.index++;practice.revealed=false;renderPractice();return;}
+  practice.finished=true;
+  const themes=new Map(),reviews=[];
+  practice.questions.forEach((q,i)=>{
+    if(!themes.has(q.module))themes.set(q.module,{module:q.module,correct:0,total:0});const t=themes.get(q.module);t.total++;
+    if(practice.answers[i]===q.answer)t.correct++;else reviews.push({...q,user:q.options[practice.answers[i]],correct:q.options[q.answer]});
+  });
+  practice.result={...structuredClone(mainResult),score:practice.score,total:practice.questions.length,date:new Date().toISOString(),moduleLabel:'Révision personnelle des erreurs',isPractice:true,themeStats:[...themes.values()],reviews};
+  $('practice-question-area').hidden=true;$('practice-complete').hidden=false;$('practice-pdf').hidden=false;
+  text('practice-final-score',`${practice.score}/${practice.questions.length}`);
+  text('practice-final-message',practice.score===practice.questions.length?'Tous les points de cette révision ont été réussis. Bien joué !':'Vous avez repris vos erreurs. Les points restants pourront être revus avec votre formateur.');
+  text('original-score-note',`Votre résultat initial reste ${mainResult.score}/${mainResult.total}. Le classement de la session est inchangé.`);
+  window.scrollTo(0,0);$('practice-complete-title').tabIndex=-1;$('practice-complete-title').focus({preventScroll:true});
+}
+function returnToResult() {practiceVisible=false;showScreen('screen-game-over');}
+
+// Bilan PDF : les données affichées restent la source unique du téléchargement.
+function createQuizPdf(result) {
+  if (!window.jspdf || !window.jspdf.jsPDF) throw new Error('La bibliothèque PDF est indisponible.');
+  if (!result || !Number.isFinite(Number(result.total)) || Number(result.total) <= 0) throw new Error('Aucun résultat à télécharger.');
+  const doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+  const palette = { navy: [19, 43, 68], blue: [31, 110, 182], pale: [236, 244, 251], ink: [27, 45, 63], muted: [86, 105, 123], rule: [215, 227, 237], white: [255, 255, 255] };
+  // Les polices PDF standard couvrent le français, mais pas les pictogrammes Unicode.
+  const clean = value => String(value == null ? '' : value).normalize('NFC')
+    .replace(/[\u2010-\u2015\u2212]/g, '-').replace(/[\u2018\u2019\u02bc]/g, "'")
+    .replace(/[\u201c\u201d]/g, '"').replace(/[\u00a0\u202f]/g, ' ')
+    .replace(/\u2026/g, '...').replace(/œ/g, 'oe').replace(/Œ/g, 'OE')
+    .replace(/[^\u0020-\u007e\u00a1-\u00ff\n]/g, '').trim();
+  const total = Math.max(1, Math.floor(Number(result.total)));
+  const score = Math.max(0, Math.min(total, Math.floor(Number(result.score) || 0)));
+  const pct = Math.round(score / total * 100);
+  const practice = result.isPractice === true;
+  const title = practice ? 'Bilan de révision' : 'Bilan du quiz';
+  const name = clean(result.name) || 'Participant AFGSU';
+  const parsedDate = new Date(result.date || Date.now());
+  const date = (Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const themeStats = Array.isArray(result.themeStats) ? result.themeStats.filter(theme => Number(theme.total) > 0) : [];
+  const m = 18, width = 174, bottom = 254;
+  let y;
+  const font = (size, style = 'normal', color = 'ink') => { doc.setFont('helvetica', style); doc.setFontSize(size); doc.setTextColor(...palette[color]); };
+  const write = (value, x, yy, options) => doc.text(clean(value), x, yy, options);
+  const lines = (value, maxWidth, size, style = 'normal') => { font(size, style); return doc.splitTextToSize(clean(value), maxWidth); };
+  function header(continued) {
+    doc.setFillColor(...palette.navy); doc.rect(0, 0, 210, 5, 'F');
+    font(10, 'bold', 'blue'); write('AFGSU', m, 19);
+    font(8, 'normal', 'muted'); write('LES GESTES QUI COMPTENT', 192, 19, { align: 'right' });
+    font(27, 'bold', 'navy'); write(title, m, 37);
+    font(10, 'normal', 'muted'); write(continued ? 'Résultats par thème - suite' : (practice ? 'Entraînement personnel sur les questions à revoir' : 'Entraînement aux gestes et soins d’urgence'), m, 46);
+    y = 55;
+  }
+  function nextPage() { doc.addPage(); header(true); }
+  function ensureRoom(height) { if (y + height > bottom) nextPage(); }
+  function footer() {
+    const pages = doc.getNumberOfPages();
+    for (let page = 1; page <= pages; page++) {
+      doc.setPage(page);
+      doc.setDrawColor(...palette.rule); doc.setLineWidth(.25); doc.line(m, 263, 192, 263);
+      font(9.5, 'bold', 'navy'); write('Alain VALARCHER', m, 270);
+      font(7.8, 'normal', 'muted'); write('Formateur AFGSU - CESU 94 - Croix-Rouge Française', m, 275);
+      write('Ambulancier SMUR - SAMU 91', m, 279.5);
+      font(7.3, 'normal', 'muted'); write('Bilan pédagogique du quiz. Ce document ne constitue pas une attestation AFGSU.', m, 288);
+      write(`${page} / ${pages}`, 192, 288, { align: 'right' });
+    }
+  }
+  header(false);
+  font(8, 'bold', 'muted'); write('PARTICIPANT', m, y);
+  y += 8;
+  let nameSize = 21;
+  let nameLines = lines(name, width, nameSize, 'bold');
+  while (nameLines.length > 3 && nameSize > 12) { nameSize -= 1; nameLines = lines(name, width, nameSize, 'bold'); }
+  const nameStep = nameSize * .3528 * 1.18;
+  nameLines.forEach(line => {
+    ensureRoom(nameStep + 3); font(nameSize, 'bold', 'navy'); write(line, m, y); y += nameStep;
+  });
+  y += 5;
+  ensureRoom(42);
+  doc.setFillColor(...palette.navy); doc.roundedRect(m, y, width, 35, 3, 3, 'F');
+  font(8, 'bold', 'white'); write(practice ? 'SCORE DE CETTE RÉVISION' : 'VOTRE SCORE', m + 8, y + 8);
+  font(26, 'bold', 'white'); write(`${score} / ${total}`, m + 8, y + 23);
+  font(18, 'bold', 'white'); write(`${pct} %`, 183, y + 14, { align: 'right' });
+  font(8, 'normal', 'white'); write('de bonnes réponses', 183, y + 21, { align: 'right' });
+  doc.setFillColor(60, 88, 115); doc.roundedRect(127, y + 26, 56, 2, 1, 1, 'F');
+  if (pct > 0) { doc.setFillColor(130, 196, 241); doc.rect(127, y + 26, 56 * pct / 100, 2, 'F'); }
+  y += 42;
+  const metadata = [
+    { label: 'PARCOURS', value: result.moduleLabel || 'Quiz AFGSU', x: m, width: 102 },
+    { label: 'DATE', value: date, x: 133, width: 59 }
+  ];
+  const metaLineSets = metadata.map(item => lines(item.value, item.width, 9));
+  const metaHeight = Math.max(...metaLineSets.map(value => value.length)) * 4.1 + 12;
+  ensureRoom(metaHeight);
+  metadata.forEach((item, index) => {
+    font(7.5, 'bold', 'muted'); write(item.label, item.x, y);
+    font(9, 'normal', 'ink'); doc.text(metaLineSets[index], item.x, y + 5.5, { lineHeightFactor: 1.29 });
+  });
+  y += metaHeight;
+  const sessionLines = lines(`Session : ${result.sessionId || 'Entraînement local'}`, width, 8);
+  ensureRoom(sessionLines.length * 3.6 + 9);
+  font(8, 'normal', 'muted'); doc.text(sessionLines, m, y, { lineHeightFactor: 1.25 });
+  y += sessionLines.length * 3.6 + 6;
+  if (practice) {
+    const practiceLines = lines('Ce score concerne uniquement cette révision. Il ne remplace pas le résultat de la session initiale et ne modifie pas le classement.', width - 12, 8.3);
+    const h = practiceLines.length * 3.6 + 6;
+    ensureRoom(h + 4);
+    doc.setFillColor(...palette.pale); doc.roundedRect(m, y - 2, width, h, 2, 2, 'F');
+    font(8.3, 'normal', 'ink'); doc.text(practiceLines, m + 6, y + 3, { lineHeightFactor: 1.23 });
+    y += h + 4;
+  }
+  function tableHeader() {
+    ensureRoom(25);
+    font(13, 'bold', 'navy'); write('Vos résultats par thème', m, y);
+    y += 8;
+    font(7.4, 'bold', 'muted'); write('THÈME', m + 3, y); write('RÉPONSES JUSTES', 154, y, { align: 'right' }); write('À REVOIR', 189, y, { align: 'right' });
+    y += 4;
+  }
+  tableHeader();
+  if (themeStats.length) {
+    themeStats.forEach((theme, index) => {
+      const label = clean(theme.module) || 'Ensemble du quiz';
+      const labelLines = lines(label, 106, 8.8);
+      const h = Math.max(10, labelLines.length * 3.8 + 6);
+      if (y + h > bottom) { nextPage(); tableHeader(); }
+      const themeTotal = Math.max(1, Math.floor(Number(theme.total)));
+      const correct = Math.max(0, Math.min(themeTotal, Math.floor(Number(theme.correct) || 0)));
+      const missed = themeTotal - correct;
+      doc.setFillColor(...(index % 2 === 0 ? palette.pale : palette.white)); doc.rect(m, y, width, h, 'F');
+      font(8.8, 'normal', 'ink'); doc.text(labelLines, m + 3, y + 6, { lineHeightFactor: 1.22 });
+      font(9, 'bold', 'navy'); write(`${correct} / ${themeTotal}`, 154, y + 6, { align: 'right' });
+      font(8.6, missed ? 'bold' : 'normal', missed ? 'blue' : 'muted'); write(missed ? `${missed} question${missed > 1 ? 's' : ''}` : 'Aucun', 189, y + 6, { align: 'right' });
+      y += h;
+    });
+  } else {
+    font(9, 'normal', 'muted'); write('Le détail par thème n’est pas disponible pour cette session.', m, y + 6); y += 13;
+  }
+  y += 9;
+  const nextText = score === total
+    ? 'Toutes les réponses de ce quiz sont justes. Poursuivez votre entraînement avec un autre parcours.'
+    : 'Pour poursuivre : relisez les corrections et utilisez « Refaire mes erreurs » depuis votre bilan en ligne.';
+  const nextLines = lines(nextText, width, 8.7);
+  // Le conseil reste facultatif pour ne pas créer une page presque vide.
+  if (y + nextLines.length * 4 <= bottom) { font(8.7, 'normal', 'muted'); doc.text(nextLines, m, y, { lineHeightFactor: 1.3 }); }
+  footer();
+  doc.setProperties({ title: `${title} AFGSU - ${name}`, subject: practice ? 'Révision personnelle des erreurs' : 'Résultats du quiz pédagogique AFGSU', author: 'Alain VALARCHER', creator: 'Quiz AFGSU' });
+  return doc;
+}
+
 function generateAttestationPDF() {
-  if (!window.jspdf) { status('Le PDF nécessite Internet. Votre score reste affiché et vous pouvez copier le récapitulatif par e-mail.', 'error'); return; }
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-  const pct = Math.round((userScore / activeQuestions.length) * 100);
-  const dateStr = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
-
-  // 1. Fond & Double Encadrement Diplôme
-  doc.setFillColor(248, 250, 252);
-  doc.rect(0, 0, 297, 210, 'F');
-
-  // Bordure Bleue Principale
-  doc.setDrawColor(2, 132, 199);
-  doc.setLineWidth(2.5);
-  doc.rect(10, 10, 277, 190);
-
-  // Liseré intérieur Rouge Urgence & Or
-  doc.setDrawColor(239, 68, 68);
-  doc.setLineWidth(0.8);
-  doc.rect(13, 13, 271, 184);
-
-  // 2. Bandeau Supérieur Médical Bicolore
-  doc.setFillColor(3, 105, 161);
-  doc.rect(14, 14, 269, 22, 'F');
-  
-  doc.setFillColor(239, 68, 68);
-  doc.rect(14, 36, 269, 2, 'F');
-
-  // Croix de Secours Stylisée en en-tête
-  doc.setFillColor(255, 255, 255);
-  doc.roundedRect(26, 18, 14, 14, 2, 2, 'F');
-  doc.setFillColor(239, 68, 68);
-  doc.rect(31.5, 20.5, 3, 9, 'F');
-  doc.rect(28.5, 23.5, 9, 3, 'F');
-
-  // Titres En-tête
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(255, 255, 255);
-  doc.text("FORMATION AUX GESTES ET SOINS D'URGENCE", 148.5, 24, { align: "center" });
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(224, 242, 254);
-  doc.text("ENTRAÎNEMENT AUX CONNAISSANCES ET DÉBRIEFING PÉDAGOGIQUE", 148.5, 31, { align: "center" });
-
-  // 3. Titre Officiel Attestation
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.setTextColor(15, 23, 42);
-  doc.text("BILAN DU QUIZ AFGSU", 148.5, 52, { align: "center" });
-
-  // Badge d'accréditation
-  doc.setFillColor(236, 253, 245);
-  doc.roundedRect(83, 58, 131, 8, 4, 4, 'F');
-  doc.setDrawColor(16, 185, 129);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(83, 58, 131, 8, 4, 4, 'D');
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8);
-  doc.setTextColor(5, 150, 105);
-  doc.text("BILAN D’ENTRAÎNEMENT — NE CONSTITUE PAS UNE CERTIFICATION", 148.5, 63.5, { align: "center" });
-
-  // 4. Attribution Stagiaire
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(12);
-  doc.setTextColor(71, 85, 105);
-  doc.text("Résultats de la session de :", 148.5, 78, { align: "center" });
-
-  // Nom du Stagiaire avec soulignement dynamique
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.setTextColor(2, 132, 199);
-  doc.text(traineeName || "Stagiaire AFGSU", 148.5, 90, { align: "center" });
-
-  doc.setDrawColor(2, 132, 199);
-  doc.setLineWidth(1);
-  doc.line(90, 93, 207, 93);
-
-  // 5. Cadre du Résultat et Score
-  doc.setFillColor(255, 255, 255);
-  doc.roundedRect(68, 102, 161, 30, 4, 4, 'F');
-  doc.setDrawColor(226, 232, 240);
-  doc.setLineWidth(0.8);
-  doc.roundedRect(68, 102, 161, 30, 4, 4, 'D');
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10.5);
-  doc.setTextColor(100, 116, 139);
-  doc.text("Évaluation continue sur simulateur interactif", 148.5, 110, { align: "center" });
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(15, 23, 42);
-  doc.text(`Score Final : ${userScore} / ${activeQuestions.length}  (${pct} % de réussite)`, 148.5, 122, { align: "center" });
-
-  doc.setFontSize(10);
-  doc.text(pct >= 80 ? "Seuil de reussite du quiz atteint (80 %)." : "Points a revoir pour consolider les connaissances.", 148.5, 138, { align: "center" });
-  // 6. Pied de page & Signature
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  doc.setTextColor(100, 116, 139);
-  doc.text(`Délivré le ${dateStr}`, 32, 160);
-  doc.text("Identifiant de session : " + (roomId || "AFGSU-LIVE"), 32, 166);
-
-  // Signature Alain VALARCHER avec tampon stylisé
-  doc.setFillColor(241, 245, 249);
-  doc.roundedRect(165, 145, 95, 36, 3, 3, 'F');
-  doc.setDrawColor(2, 132, 199);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(165, 145, 95, 36, 3, 3, 'D');
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(15, 23, 42);
-  doc.text("Alain VALARCHER", 212.5, 153, { align: "center" });
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(71, 85, 105);
-  doc.text("Formateur AFGSU • CESU 94 • Croix-Rouge Française", 212.5, 159, { align: "center" });
-  doc.text("Ambulancier SMUR – SAMU 91", 212.5, 164, { align: "center" });
-
-  doc.setFont("helvetica", "italic");
-  doc.setFontSize(7.5);
-  doc.setTextColor(16, 185, 129);
-  doc.text("Bilan de participation au quiz", 212.5, 172, { align: "center" });
-
-  // Téléchargement
-  doc.save(`Bilan_AFGSU_${(traineeName || "Stagiaire").replace(/\s+/g, '_')}.pdf`);
+  if (!window.jspdf || !window.jspdf.jsPDF) { status('Le PDF nécessite Internet. Vous pouvez consulter votre score ou ouvrir le récapitulatif par e-mail.', 'error'); return; }
+  const result = getDisplayedResult();
+  if (!result || !result.total) { status('Terminez un quiz pour télécharger votre bilan.', 'error'); return; }
+  try {
+    const safeName = String(result.name || 'Participant').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 90) || 'Participant';
+    createQuizPdf(result).save(`${result.isPractice ? 'Revision' : 'Bilan'}_AFGSU_${safeName}.pdf`);
+  } catch (error) { status('Le PDF n’a pas pu être créé. Votre résultat reste disponible sur cette page.', 'error'); console.error('Génération du bilan PDF', error); }
 }
 
 function sendAttestationByEmail() {
-  const pct = Math.round((userScore / activeQuestions.length) * 100);
-  const subject = encodeURIComponent(`Bilan AFGSU - ${traineeName || 'Stagiaire'}`);
-  const body = encodeURIComponent(`Bonjour,\n\nVoici mon résultat au quiz d’entraînement AFGSU :\n• Stagiaire : ${traineeName}\n• Score : ${userScore}/${activeQuestions.length} (${pct}%)\n• Formateur : Alain VALARCHER (CESU 94 / Croix-Rouge Française / SAMU 91)\n\nLe PDF peut être téléchargé séparément depuis la page de résultats.`);
+  const result = getDisplayedResult();
+  if (!result || !result.total) { status('Terminez un quiz pour partager votre bilan.', 'error'); return; }
+  const pct = Math.round(result.score / result.total * 100);
+  const subject = encodeURIComponent(`${result.isPractice ? 'Révision' : 'Bilan'} AFGSU - ${result.name || 'Participant'}`);
+  const themes = (result.themeStats || []).map(theme => `- ${theme.module} : ${theme.correct}/${theme.total}`).join('\n');
+  const body = encodeURIComponent(`Bonjour,\n\nVoici mon résultat ${result.isPractice ? 'de révision personnelle' : 'au quiz d’entraînement'} AFGSU :\n\nParticipant : ${result.name || 'Participant'}\nParcours : ${result.moduleLabel || 'Quiz AFGSU'}\nSession : ${result.sessionId || 'Entraînement local'}\nScore : ${result.score}/${result.total} (${pct} % de bonnes réponses)\n${result.isPractice ? '\nCe score de révision ne remplace pas le résultat initial et ne modifie pas le classement.\n' : ''}${themes ? '\nRésultats par thème :\n' + themes + '\n' : ''}\nFormateur : Alain VALARCHER (CESU 94 / Croix-Rouge Française / SAMU 91)\n\nLe PDF se télécharge séparément depuis le bilan. Il n’est pas joint automatiquement à ce message.`);
   window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
+
 </script>
 
 </body>
 </html>
+
 
