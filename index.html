@@ -228,21 +228,98 @@
     .leaderboard-table tr:nth-child(1) td { background: #fefce8; font-weight: 700; }
     .leaderboard-table tr:nth-child(2) td { background: #f8fafc; }
     .leaderboard-table tr:nth-child(3) td { background: #fff7ed; }
-  </style>
+  /* AFGSU — présentation de formation */
+:root { --primary:#0369a1; --primary-dark:#075985; --success:#047857; --text-muted:#52657a; }
+body { background:#edf3f7; align-items:flex-start; padding:32px 20px; }
+.app-card { max-width:920px; padding:36px; border:1px solid #dce6ee; border-radius:24px; box-shadow:0 12px 40px #16324c0d; }
+[hidden] { display:none!important; }
+.brand-line {display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--border);color:#12324c;font-weight:800;letter-spacing:.04em;}
+.brand-line span {font-size:.8rem;font-weight:500;letter-spacing:0;color:var(--text-muted);}
+.hero-title {font-size:2rem;letter-spacing:-.035em;line-height:1.2;}
+.hero-sub {line-height:1.6;max-width:580px;margin:10px auto 0;}
+.hero-badge {font-size:.72rem;letter-spacing:.07em;padding:7px 12px;}
+.step-title {font-size:1rem;display:flex;align-items:center;gap:10px;margin:26px 0 14px;}
+.step-title span {display:inline-flex;align-items:center;justify-content:center;background:#e0f2fe;color:#075985;width:28px;height:28px;border-radius:9px;}
+.lobby-container {background:#f8fafc;padding:20px;border:1px solid var(--border);border-radius:16px;}
+.trainees-badge-grid {background:white;border:1px solid var(--border);font-size:.9rem;line-height:1.6;}
+.trainee-pill {font-size:.8rem;animation:none;}
+.room-sharing {margin-top:16px;display:flex;gap:8px;align-items:center;}
+.room-sharing input {margin:0;min-width:0;font-size:.8rem;font-weight:400;}
+.room-sharing button {width:auto;flex-shrink:0;margin:0;}
+.connection-note {font-size:.86rem;padding:12px 14px;background:#f1f5f9;border-radius:10px;line-height:1.6;margin-bottom:16px;}
+.connection-note[data-state=ready] {color:#065f46;background:#ecfdf5;}
+.connection-note[data-state=error] {color:#9a3412;background:#fff7ed;}
+.field-help {font-size:.84rem;color:var(--text-muted);line-height:1.6;margin:8px 0;}
+.ranking-choice {display:flex;align-items:center;gap:10px;font-size:.9rem;margin-top:16px;line-height:1.5;}
+.ranking-choice input {width:20px;height:20px;accent-color:var(--primary);}
+.btn {min-height:48px;line-height:1.4;transition:background-color .15s;}
+.btn-primary {background:#0369a1;}
+.btn-success {background:#047857;}
+.btn:disabled {opacity:.55;cursor:not-allowed;}
+.btn:focus-visible,.opt-card:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible {outline:3px solid #0284c7;outline-offset:3px;}
+.select-styled,.input-styled {font-weight:500;font-size:1rem;}
+.live-status-bar {gap:12px;flex-wrap:wrap;line-height:1.5;background:transparent;padding:0;}
+progress {appearance:none;border:0;border-radius:20px;overflow:hidden;height:8px;background:#dbe7ef;accent-color:#0369a1;}
+progress::-webkit-progress-bar {background:#dbe7ef;}
+progress::-webkit-progress-value {background:#0369a1;}
+progress::-moz-progress-bar {background:#0369a1;}
+#quiz-progress {width:100%;margin:0 0 24px;}
+.q-title {font-size:1.45rem;line-height:1.5;margin:12px 0 24px;}
+.answers-grid {gap:12px;}
+.opt-card {font-size:1.08rem;line-height:1.55;padding:16px;gap:14px;justify-content:flex-start;color:#243b50;}
+.opt-card:hover:not(:disabled) {background:#f0f9ff;border-color:#0284c7;}
+.opt-card:disabled {opacity:1;cursor:default;}
+.answer-letter {display:flex;align-items:center;justify-content:center;flex:0 0 34px;height:34px;border-radius:9px;background:#f1f5f9;font-weight:800;}
+.answer-copy {flex:1;}
+.answer-status {display:block;font-size:.84rem;margin-top:6px;font-weight:700;}
+.opt-card.selected {border-width:2px;}
+#game-feedback-box {font-size:1.05rem!important;padding:20px!important;line-height:1.7;}
+#game-feedback-box strong {color:#075985;}
+.illustration-box svg {width:100%;height:auto;min-height:100px;}
+#answer-distribution {padding:20px;margin-top:16px;border:1px solid var(--border);border-radius:14px;}
+#answer-distribution h3 {font-size:1rem;margin-bottom:10px;}
+.distribution-row {display:grid;grid-template-columns:20px 1fr 30px;gap:12px;align-items:center;margin:10px 0;}
+.distribution-row progress {width:100%;height:12px;}
+.class-stats-banner {background:#075985;box-shadow:none;gap:12px;flex-wrap:wrap;}
+#result-reviews {text-align:left;margin:24px 0;}
+#result-reviews h2 {font-size:1.1rem;margin-bottom:12px;}
+#result-reviews details {background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:16px;margin:10px 0;line-height:1.6;}
+#result-reviews summary {font-weight:650;cursor:pointer;}
+#result-reviews p {margin-top:10px;}
+.footer-note {font-size:.78rem;line-height:1.65;color:var(--text-muted);text-align:center;padding-top:20px;margin-top:24px;border-top:1px solid var(--border);}
+.presenting .app-card {max-width:1120px;}
+.presenting .q-title {font-size:1.85rem;}
+.presenting .opt-card {font-size:1.2rem;}
+.toolbar {display:flex;justify-content:flex-end;}
+.toolbar .btn {width:auto;font-size:.8rem;padding:8px 14px;min-height:38px;}
+@media(max-width:650px) {
+ body {padding:10px;}.app-card {padding:20px 16px;border-radius:18px;}.hero-title {font-size:1.55rem;}
+ .brand-line {gap:8px;flex-wrap:wrap;}.lobby-container {padding:14px;}
+ .q-title,.presenting .q-title {font-size:1.24rem;}.opt-card,.presenting .opt-card {font-size:1rem;padding:13px 12px;}
+ .room-sharing {flex-wrap:wrap;}.room-sharing button {width:100%;}.select-styled,.input-styled {font-size:16px;}
+ .leaderboard-table-wrapper {overflow:auto;}.class-stats-banner {padding:16px 10px;}
+ .class-stats-banner .stat-lbl {font-size:.7rem;}.class-stats-banner .stat-num {font-size:1.4rem;}
+}
+@media(prefers-reduced-motion:reduce) {*,*::before,*::after {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+
+</style>
 </head>
 <body>
 
-<div class="app-card">
+<main class="app-card">
+<div class="brand-line">AFGSU <span>Apprendre · S’entraîner · Débriefer</span></div>
+<div id="connection-status" class="connection-note" role="status" aria-live="polite">Chargement…</div>
+<button type="button" class="btn btn-secondary" id="retry-connection" hidden>Réessayer la connexion</button>
 
   <!-- ================= 1. FORMATEUR : LOBBY & CONFIGURATION ================= -->
   <div id="screen-trainer-config" style="display: none;">
     <div style="text-align: center; margin-bottom: 16px;">
       <span class="hero-badge">Console Formateur</span>
       <h1 class="hero-title">Plateforme Pédagogique AFGSU</h1>
-      <p class="hero-sub">Sélectionnez le mode d'animation et le module à évaluer.</p>
+      <p class="hero-sub">Préparez votre session, accueillez les participants et échangez autour des réponses.</p>
     </div>
 
-    <label style="font-size:0.85rem; font-weight:700; color:#334155;">Thème de l'évaluation :</label>
+    <h2 class="step-title"><span>1</span> Choisir le thème</h2><label for="trainer-module-select" class="field-help">Questions à proposer au groupe</label>
     <select id="trainer-module-select" class="select-styled">
       <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions aléatoires)</option>
       <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions aléatoires)</option>
@@ -257,7 +334,7 @@
       <option value="Module 7 : Cas Cliniques & ABCDE">📋 Module 7 : Cas Cliniques & ABCDE (10 questions)</option>
     </select>
 
-    <!-- Zone Live QR Code -->
+    <h2 class="step-title"><span>2</span> Accueillir les participants</h2>
     <div class="lobby-container">
       <div style="text-align: center;">
         <div id="qrcode-box" style="padding:8px; background:white; border:2px solid var(--border); border-radius:12px; display:inline-block;"></div>
@@ -275,13 +352,16 @@
       </div>
     </div>
 
-    <!-- 2 Boutons Formateur -->
-    <button type="button" class="btn btn-success" id="btn-trainer-start-live" style="font-size:1.05rem; padding:15px; margin-top:20px;">
-      📱 Lancer la Session Live Interactive (<span id="btn-count">0</span> participant(s))
+    <div class="room-sharing"><label for="room-link" class="field-help">Lien de la salle</label><input id="room-link" class="input-styled" readonly placeholder="Préparation du lien…"><button type="button" id="copy-room-link" class="btn btn-secondary">Copier le lien</button></div>
+<label class="ranking-choice"><input id="show-ranking" type="checkbox"> Afficher le classement à la fin de la session</label>
+<p class="field-help">Sans classement, chaque participant conserve son score et les points à revoir.</p>
+<h2 class="step-title"><span>3</span> Lancer la session</h2>
+    <button type="button" class="btn btn-success" id="btn-trainer-start-live" disabled style="font-size:1.05rem; padding:15px; margin-top:20px;">
+      Lancer la session Live (<span id="btn-count">0</span> participant(s))
     </button>
 
     <button type="button" class="btn btn-secondary" id="btn-trainer-start-local" style="font-size:1rem; padding:13px;">
-      💻 Projeter sur Grand Écran (Animation directe & Débrief)
+      Ouvrir le mode projection
     </button>
   </div>
 
@@ -292,10 +372,11 @@
     <p class="hero-sub">Entrez votre nom pour participer en direct sur grand écran.</p>
 
     <div style="margin: 20px 0; text-align: left;">
-      <label style="font-size:0.85rem; font-weight:700; color:#334155;">Votre Prénom & Nom (ou Pseudo) :</label>
+      <label for="input-trainee-name" class="field-help">Votre nom ou pseudonyme</label>
       <input type="text" id="input-trainee-name" class="input-styled" placeholder="Ex: Sarah B. 🚑" maxlength="25">
     </div>
 
+    <p id="join-error" role="alert" class="field-help"></p>
     <button type="button" class="btn btn-primary" id="btn-trainee-join-room" style="padding:16px; font-size:1.05rem;">
       Rejoindre la salle
     </button>
@@ -311,17 +392,20 @@
 
   <!-- ================= 4. JEU SYNCHRONISÉ OU LOCAL ================= -->
   <div id="screen-live-game" style="display: none;">
+    <div class="toolbar"><button type="button" id="fullscreen-toggle" class="btn btn-secondary">Plein écran</button></div>
     <div class="live-status-bar">
       <span id="game-q-counter">Question 1 / X</span>
       <span id="game-answers-count" style="color:var(--primary-dark);">Réponses : 0 / 0</span>
     </div>
 
+    <progress id="quiz-progress" aria-label="Progression du quiz" max="1" value="0"></progress>
     <span class="hero-badge" id="game-module-badge">Module</span>
     <h2 class="q-title" id="game-question-text">Énoncé...</h2>
 
     <div class="answers-grid" id="game-options-container"></div>
-    <div id="game-feedback-box" style="display: none; background:#f8fafc; border-left:4px solid var(--primary); padding:12px; border-radius:10px; margin-top:14px; font-size:0.9rem;"></div>
+    <div id="game-feedback-box" role="status" aria-live="polite" style="display: none; background:#f8fafc; border-left:4px solid var(--primary); padding:12px; border-radius:10px; margin-top:14px; font-size:0.9rem;"></div>
 
+    <div id="answer-distribution" hidden></div>
     <!-- Contrôles Formateur exclusifs -->
     <div id="trainer-controls" style="display: none; margin-top: 16px;">
       <button type="button" class="btn btn-primary" id="btn-trainer-reveal">🔍 Révéler la réponse & Débriefer</button>
@@ -348,7 +432,7 @@
       </div>
       <div class="stat-box">
         <div class="stat-num" id="class-total-players">0</div>
-        <div class="stat-lbl">Sauveteurs formés 🚑</div>
+        <div class="stat-lbl">Participants</div>
       </div>
       <div class="stat-box">
         <div class="stat-num" id="class-pass-rate">0%</div>
@@ -366,7 +450,7 @@
               <th>Rang</th>
               <th>Stagiaire</th>
               <th>Score</th>
-              <th>Titre réflexe</th>
+              <th>Repère</th>
             </tr>
           </thead>
           <tbody id="leaderboard-body"></tbody>
@@ -374,28 +458,30 @@
       </div>
     </div>
 
+    <div id="result-reviews"></div>
     <!-- Options Stagiaire -->
     <div id="trainee-actions-box" style="display: none; flex-direction: column; gap: 8px; margin-top: 14px;">
       <button type="button" class="btn btn-success" id="btn-live-pdf" style="font-size: 1rem; margin-top: 0;">
-        📄 Télécharger mon Attestation Officielle (PDF)
+        Télécharger mon bilan (PDF)
       </button>
       <button type="button" class="btn btn-secondary" id="btn-live-email" style="font-size: 0.95rem; margin-top: 0;">
         ✉️ M'envoyer le récapitulatif par e-mail
       </button>
       <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;">
-        Pour participer à une nouvelle session, attendez la prochaine projection du formateur.
+        Pour une nouvelle session, scannez le nouveau QR code du formateur. Le bouton e-mail prépare un message sans pièce jointe.
       </p>
     </div>
 
     <!-- Option Formateur unique -->
     <div id="trainer-actions-box" style="display: none; margin-top: 14px;">
-      <button type="button" class="btn btn-primary" onclick="location.href='https://alaincool-19583.github.io/FORMATION-AFGSU-QUIZ/'">
+      <button type="button" class="btn btn-primary" id="new-session">
         🔄 Créer une nouvelle session
       </button>
     </div>
   </div>
 
-</div>
+<p class="footer-note">Support d’entraînement AFGSU · Le bilan du quiz ne constitue pas une certification.<br>La session Live nécessite Internet. Gardez la page du formateur ouverte pendant la session.</p>
+</main>
 
 <script>
 const BASE_URL = "https://alaincool-19583.github.io/FORMATION-AFGSU-QUIZ/";
@@ -496,380 +582,328 @@ const defaultQuestions = [
   { module: "Module 7 : Cas Cliniques & ABCDE", question: "Pourquoi réévalue-t-on régulièrement la séquence ABCDE chez un patient pris en charge ?", options: ["Pour passer le temps", "Parce que l'état d'un patient en urgence est dynamique : toute dégradation impose de recommencer l'analyse depuis le 'A'", "Ce n'est pas nécessaire si le premier bilan était bon", "Uniquement à la demande du patient"], answer: 1, explanation: "La méthode ABCDE est une boucle itérative : toute modification clinique ou geste thérapeutique nécessite une réévaluation complète à partir de A." }
 ];
 
-let isTrainer = false;
-let isLocalOnly = false;
-let peer = null;
-let roomId = "";
-let trainerConn = null;
-let traineeConnections = [];
-let participants = [];
-
-let activeQuestions = [];
-let qIndex = 0;
-let answeredCount = 0;
-let userScore = 0;
-let userSelectedOption = null;
-let traineeName = "";
-
-window.addEventListener('DOMContentLoaded', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const joinRoom = urlParams.get('room');
-
-  if (joinRoom) {
-    // Mode Stagiaire Live
-    isTrainer = false;
-    roomId = joinRoom;
-    document.getElementById('screen-trainee-join').style.display = 'block';
-    document.getElementById('screen-trainer-config').style.display = 'none';
-  } else {
-    // Mode Formateur par défaut
-    isTrainer = true;
-    document.getElementById('screen-trainer-config').style.display = 'block';
-    document.getElementById('screen-trainee-join').style.display = 'none';
-    initTrainerRoom();
+let isTrainer = false, isLocalOnly = false, peer = null, roomId = '', trainerConn = null;
+let participants = [], activeQuestions = [], qIndex = 0, userScore = 0, userSelectedOption = null, traineeName = '';
+let sessionId = '', phase = 'lobby', localAnswers = [], pendingAnswer = false, joinTimer = null;
+let liveReady = false, joining = false, latestSnapshot = null;
+const $ = id => document.getElementById(id);
+const text = (id, value) => { $(id).textContent = value; };
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.style.display = el.id === id ? 'block' : 'none');
+  window.scrollTo(0, 0);
+  const heading = $(id).querySelector('h1,h2');
+  if (heading) { heading.tabIndex = -1; heading.focus({preventScroll:true}); }
+}
+function status(message, state = '') {
+  text('connection-status', message); $('connection-status').dataset.state = state;
+}
+function safeSend(conn, data) {
+  if (!conn || !conn.open) return false;
+  try { conn.send(data); return true; } catch (_) { return false; }
+}
+function shuffle(values) {
+  const result = [...values];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); [result[i], result[j]] = [result[j], result[i]];
   }
-
-  document.getElementById('btn-trainee-join-room').addEventListener('click', joinLiveSession);
-  document.getElementById('btn-trainer-start-live').addEventListener('click', () => startSession(false));
-  document.getElementById('btn-trainer-start-local').addEventListener('click', () => startSession(true));
-  document.getElementById('btn-trainer-reveal').addEventListener('click', revealAnswer);
-  document.getElementById('btn-trainer-next-q').addEventListener('click', nextQuestionLive);
-  document.getElementById('btn-live-pdf').addEventListener('click', generateAttestationPDF);
-  document.getElementById('btn-live-email').addEventListener('click', sendAttestationByEmail);
-});
-
-// ================= INITIALISATION FORMATEUR =================
-function initTrainerRoom() {
-  roomId = "afgsu-" + Math.random().toString(36).substring(2, 8);
-  peer = new Peer(roomId);
-
-  peer.on('open', (id) => {
-    const origin = (window.location.protocol.startsWith('http'))
-      ? window.location.origin + window.location.pathname
-      : BASE_URL;
-    const joinUrl = `${origin}?room=${id}`;
-    
-    const qrb = document.getElementById('qrcode-box');
-    qrb.innerHTML = '';
-    new QRCode(qrb, { text: joinUrl, width: 170, height: 170, colorDark: "#0f172a", colorLight: "#ffffff" });
-  });
-
-  peer.on('connection', (conn) => {
-    conn.on('data', (data) => {
-      if (data.type === 'JOIN') {
-        participants.push({ id: conn.peer, name: data.name, score: 0 });
-        traineeConnections.push(conn);
-        updateTraineesLobby();
-      } else if (data.type === 'ANSWER') {
-        answeredCount++;
-        document.getElementById('game-answers-count').textContent = `Réponses : ${answeredCount} / ${participants.length}`;
-        const p = participants.find(x => x.id === conn.peer);
-        if (p && data.correct) p.score++;
-      }
-    });
+  return result;
+}
+function prepareQuestions(pool) {
+  return pool.map(q => {
+    const order = shuffle(q.options.map((_, i) => i));
+    return {...q, options: order.map(i => q.options[i]), answer: order.indexOf(q.answer)};
   });
 }
-
-function updateTraineesLobby() {
-  document.getElementById('connected-count').textContent = participants.length;
-  document.getElementById('btn-count').textContent = participants.length;
-  
-  const box = document.getElementById('trainees-list-box');
-  const wMsg = document.getElementById('waiting-msg');
-  if (wMsg) wMsg.remove();
-  
-  box.innerHTML = '';
-  participants.forEach(p => {
-    const pill = document.createElement('div');
-    pill.className = 'trainee-pill';
-    pill.innerHTML = `👤 ${p.name}`;
-    box.appendChild(pill);
-  });
-}
-
-// ================= CONNEXION STAGIAIRE =================
-function joinLiveSession() {
-  const name = document.getElementById('input-trainee-name').value.trim();
-  if (!name) return alert("Veuillez entrer votre prénom/nom.");
-  
-  traineeName = name;
-  document.getElementById('screen-trainee-join').style.display = 'none';
-  document.getElementById('screen-trainee-waiting').style.display = 'block';
-  document.getElementById('trainee-confirmed-name').textContent = `Connecté en tant que : ${name}`;
-
-  peer = new Peer();
-  peer.on('open', () => {
-    trainerConn = peer.connect(roomId);
-    trainerConn.on('open', () => {
-      trainerConn.send({ type: 'JOIN', name: traineeName });
-    });
-
-    trainerConn.on('data', (data) => {
-      if (data.type === 'START_GAME') {
-        activeQuestions = data.questions;
-        qIndex = 0;
-        userScore = 0;
-        document.getElementById('screen-trainee-waiting').style.display = 'none';
-        document.getElementById('screen-live-game').style.display = 'block';
-        renderQuestionLive(data.currentQ, false);
-      } else if (data.type === 'REVEAL') {
-        showFeedbackLive(data.correctAnswer, data.explanation, data.diagram);
-      } else if (data.type === 'NEXT_Q') {
-        qIndex = data.qIndex;
-        renderQuestionLive(data.currentQ, false);
-      } else if (data.type === 'GAME_OVER') {
-        showGameOverScreen(data.leaderboard, data.classStats);
-      }
-    });
-  });
-}
-
-// ================= DÉMARRAGE (LIVE OU GRAND ÉCRAN DIRECT) =================
-function startSession(localMode) {
-  isLocalOnly = localMode;
-  
-  if (!isLocalOnly && participants.length === 0) {
-    return alert("Attendez qu'au moins un stagiaire se connecte avec le QR code !");
-  }
-
-  const mod = document.getElementById('trainer-module-select').value;
-  let pool = [];
-
-  if (mod === "RANDOM_20") {
-    pool = [...defaultQuestions].sort(() => Math.random() - 0.5).slice(0, 20);
-  } else if (mod === "RANDOM_30") {
-    pool = [...defaultQuestions].sort(() => Math.random() - 0.5).slice(0, 30);
-  } else if (mod === "RANDOM_50") {
-    pool = [...defaultQuestions].sort(() => Math.random() - 0.5).slice(0, 50);
-  } else if (mod === "ALL") {
-    pool = [...defaultQuestions].sort(() => Math.random() - 0.5);
-  } else {
-    pool = defaultQuestions.filter(q => q.module === mod).sort(() => Math.random() - 0.5);
-  }
-
-  activeQuestions = pool;
-  qIndex = 0;
-  userScore = 0;
-
-  if (!isLocalOnly) {
-    traineeConnections.forEach(conn => {
-      conn.send({
-        type: 'START_GAME',
-        questions: activeQuestions,
-        currentQ: activeQuestions[qIndex]
-      });
-    });
-  }
-
-  document.getElementById('screen-trainer-config').style.display = 'none';
-  document.getElementById('screen-live-game').style.display = 'block';
-  document.getElementById('trainer-controls').style.display = 'block';
-
-  renderQuestionLive(activeQuestions[qIndex], true);
-}
-
-function renderQuestionLive(q, isTrainerHost) {
-  answeredCount = 0;
-  userSelectedOption = null;
-  
-  document.getElementById('game-q-counter').textContent = `Question ${qIndex + 1} / ${activeQuestions.length}`;
-  
-  if (isLocalOnly) {
-    document.getElementById('game-answers-count').textContent = `Mode Projection Directe`;
-  } else {
-    document.getElementById('game-answers-count').textContent = `Réponses : 0 / ${participants.length || 1}`;
-  }
-  
-  document.getElementById('game-module-badge').textContent = q.module;
-  document.getElementById('game-question-text').textContent = q.question;
-  
-  const fb = document.getElementById('game-feedback-box');
-  fb.style.display = 'none';
-  fb.innerHTML = '';
-
-  const container = document.getElementById('game-options-container');
-  container.innerHTML = '';
-
-  q.options.forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'opt-card';
-    btn.innerHTML = `<span>${opt}</span> <span>➜</span>`;
-    
-    btn.addEventListener('click', () => {
-      if (userSelectedOption !== null) return;
-      userSelectedOption = idx;
-      btn.classList.add('selected');
-      
-      const isRight = (idx === q.answer);
-      if (isRight) userScore++;
-
-      if (trainerConn) {
-        trainerConn.send({ type: 'ANSWER', correct: isRight });
-      }
-    });
-
-    container.appendChild(btn);
-  });
-
-  if (isTrainerHost) {
-    document.getElementById('btn-trainer-reveal').style.display = 'flex';
-    document.getElementById('btn-trainer-next-q').style.display = 'none';
-  }
-}
-
-function revealAnswer() {
-  const q = activeQuestions[qIndex];
-  
-  if (!isLocalOnly) {
-    traineeConnections.forEach(conn => {
-      conn.send({
-        type: 'REVEAL',
-        correctAnswer: q.answer,
-        explanation: q.explanation,
-        diagram: q.diagram
-      });
-    });
-  }
-
-  showFeedbackLive(q.answer, q.explanation, q.diagram);
-
-  document.getElementById('btn-trainer-reveal').style.display = 'none';
-  document.getElementById('btn-trainer-next-q').style.display = 'flex';
-}
-
-function showFeedbackLive(correctIdx, explanation, diagramKey) {
-  const buttons = document.querySelectorAll('#game-options-container .opt-card');
-  buttons.forEach((b, idx) => {
-    b.disabled = true;
-    if (idx === correctIdx) b.classList.add('correct');
-    else if (idx === userSelectedOption) b.classList.add('wrong');
-  });
-
-  const diagHtml = (diagramKey && SVG_DIAGRAMS[diagramKey]) ? SVG_DIAGRAMS[diagramKey] : '';
-  const fb = document.getElementById('game-feedback-box');
-  fb.innerHTML = `${diagHtml}<strong>Rappel réflexe :</strong> ${explanation}`;
-  fb.style.display = 'block';
-}
-
-function nextQuestionLive() {
-  qIndex++;
-  if (qIndex < activeQuestions.length) {
-    if (!isLocalOnly) {
-      traineeConnections.forEach(conn => {
-        conn.send({
-          type: 'NEXT_Q',
-          qIndex: qIndex,
-          currentQ: activeQuestions[qIndex]
-        });
-      });
-    }
-    renderQuestionLive(activeQuestions[qIndex], true);
-  } else {
-    // Calcul et diffusion du classement
-    const totalQ = activeQuestions.length;
-    let sortedLeaderboard = [...participants].sort((a, b) => b.score - a.score);
-    
-    let sumScore = sortedLeaderboard.reduce((acc, p) => acc + p.score, 0);
-    let avgScorePct = sortedLeaderboard.length ? Math.round((sumScore / (sortedLeaderboard.length * totalQ)) * 100) : 100;
-    let passCount = sortedLeaderboard.filter(p => (p.score / totalQ) >= 0.8).length;
-    let passRate = sortedLeaderboard.length ? Math.round((passCount / sortedLeaderboard.length) * 100) : 100;
-
-    let classStats = {
-      avg: avgScorePct,
-      total: sortedLeaderboard.length,
-      passRate: passRate,
-      totalQ: totalQ
-    };
-
-    if (!isLocalOnly) {
-      traineeConnections.forEach(conn => {
-        conn.send({
-          type: 'GAME_OVER',
-          leaderboard: sortedLeaderboard,
-          classStats: classStats
-        });
-      });
-    }
-    
-    showGameOverScreen(sortedLeaderboard, classStats);
-  }
-}
-
-// Fonction d'attribution de badge humoristique/médical
-function getFunBadge(pct, rank) {
-  if (rank === 1 && pct >= 80) return "🏆 Major de Promo 🩺";
-  if (rank === 2) return "🥈 As de la Réa ⚡";
-  if (rank === 3) return "🥉 Garrot d'Or 🩹";
-  if (pct >= 80) return "🌟 Sauveteur d'Élite 🚑";
-  if (pct >= 60) return "👍 Réflexes Solides 💉";
-  return "🫁 En cours d'oxygénation 📚";
-}
-
-function showGameOverScreen(leaderboard, classStats) {
-  document.getElementById('screen-live-game').style.display = 'none';
-  document.getElementById('screen-game-over').style.display = 'block';
-
+function setProgress() {
   const total = activeQuestions.length;
-  const score = isTrainer ? total : userScore;
-  const pct = Math.round((score / total) * 100);
-
-  // Vue stagiaire vs Formateur
-  if (!isTrainer) {
-    document.getElementById('single-score-box').style.display = 'block';
-    document.getElementById('end-score-display').textContent = `${score}/${total}`;
-    document.getElementById('end-message').innerHTML = (pct >= 80) 
-      ? "🌟 <strong>Félicitations !</strong> Objectifs AFGSU validés avec brio." 
-      : "⚠️ <strong>Révision conseillée</strong> sur certains réflexes.";
-    document.getElementById('trainee-actions-box').style.display = 'flex';
-    document.getElementById('trainer-actions-box').style.display = 'none';
-  } else {
-    document.getElementById('single-score-box').style.display = isLocalOnly ? 'block' : 'none';
-    if (isLocalOnly) {
-      document.getElementById('end-score-display').textContent = `${total}/${total}`;
-      document.getElementById('end-message').innerHTML = "🌟 <strong>Session terminée !</strong> Excellent débriefing avec la promotion.";
+  $('quiz-progress').max = total || 1;
+  $('quiz-progress').value = phase === 'finished' ? total : qIndex + (phase === 'revealed' ? 1 : 0);
+}
+function publicQuestion(q) { return {module:q.module, question:q.question, options:q.options}; }
+function currentKey() { return sessionId + ':' + qIndex; }
+function classStats() {
+  const totalQ = activeQuestions.length;
+  const sum = participants.reduce((n,p) => n + p.score, 0);
+  return {total:participants.length, totalQ, avg:participants.length ? Math.round(100*sum/(participants.length*totalQ)) : 0,
+    passRate:participants.length ? Math.round(100*participants.filter(p => p.score/totalQ >= .8).length/participants.length) : 0};
+}
+function reviewFor(answers) {
+  return activeQuestions.flatMap((q,i) => answers[i] === q.answer ? [] : [{question:q.question,
+    user:Number.isInteger(answers[i]) ? q.options[answers[i]] : 'Sans réponse', correct:q.options[q.answer], explanation:q.explanation}]);
+}
+function snapshotFor(p) {
+  const base = {type:'STATE', sessionId, phase, qIndex, total:activeQuestions.length, score:p.score,
+    selected:p.answers[qIndex] ?? null, showRanking:$('show-ranking').checked};
+  if (phase === 'asking' || phase === 'revealed') {
+    base.question = publicQuestion(activeQuestions[qIndex]);
+    base.key = currentKey();
+    if (phase === 'revealed') Object.assign(base, {correctAnswer:activeQuestions[qIndex].answer,
+      explanation:activeQuestions[qIndex].explanation, diagram:activeQuestions[qIndex].diagram});
+  }
+  if (phase === 'finished') {
+    base.reviews = reviewFor(p.answers); base.classStats = classStats();
+    base.leaderboard = base.showRanking ? participants.map(({name,score}) => ({name,score})).sort((a,b)=>b.score-a.score) : [];
+  }
+  return base;
+}
+function broadcast() { participants.forEach(p => safeSend(p.conn, snapshotFor(p))); }
+function updateLobby() {
+  const connected = participants.filter(p => p.connected).length;
+  text('connected-count', connected); text('btn-count', connected);
+  const box = $('trainees-list-box'); box.replaceChildren();
+  if (!participants.length) { const hint = document.createElement('p'); hint.textContent = 'Les participants apparaîtront ici après leur connexion.'; box.append(hint); }
+  participants.forEach(p => {
+    const el = document.createElement('span'); el.className = 'trainee-pill';
+    el.textContent = p.name + (p.connected ? ' · connecté' : ' · déconnecté'); box.append(el);
+  });
+  $('btn-trainer-start-live').disabled = !liveReady || connected === 0;
+  if (phase === 'asking' || phase === 'revealed') updateAnswerCount();
+}
+function updateAnswerCount() {
+  if (isLocalOnly) { text('game-answers-count','Projection'); return; }
+  const count = participants.filter(p => Number.isInteger(p.answers[qIndex])).length;
+  text('game-answers-count', `${count} / ${participants.length} réponses · ${participants.filter(p=>p.connected).length} connectés`);
+}
+function registerConnection(conn) {
+  conn.on('data', data => {
+    if (!data || typeof data !== 'object') return;
+    let p = participants.find(p => p.id === conn.peer);
+    if (data.type === 'JOIN') {
+      if (isLocalOnly) { safeSend(conn,{type:'UNAVAILABLE',message:'Le formateur utilise le mode projection. Attendez le lien d’une nouvelle session Live.'}); return; }
+      if (typeof data.name !== 'string' || !data.name.trim()) return;
+      if (!p) { p = {id:conn.peer,name:data.name.trim().slice(0,25),score:0,answers:[],conn,connected:true}; participants.push(p); }
+      else { p.conn = conn; p.connected = true; }
+      updateLobby(); safeSend(conn,snapshotFor(p));
+    } else if (data.type === 'ANSWER' && p && p.conn === conn) {
+      if (phase !== 'asking' || data.key !== currentKey() || Number.isInteger(p.answers[qIndex])) return;
+      if (!Number.isInteger(data.option) || data.option < 0 || data.option >= activeQuestions[qIndex].options.length) return;
+      p.answers[qIndex] = data.option;
+      if (data.option === activeQuestions[qIndex].answer) p.score++;
+      updateAnswerCount(); safeSend(conn,snapshotFor(p));
     }
-    document.getElementById('trainee-actions-box').style.display = 'none';
-    document.getElementById('trainer-actions-box').style.display = 'block';
-  }
-
-  // Affichage du Podium et Stats de classe si session live
-  if (leaderboard && leaderboard.length > 0 && classStats) {
-    document.getElementById('class-stats-box').style.display = 'flex';
-    document.getElementById('class-avg-score').textContent = `${classStats.avg}%`;
-    document.getElementById('class-total-players').textContent = `${classStats.total}`;
-    document.getElementById('class-pass-rate').textContent = `${classStats.passRate}%`;
-
-    const tbody = document.getElementById('leaderboard-body');
-    tbody.innerHTML = '';
-    
-    leaderboard.forEach((p, index) => {
-      const pPct = Math.round((p.score / total) * 100);
-      const tr = document.createElement('tr');
-      const medals = ['🥇 1er', '🥈 2e', '🥉 3e'];
-      const rankDisplay = medals[index] || `#${index + 1}`;
-      const badge = getFunBadge(pPct, index + 1);
-
-      tr.innerHTML = `
-        <td>${rankDisplay}</td>
-        <td><strong>${p.name}</strong></td>
-        <td><span style="color:var(--primary-dark); font-weight:bold;">${p.score}/${total}</span> (${pPct}%)</td>
-        <td><span style="font-size:0.8rem;">${badge}</span></td>
-      `;
-      tbody.appendChild(tr);
+  });
+  const disconnected = () => {
+    const p = participants.find(p => p.id === conn.peer && p.conn === conn);
+    if (p) { p.connected = false; updateLobby(); }
+  };
+  conn.on('close',disconnected); conn.on('error',disconnected);
+}
+function initTrainerRoom() {
+  if (typeof Peer === 'undefined') { status('Connexion Live indisponible. Le mode projection reste accessible.', 'error'); return; }
+  status('Préparation de la salle…');
+  roomId = 'afgsu-' + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
+  try { peer = new Peer(roomId); } catch (_) { status('Impossible de créer la salle. Le mode projection reste accessible.','error'); return; }
+  peer.on('open',id => {
+    liveReady = true; status('Salle ouverte · prête à accueillir les participants','ready');
+    const origin = location.protocol.startsWith('http') ? location.origin + location.pathname : BASE_URL;
+    const url = `${origin}?room=${encodeURIComponent(id)}`;
+    $('room-link').value = url; $('qrcode-box').replaceChildren();
+    if (typeof QRCode !== 'undefined') new QRCode($('qrcode-box'),{text:url,width:190,height:190,colorDark:'#12324c',colorLight:'#ffffff'});
+    else text('qrcode-box','QR code indisponible : utilisez le lien de la salle.');
+    updateLobby();
+  });
+  peer.on('connection',registerConnection);
+  peer.on('disconnected',() => {liveReady=false; updateLobby(); status('Connexion au service interrompue. Les connexions déjà établies peuvent rester actives.','error');});
+  peer.on('error',() => {liveReady=false; updateLobby(); status('Salle Live indisponible. Rechargez pour réessayer, ou utilisez la projection.','error');});
+}
+function lostConnection() {
+  clearTimeout(joinTimer); joining = false; pendingAnswer = false;
+  status('Connexion interrompue. Vous pouvez tenter de rejoindre la même session.','error');
+  $('retry-connection').hidden = false;
+  document.querySelectorAll('#game-options-container button').forEach(b=>b.disabled=true);
+  $('btn-trainee-join-room').disabled = false;
+}
+function connectToTrainer() {
+  if (joining) return;
+  joining=true; status('Connexion à la salle en cours…'); $('retry-connection').hidden=true;
+  $('btn-trainee-join-room').disabled=true;
+  clearTimeout(joinTimer); joinTimer=setTimeout(lostConnection,15000);
+  if (trainerConn) { const old=trainerConn; trainerConn=null; old.close(); }
+  const connect = () => {
+    try { trainerConn=peer.connect(roomId,{reliable:true}); } catch (_) {lostConnection();return;}
+    const conn=trainerConn;
+    conn.on('open',()=>safeSend(conn,{type:'JOIN',name:traineeName}));
+    conn.on('data',data=>{
+      if(conn !== trainerConn) return;
+      if(data?.type === 'STATE') receiveState(data);
+      else if(data?.type === 'UNAVAILABLE') {lostConnection();status(data.message,'error');}
     });
-
-    document.getElementById('leaderboard-section').style.display = 'block';
+    conn.on('close',()=>{if(conn === trainerConn) lostConnection();});
+    conn.on('error',()=>{if(conn === trainerConn) lostConnection();});
+  };
+  if (peer && !peer.destroyed && peer.open) {connect();return;}
+  if (peer && !peer.destroyed) peer.destroy();
+  try {peer=new Peer();} catch (_) {lostConnection();return;}
+  peer.on('open',connect); peer.on('error',lostConnection);
+}
+function joinLiveSession() {
+  const name=$('input-trainee-name').value.trim();
+  if (!name) {text('join-error','Saisissez votre nom ou un pseudonyme.');$('input-trainee-name').focus();return;}
+  text('join-error','');traineeName=name;
+  if (typeof Peer === 'undefined') {status('La connexion Live nécessite Internet. Rechargez la page une fois connecté.','error');return;}
+  connectToTrainer();
+}
+function receiveState(data) {
+  clearTimeout(joinTimer);joining=false;pendingAnswer=false;latestSnapshot=data;
+  $('retry-connection').hidden=true;status('Connecté à la session','ready');
+  sessionId=data.sessionId;phase=data.phase;qIndex=data.qIndex;userScore=data.score;
+  activeQuestions=Array.from({length:data.total},()=>({})); userSelectedOption=data.selected;
+  if (phase === 'lobby') {
+    text('trainee-confirmed-name',traineeName);showScreen('screen-trainee-waiting');return;
   }
-
-  // Pluie de Confettis festifs
-  if (typeof confetti === 'function') {
-    confetti({ particleCount: 120, spread: 80, origin: { y: 0.55 } });
+  if (phase === 'finished') {showGameOverScreen(data.leaderboard,data.classStats,data.reviews);return;}
+  activeQuestions[qIndex]=data.question;
+  showScreen('screen-live-game');renderQuestionLive(data.question,false);
+  if (phase === 'revealed') showFeedbackLive(data.correctAnswer,data.explanation,data.diagram);
+}
+function startSession(localMode) {
+  if (phase !== 'lobby') return;
+  if (!localMode && (!liveReady || !participants.some(p=>p.connected))) return;
+  isLocalOnly=localMode;
+  const mod=$('trainer-module-select').value;
+  const pool=mod.startsWith('RANDOM_') ? shuffle(defaultQuestions).slice(0,Number(mod.split('_')[1])) :
+    mod === 'ALL' ? shuffle(defaultQuestions) : shuffle(defaultQuestions.filter(q=>q.module===mod));
+  if (!pool.length) return;
+  activeQuestions=prepareQuestions(pool);qIndex=0;userScore=0;localAnswers=[];
+  participants.forEach(p=>{p.score=0;p.answers=[];});
+  sessionId=crypto.randomUUID ? crypto.randomUUID() : String(Date.now());phase='asking';userSelectedOption=null;
+  document.body.classList.add('presenting');
+  showScreen('screen-live-game');renderQuestionLive(activeQuestions[0],true);
+  if (!isLocalOnly) broadcast();
+}
+function renderQuestionLive(q, host) {
+  text('game-q-counter',`Question ${qIndex+1} / ${activeQuestions.length}`);setProgress();
+  if(host) updateAnswerCount(); else text('game-answers-count',userSelectedOption===null ? 'À vous de répondre' : 'Réponse enregistrée');
+  text('game-module-badge',q.module);text('game-question-text',q.question);
+  $('game-feedback-box').style.display='none';$('game-feedback-box').replaceChildren();
+  $('answer-distribution').hidden=true;
+  const container=$('game-options-container');container.replaceChildren();
+  q.options.forEach((option,i)=>{
+    const button=document.createElement('button');button.type='button';button.className='opt-card';
+    const letter=document.createElement('span');letter.className='answer-letter';letter.textContent=String.fromCharCode(65+i);
+    const copy=document.createElement('span');copy.className='answer-copy';copy.textContent=option;
+    button.append(letter,copy);button.setAttribute('aria-pressed',String(i===userSelectedOption));
+    if(i===userSelectedOption) button.classList.add('selected');
+    button.disabled=phase!=='asking' || (host && !isLocalOnly) || userSelectedOption!==null || pendingAnswer;
+    button.addEventListener('click',()=>{
+      if(phase!=='asking' || userSelectedOption!==null || pendingAnswer) return;
+      if(isLocalOnly) {userSelectedOption=i;localAnswers[qIndex]=i;renderQuestionLive(q,true);}
+      else {
+        pendingAnswer=true;
+        if(!safeSend(trainerConn,{type:'ANSWER',key:currentKey(),option:i})) {lostConnection();return;}
+        text('game-answers-count','Enregistrement de votre réponse…');
+        container.querySelectorAll('button').forEach(b=>b.disabled=true);
+        clearTimeout(joinTimer);joinTimer=setTimeout(lostConnection,10000);
+      }
+    });container.append(button);
+  });
+  $('trainer-controls').style.display=host?'block':'none';
+  $('btn-trainer-reveal').style.display=host && phase==='asking'?'flex':'none';
+  $('btn-trainer-next-q').style.display=host && phase==='revealed'?'flex':'none';
+  text('btn-trainer-next-q',qIndex===activeQuestions.length-1?'Afficher le bilan':'Question suivante →');
+}
+function revealAnswer() {
+  if(!isTrainer || phase!=='asking')return;
+  phase='revealed';const q=activeQuestions[qIndex];
+  if(isLocalOnly && localAnswers[qIndex]===q.answer)userScore++;
+  showFeedbackLive(q.answer,q.explanation,q.diagram);setProgress();
+  $('btn-trainer-reveal').style.display='none';$('btn-trainer-next-q').style.display='flex';
+  if(!isLocalOnly){renderDistribution();broadcast();}
+}
+function showFeedbackLive(correctIdx,explanation,diagramKey) {
+  document.querySelectorAll('#game-options-container .opt-card').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===correctIdx || i===userSelectedOption) {
+      b.classList.add(i===correctIdx?'correct':'wrong');
+      const label=document.createElement('small');label.className='answer-status';
+      label.textContent=i===correctIdx?'✓ Bonne réponse':'✕ Votre réponse';b.querySelector('.answer-copy').append(label);
+    }
+  });
+  const fb=$('game-feedback-box');fb.replaceChildren();
+  if(diagramKey && SVG_DIAGRAMS[diagramKey]) fb.innerHTML=SVG_DIAGRAMS[diagramKey];
+  const title=document.createElement('strong');title.textContent='Le réflexe à retenir';
+  const detail=document.createElement('p');detail.textContent=explanation;fb.append(title,detail);fb.style.display='block';
+  if(!isTrainer)text('game-answers-count','Correction · attendez la suite du formateur');
+}
+function renderDistribution() {
+  const box=$('answer-distribution');box.replaceChildren();box.hidden=false;
+  const heading=document.createElement('h3');heading.textContent='Répartition des réponses';box.append(heading);
+  activeQuestions[qIndex].options.forEach((_,i)=>{
+    const count=participants.filter(p=>p.answers[qIndex]===i).length;
+    const row=document.createElement('div');row.className='distribution-row';
+    const label=document.createElement('span');label.textContent=String.fromCharCode(65+i);
+    const meter=document.createElement('progress');meter.max=participants.length||1;meter.value=count;meter.setAttribute('aria-label','Réponse '+label.textContent);
+    const value=document.createElement('span');value.textContent=String(count);row.append(label,meter,value);box.append(row);
+  });
+  const absent=document.createElement('p');absent.textContent=`Sans réponse : ${participants.filter(p=>!Number.isInteger(p.answers[qIndex])).length}`;box.append(absent);
+}
+function nextQuestionLive() {
+  if(!isTrainer || phase!=='revealed')return;
+  if(qIndex+1<activeQuestions.length){qIndex++;phase='asking';userSelectedOption=null;renderQuestionLive(activeQuestions[qIndex],true);if(!isLocalOnly)broadcast();}
+  else {
+    phase='finished';setProgress();
+    const board=$('show-ranking').checked ? participants.map(({name,score})=>({name,score})).sort((a,b)=>b.score-a.score):[];
+    const reviews=isLocalOnly?reviewFor(localAnswers):activeQuestions.flatMap((q,i)=>{
+      const misses=participants.filter(p=>p.answers[i]!==q.answer).length;
+      return misses?[{question:q.question,user:`${misses} participant(s) à accompagner sur ce point`,correct:q.options[q.answer],explanation:q.explanation}]:[];
+    });
+    showGameOverScreen(board,isLocalOnly?null:classStats(),reviews);if(!isLocalOnly)broadcast();
   }
 }
+function showGameOverScreen(leaderboard,stats,reviews=[]) {
+  showScreen('screen-game-over');document.body.classList.remove('presenting');
+  text('end-title-text',isTrainer&&!isLocalOnly?'Bilan du groupe':'Votre bilan');
+  $('single-score-box').style.display=!isTrainer||isLocalOnly?'block':'none';
+  text('end-score-display',`${userScore}/${activeQuestions.length}`);
+  const pct=activeQuestions.length?Math.round(userScore/activeQuestions.length*100):0;
+  text('end-message',pct>=80?'Seuil de réussite du quiz atteint. Bravo pour votre travail !':'Voici les points à revoir pour consolider vos connaissances.');
+  $('trainee-actions-box').style.display=!isTrainer?'flex':'none';$('trainer-actions-box').style.display=isTrainer?'block':'none';
+  $('class-stats-box').style.display=stats && stats.total?'flex':'none';
+  if(stats){text('class-avg-score',stats.avg+'%');text('class-total-players',stats.total);text('class-pass-rate',stats.passRate+'%');}
+  $('leaderboard-section').style.display=leaderboard?.length?'block':'none';
+  const tbody=$('leaderboard-body');tbody.replaceChildren();
+  let rank=0;
+  (leaderboard||[]).forEach((p,i)=>{
+    if(i===0 || p.score!==leaderboard[i-1].score)rank=i+1;
+    const tr=document.createElement('tr');
+    [rank,p.name,`${p.score}/${activeQuestions.length}`,p.score/activeQuestions.length>=.8?'Seuil atteint':'À consolider'].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td);});tbody.append(tr);
+  });
+  const box=$('result-reviews');box.replaceChildren();
+  const heading=document.createElement('h2');heading.textContent=reviews.length?'Points à retravailler':'Tous les points ont été réussis';box.append(heading);
+  reviews.forEach(r=>{
+    const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=r.question;details.append(summary);
+    [r.user,'Réponse attendue : '+r.correct,r.explanation].forEach(value=>{const p=document.createElement('p');p.textContent=value;details.append(p);});box.append(details);
+  });
+  if(pct>=80 && (!isTrainer||isLocalOnly) && typeof confetti==='function' && !matchMedia('(prefers-reduced-motion: reduce)').matches)confetti({particleCount:65,spread:65,origin:{y:.6}});
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  roomId=new URLSearchParams(location.search).get('room')||'';isTrainer=!roomId;
+  $('btn-trainee-join-room').addEventListener('click',joinLiveSession);
+  $('input-trainee-name').addEventListener('keydown',e=>{if(e.key==='Enter')joinLiveSession();});
+  $('btn-trainer-start-live').addEventListener('click',()=>startSession(false));
+  $('btn-trainer-start-local').addEventListener('click',()=>startSession(true));
+  $('btn-trainer-reveal').addEventListener('click',revealAnswer);
+  $('btn-trainer-next-q').addEventListener('click',nextQuestionLive);
+  $('btn-live-pdf').addEventListener('click',generateAttestationPDF);
+  $('btn-live-email').addEventListener('click',sendAttestationByEmail);
+  $('retry-connection').addEventListener('click',connectToTrainer);
+  $('copy-room-link').addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText($('room-link').value);text('copy-room-link','Lien copié');}
+    catch(_){$('room-link').focus();$('room-link').select();status('Le lien est sélectionné : copiez-le avec votre clavier.');}
+  });
+  $('new-session').addEventListener('click',()=>{location.href=location.href.split('?')[0];});
+  $('fullscreen-toggle').addEventListener('click',async()=>{
+    try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}
+    catch(_){status('Le plein écran n’est pas disponible dans ce navigateur.');}
+  });
+  document.addEventListener('fullscreenchange',()=>text('fullscreen-toggle',document.fullscreenElement?'Quitter le plein écran':'Plein écran'));
+  if(isTrainer){showScreen('screen-trainer-config');initTrainerRoom();}
+  else {showScreen('screen-trainee-join');status('Saisissez votre nom pour rejoindre la salle.');}
+});
 
 // ================= ATTESTATION PDF HAUT DE GAMME DESIGN =================
 function generateAttestationPDF() {
+  if (!window.jspdf) { status('Le PDF nécessite Internet. Votre score reste affiché et vous pouvez copier le récapitulatif par e-mail.', 'error'); return; }
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
   const pct = Math.round((userScore / activeQuestions.length) * 100);
@@ -912,13 +946,13 @@ function generateAttestationPDF() {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(224, 242, 254);
-  doc.text("RÉFÉRENTIEL NATIONAL • CESU 94 • CROIX-ROUGE FRANÇAISE • SAMU 91", 148.5, 31, { align: "center" });
+  doc.text("ENTRAÎNEMENT AUX CONNAISSANCES ET DÉBRIEFING PÉDAGOGIQUE", 148.5, 31, { align: "center" });
 
   // 3. Titre Officiel Attestation
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
   doc.setTextColor(15, 23, 42);
-  doc.text("ATTESTATION DE RÉUSSITE & RÉFLEXES D'URGENCE", 148.5, 52, { align: "center" });
+  doc.text("BILAN DU QUIZ AFGSU", 148.5, 52, { align: "center" });
 
   // Badge d'accréditation
   doc.setFillColor(236, 253, 245);
@@ -929,13 +963,13 @@ function generateAttestationPDF() {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(5, 150, 105);
-  doc.text("✓ COMPÉTENCES THÉORIQUES & RÉFLEXES CLINIQUES VALIDÉS", 148.5, 63.5, { align: "center" });
+  doc.text("BILAN D’ENTRAÎNEMENT — NE CONSTITUE PAS UNE CERTIFICATION", 148.5, 63.5, { align: "center" });
 
   // 4. Attribution Stagiaire
   doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
   doc.setTextColor(71, 85, 105);
-  doc.text("La présente attestation est décernée à :", 148.5, 78, { align: "center" });
+  doc.text("Résultats de la session de :", 148.5, 78, { align: "center" });
 
   // Nom du Stagiaire avec soulignement dynamique
   doc.setFont("helvetica", "bold");
@@ -964,6 +998,8 @@ function generateAttestationPDF() {
   doc.setTextColor(15, 23, 42);
   doc.text(`Score Final : ${userScore} / ${activeQuestions.length}  (${pct} % de réussite)`, 148.5, 122, { align: "center" });
 
+  doc.setFontSize(10);
+  doc.text(pct >= 80 ? "Seuil de reussite du quiz atteint (80 %)." : "Points a revoir pour consolider les connaissances.", 148.5, 138, { align: "center" });
   // 6. Pied de page & Signature
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9.5);
@@ -992,19 +1028,20 @@ function generateAttestationPDF() {
   doc.setFont("helvetica", "italic");
   doc.setFontSize(7.5);
   doc.setTextColor(16, 185, 129);
-  doc.text("✓ Validation Pédagogique Conforme", 212.5, 172, { align: "center" });
+  doc.text("Bilan de participation au quiz", 212.5, 172, { align: "center" });
 
   // Téléchargement
-  doc.save(`Attestation_AFGSU_${(traineeName || "Stagiaire").replace(/\s+/g, '_')}.pdf`);
+  doc.save(`Bilan_AFGSU_${(traineeName || "Stagiaire").replace(/\s+/g, '_')}.pdf`);
 }
 
 function sendAttestationByEmail() {
   const pct = Math.round((userScore / activeQuestions.length) * 100);
-  const subject = encodeURIComponent(`Attestation AFGSU - ${traineeName || 'Stagiaire'}`);
-  const body = encodeURIComponent(`Bonjour,\n\nVoici mon résultat officiel à l'évaluation AFGSU :\n• Stagiaire : ${traineeName}\n• Score : ${userScore}/${activeQuestions.length} (${pct}%)\n• Formateur : Alain VALARCHER (CESU 94 / Croix-Rouge Française / SAMU 91)\n\nL'attestation PDF a été générée lors de la session.`);
+  const subject = encodeURIComponent(`Bilan AFGSU - ${traineeName || 'Stagiaire'}`);
+  const body = encodeURIComponent(`Bonjour,\n\nVoici mon résultat au quiz d’entraînement AFGSU :\n• Stagiaire : ${traineeName}\n• Score : ${userScore}/${activeQuestions.length} (${pct}%)\n• Formateur : Alain VALARCHER (CESU 94 / Croix-Rouge Française / SAMU 91)\n\nLe PDF peut être téléchargé séparément depuis la page de résultats.`);
   window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
 </script>
 
 </body>
 </html>
+
