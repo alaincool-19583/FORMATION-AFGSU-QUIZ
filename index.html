@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AFGSU Master - Évaluation & Réflexes d'Urgence</title>
-  <!-- Librairie QR Code -->
+  <!-- Librairies -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <!-- Librairie jsPDF pour la génération d'attestations PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Librairie Confetti pour animation de réussite -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
@@ -20,7 +18,6 @@
       --danger: #ef4444;
       --danger-bg: #fef2f2;
       --warning: #f59e0b;
-      --warning-bg: #fffbeb;
       --bg: #0f172a;
       --card-bg: #ffffff;
       --text-main: #1e293b;
@@ -29,7 +26,6 @@
     }
 
     * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
-    
     body {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: var(--text-main);
@@ -42,7 +38,7 @@
 
     .app-card {
       background: var(--card-bg);
-      max-width: 750px;
+      max-width: 820px;
       width: 100%;
       border-radius: 20px;
       padding: 28px;
@@ -99,18 +95,60 @@
       transition: all 0.15s ease;
       margin-top: 10px;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: white;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-    }
-    .btn-success {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
+    .btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; }
+    .btn-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
     .btn-secondary { background: #f1f5f9; color: #334155; }
     .btn-secondary:hover { background: #e2e8f0; }
+
+    /* Grille Live Participants */
+    .live-dashboard {
+      background: #f8fafc;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+    .live-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--success);
+    }
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    .trainee-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+    .trainee-table th, .trainee-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .trainee-table th { background: #f1f5f9; color: #475569; font-weight: 700; }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .status-in-progress { background: #fef3c7; color: #b45309; }
+    .status-done { background: var(--success-bg); color: #065f46; }
 
     /* Quiz */
     .quiz-meta {
@@ -130,14 +168,7 @@
       margin-bottom: 16px;
     }
     .progress-fill-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
-
-    .q-title {
-      font-size: 1.12rem;
-      font-weight: 700;
-      color: #0f172a;
-      line-height: 1.4;
-      margin-bottom: 16px;
-    }
+    .q-title { font-size: 1.12rem; font-weight: 700; color: #0f172a; line-height: 1.4; margin-bottom: 16px; }
 
     .answers-grid { display: flex; flex-direction: column; gap: 9px; }
     .opt-card {
@@ -153,14 +184,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: transform 0.1s, border-color 0.15s, background-color 0.15s;
+      transition: transform 0.1s;
     }
     .opt-card:active { transform: scale(0.98); }
-    .opt-card:hover:not(:disabled) {
-      border-color: var(--primary);
-      background: var(--primary-light);
-      color: var(--primary-dark);
-    }
     .opt-card.correct { background: var(--success-bg); border-color: var(--success); color: #065f46; }
     .opt-card.wrong { background: var(--danger-bg); border-color: var(--danger); color: #991b1b; }
 
@@ -175,20 +201,7 @@
       line-height: 1.5;
     }
 
-    .illustration-box {
-      background: #ffffff;
-      border-radius: 8px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: 1px dashed #cbd5e1;
-      margin-bottom: 10px;
-    }
-    .illustration-box svg { max-width: 100%; height: 90px; }
-    .illustration-caption { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
-
-    /* Modales */
+    /* Modale QR */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -202,10 +215,8 @@
     }
     .modal-window {
       background: white;
-      max-width: 580px;
+      max-width: 440px;
       width: 100%;
-      max-height: 88vh;
-      overflow-y: auto;
       border-radius: 20px;
       padding: 24px;
       text-align: center;
@@ -243,36 +254,6 @@
       margin-bottom: 8px;
       font-size: 0.85rem;
     }
-
-    /* Stats Table */
-    .stats-kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 16px 0;
-    }
-    .kpi-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      padding: 12px;
-      border-radius: 12px;
-      text-align: center;
-    }
-    .kpi-num { font-size: 1.3rem; font-weight: 800; color: var(--primary-dark); }
-    .kpi-lbl { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-
-    .stats-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.8rem;
-      text-align: left;
-      margin-top: 10px;
-    }
-    .stats-table th, .stats-table td {
-      padding: 8px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .stats-table th { background: #f1f5f9; color: #475569; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -283,14 +264,14 @@
   <div id="view-trainer" style="display: none;">
     <div class="hero-header">
       <span class="hero-badge">Console Formateur</span>
-      <h1 class="hero-title">Diffusion du Quiz AFGSU</h1>
-      <p class="hero-sub">Sélectionnez le mode ou le module à faire passer aux stagiaires.</p>
+      <h1 class="hero-title">Pilotage & Suivi en Direct</h1>
+      <p class="hero-sub">Projetez le QR code et suivez les réponses de la salle en direct.</p>
     </div>
 
-    <label class="field-label" for="trainer-module-select">Mode d'évaluation ou Module :</label>
+    <label class="field-label" for="trainer-module-select">Module ou Mode d'évaluation :</label>
     <select id="trainer-module-select" class="select-styled">
-      <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions transversales exclusives)</option>
-      <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions transversales exclusives)</option>
+      <option value="RANDOM_20">⚡ Quiz Rapide Global (20 questions transversales)</option>
+      <option value="RANDOM_30">🎯 Quiz Bilan Global (30 questions transversales)</option>
       <option value="Module 1 : Urgences Vitales">🚨 Module 1 : Urgences Vitales (20 questions)</option>
       <option value="Module 2 : Urgences Potentielles">⚠️ Module 2 : Urgences Potentielles (20 questions)</option>
       <option value="Module 3 : Risques Sanitaires & Collectifs">☣️ Module 3 : Risques Sanitaires & Collectifs (20 questions)</option>
@@ -300,17 +281,34 @@
       <option value="Module 7 : Cas Cliniques & ABCDE">📋 Module 7 : Cas Cliniques & ABCDE (20 questions)</option>
     </select>
 
-    <button type="button" class="btn btn-primary" id="btn-show-qr" style="padding: 16px; font-size: 1.05rem;">
-      📱 Afficher le QR Code Stagiaires
-    </button>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <button type="button" class="btn btn-primary" id="btn-show-qr" style="margin: 0;">
+        📱 Projeter le QR Code
+      </button>
+      <button type="button" class="btn btn-secondary" id="btn-clear-session-live" style="margin: 0; color: var(--danger);">
+        🔄 Réinitialiser la session
+      </button>
+    </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-      <button type="button" class="btn btn-secondary" id="btn-trainer-play" style="margin: 0;">
-        💻 Grand Écran
-      </button>
-      <button type="button" class="btn btn-secondary" id="btn-open-stats" style="margin: 0;">
-        📊 Statistiques (<span id="stats-badge-count">0</span>)
-      </button>
+    <!-- Tableau de bord LIVE des participants connectés -->
+    <div class="live-dashboard">
+      <div class="live-header">
+        <strong style="font-size: 0.95rem;">👥 Apprenants connectés (<span id="live-count">0</span>)</strong>
+        <div class="live-indicator"><span class="live-dot"></span> Synchronisation direct</div>
+      </div>
+      <table class="trainee-table">
+        <thead>
+          <tr>
+            <th>Nom du stagiaire</th>
+            <th>Module</th>
+            <th>Progression / Résultat</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody id="live-trainees-body">
+          <tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 14px;">En attente de connexion des stagiaires via le QR code...</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -366,158 +364,169 @@
     </button>
 
     <div id="review-container"></div>
-
     <button type="button" class="btn btn-secondary" id="btn-restart">Recommencer une session</button>
   </div>
 
 </div>
 
-<!-- ================= MODALE QR CODE (FORMATEUR) ================= -->
+<!-- ================= MODALE QR CODE ================= -->
 <div class="modal-backdrop" id="qr-modal">
   <div class="modal-window">
     <span class="hero-badge">Scan Stagiaires</span>
-    <h2 style="font-size: 1.25rem; margin: 8px 0;">Scannez pour démarrer</h2>
+    <h2 style="font-size: 1.25rem; margin: 8px 0;">Scannez pour rejoindre la session</h2>
     <p style="font-size: 0.85rem; color: var(--text-muted);" id="qr-modal-info">Module...</p>
     
     <div id="qrcode-box"></div>
+    <p style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">Votre nom apparaîtra en direct au tableau dès votre entrée.</p>
 
-    <p style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">
-      Le stagiaire saisira son nom et démarrera directement son évaluation.
-    </p>
-
-    <button type="button" class="btn btn-secondary" onclick="document.getElementById('qr-modal').style.display='none'">
-      Fermer
-    </button>
-  </div>
-</div>
-
-<!-- ================= MODALE STATISTIQUES (FORMATEUR) ================= -->
-<div class="modal-backdrop" id="stats-modal">
-  <div class="modal-window" style="text-align: left;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h2 style="font-size: 1.25rem;">📊 Statistiques & Historique</h2>
-      <button type="button" style="background:none; border:none; font-size: 1.4rem; cursor:pointer;" onclick="document.getElementById('stats-modal').style.display='none'">&times;</button>
-    </div>
-    
-    <div class="stats-kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-num" id="kpi-total-tests">0</div>
-        <div class="kpi-lbl">Sessions</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-num" id="kpi-avg-score">0%</div>
-        <div class="kpi-lbl">Moyenne</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-num" id="kpi-success-rate">0%</div>
-        <div class="kpi-lbl">Réussite (&ge;80%)</div>
-      </div>
-    </div>
-
-    <div style="max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px;">
-      <table class="stats-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Stagiaire</th>
-            <th>Module</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody id="stats-table-body">
-          <tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Aucune session enregistrée</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div style="display: flex; gap: 8px; margin-top: 14px;">
-      <button type="button" class="btn btn-secondary" id="btn-clear-stats" style="color: var(--danger); font-size: 0.85rem; margin: 0;">
-        🗑️ Effacer l'historique
-      </button>
-      <button type="button" class="btn btn-primary" onclick="document.getElementById('stats-modal').style.display='none'" style="margin: 0;">
-        Fermer
-      </button>
-    </div>
+    <button type="button" class="btn btn-secondary" onclick="document.getElementById('qr-modal').style.display='none'">Fermer</button>
   </div>
 </div>
 
 <script>
-// ================= DIAGRAMMES SVG =================
-const SVG_DIAGRAMS = {
-  garrot: `
-    <div class="illustration-box">
-      <svg viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="38" width="360" height="14" rx="7" fill="#cbd5e1"/>
-        <circle cx="310" cy="45" r="14" fill="#ef4444"/>
-        <text x="310" y="48" font-size="9" fill="white" font-weight="bold" text-anchor="middle">PLAIE</text>
-        <rect x="180" y="20" width="22" height="50" rx="4" fill="#0284c7"/>
-        <text x="191" y="16" font-size="10" font-weight="bold" fill="#0284c7" text-anchor="middle">GARROT (5-7 cm en amont)</text>
-      </svg>
-      <div class="illustration-caption">Pose du Garrot Tourniquet en amont de la plaie</div>
-    </div>
-  `,
-  heimlich: `
-    <div class="illustration-box">
-      <svg viewBox="0 0 380 80" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="15" width="150" height="50" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
-        <text x="95" y="38" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">1 à 5 CLAQUES</text>
-        <text x="95" y="52" font-size="9" fill="#0284c7" text-anchor="middle">Entre les omoplates</text>
-        <text x="190" y="45" font-size="16" font-weight="bold" fill="#94a3b8">➔</text>
-        <rect x="210" y="15" width="150" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
-        <text x="285" y="38" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">1 à 5 COMPRESSIONS</text>
-        <text x="285" y="52" font-size="9" fill="#d97706" text-anchor="middle">Abdominales (Heimlich)</text>
-      </svg>
-      <div class="illustration-caption">Obstruction aiguë des voies aériennes</div>
-    </div>
-  `,
-  pediatrique: `
-    <div class="illustration-box">
-      <svg viewBox="0 0 380 80" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="70" cy="40" r="26" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-        <text x="70" y="38" font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">5</text>
-        <text x="70" y="50" font-size="7" font-weight="bold" fill="#1d4ed8" text-anchor="middle">INSUFFLATIONS</text>
-        <text x="135" y="44" font-size="16" font-weight="bold" fill="#64748b">➔</text>
-        <rect x="170" y="15" width="170" height="50" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
-        <text x="255" y="38" font-size="11" font-weight="bold" fill="#047857" text-anchor="middle">15 COMPRESSIONS</text>
-        <text x="255" y="52" font-size="10" font-weight="bold" fill="#059669" text-anchor="middle">: 2 INSUFFLATIONS</text>
-      </svg>
-      <div class="illustration-caption">Protocole RCP Pédiatrique (5 initiales + 15:2)</div>
-    </div>
-  `,
-  chest_seal: `
-    <div class="illustration-box">
-      <svg viewBox="0 0 380 80" xmlns="http://www.w3.org/2000/svg">
-        <rect x="120" y="10" width="140" height="60" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
-        <line x1="120" y1="10" x2="260" y2="10" stroke="#ef4444" stroke-width="4"/>
-        <line x1="120" y1="10" x2="120" y2="70" stroke="#ef4444" stroke-width="4"/>
-        <line x1="260" y1="10" x2="260" y2="70" stroke="#ef4444" stroke-width="4"/>
-        <line x1="120" y1="70" x2="260" y2="70" stroke="#10b981" stroke-width="3" stroke-dasharray="4"/>
-        <text x="190" y="40" font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">Pansement 3 côtés</text>
-        <text x="190" y="56" font-size="8" fill="#10b981" font-weight="bold" text-anchor="middle">Évacuation d'air</text>
-      </svg>
-      <div class="illustration-caption">Plaie thoracique soufflante (effet valve)</div>
-    </div>
-  `
-};
+// ================= CONFIGURATION FIREBASE REALTIME DATABASE =================
+// Collez ici l'URL de votre base Firebase créée à l'Étape 1
+const FIREBASE_DB_URL = "https://afgsu-quiz-default-rtdb.europe-west1.firebasedatabase.app/";
 
-// ================= BANQUE DES MODULES THÉMATIQUES (20 QUESTIONS PAR MODULE = 140 QUESTIONS) =================
+// Identifiant de la session courante (pour isoler les formations jour par jour)
+const SESSION_ID = new Date().toISOString().slice(0, 10); 
+let traineeSessionKey = null;
+
+// ================= API REST TEMPS RÉEL (SANS DÉPENDANCE LOURDE) =================
+async function registerTraineeLive(name, moduleTitle) {
+  if (!FIREBASE_DB_URL.startsWith("http")) return;
+  try {
+    const res = await fetch(`${FIREBASE_DB_URL}sessions/${SESSION_ID}.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        module: moduleTitle,
+        progress: "En cours...",
+        score: null,
+        status: "in-progress",
+        joinedAt: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+      })
+    });
+    const data = await res.json();
+    traineeSessionKey = data.name; // ID généré par Firebase
+  } catch (e) {
+    console.warn("Mode hors-ligne actif (pas de remontée cloud)");
+  }
+}
+
+async function updateTraineeScoreLive(score, total, percentage) {
+  if (!FIREBASE_DB_URL.startsWith("http") || !traineeSessionKey) return;
+  try {
+    await fetch(`${FIREBASE_DB_URL}sessions/${SESSION_ID}/${traineeSessionKey}.json`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        progress: `${score} / ${total} (${percentage}%)`,
+        score: score,
+        percentage: percentage,
+        status: "done"
+      })
+    });
+  } catch (e) {}
+}
+
+function listenToLiveTrainees() {
+  if (!FIREBASE_DB_URL.startsWith("http")) return;
+  // Polling temps réel toutes les 3 secondes pour rafraîchir le tableau formateur
+  setInterval(async () => {
+    try {
+      const res = await fetch(`${FIREBASE_DB_URL}sessions/${SESSION_ID}.json`);
+      const data = await res.json();
+      renderLiveDashboard(data);
+    } catch (e) {}
+  }, 3000);
+}
+
+function renderLiveDashboard(traineesObj) {
+  const tbody = document.getElementById("live-trainees-body");
+  if (!traineesObj) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 14px;">En attente de connexion des stagiaires via le QR code...</td></tr>`;
+    document.getElementById("live-count").textContent = "0";
+    return;
+  }
+
+  const list = Object.values(traineesObj);
+  document.getElementById("live-count").textContent = list.length;
+  tbody.innerHTML = "";
+
+  list.forEach(t => {
+    const tr = document.createElement("tr");
+    const isDone = t.status === "done";
+    const statusClass = isDone ? "status-done" : "status-in-progress";
+    const statusLabel = isDone ? "Terminé" : "En cours";
+
+    tr.innerHTML = `
+      <td><strong>${t.name}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">${t.joinedAt || ""}</span></td>
+      <td style="font-size: 0.82rem;">${t.module}</td>
+      <td style="font-weight: 700; color: ${isDone ? (t.percentage >= 80 ? 'var(--success)' : 'var(--danger)') : '#334155'};">
+        ${t.progress}
+      </td>
+      <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function clearLiveSession() {
+  if (!confirm("Voulez-vous réinitialiser la liste des participants pour ce groupe ?")) return;
+  try {
+    await fetch(`${FIREBASE_DB_URL}sessions/${SESSION_ID}.json`, { method: "DELETE" });
+    renderLiveDashboard(null);
+  } catch (e) {}
+}
+
+// ================= BANQUES DE QUESTIONS =================
+const quickQuizBank = [
+  {
+    module: "Quiz Rapide Global",
+    question: "Arrêt cardiaque chez la femme enceinte au 3e trimestre : quelle précaution de positionnement ?",
+    options: ["La mettre sur le ventre", "Déplacer manuellement l'utérus vers la gauche pour dégager la veine cave inférieure", "Surélever sa tête", "Masser uniquement l'abdomen"],
+    answer: 1,
+    explanation: "Le refoulement utérin vers la gauche lève la compression foeto-placentaire sur la veine cave et rétablit le retour veineux."
+  },
+  {
+    module: "Quiz Rapide Global",
+    question: "Face à une suspicion d'AVC avec début des symptômes il y a 1h, quel est l'enjeu prioritaire ?",
+    options: ["Prendre rendez-vous chez son médecin", "Alerter le SAMU 15 sans délai pour envisager une thrombolyse/thrombectomie d'urgence", "Attendre le lendemain", "Donner un somnifère"],
+    answer: 1,
+    explanation: "Chaque minute compte ('Time is brain') : la désobstruction artérielle cérébrale doit être initiée le plus vite possible."
+  },
+  {
+    module: "Quiz Rapide Global",
+    question: "Lors d'un accident par arme à feu, quelle est l'action prioritaire en Damage Control ?",
+    options: ["Chercher la balle avec les doigts", "Poser immédiatement un garrot tourniquet (si membre) ou faire un packing compressif", "Donner à boire", "Faire une radio sur place"],
+    answer: 1,
+    explanation: "L'arrêt de l'hémorragie externe cataclysmique prime sur toute autre action."
+  },
+  {
+    module: "Quiz Rapide Global",
+    question: "En cas d'Accident d'Exposition au Sang par piqûre, quelle durée minimale de trempage antiseptique est requise ?",
+    options: ["10 secondes", "Au moins 5 minutes", "30 minutes", "Aucune"],
+    answer: 1,
+    explanation: "Après lavage à l'eau et savon, la désinfection locale de contact doit durer au minimum 5 minutes complètes."
+  },
+  {
+    module: "Quiz Rapide Global",
+    question: "Quelle est la conduite à tenir en présence d'une victime en choc anaphylactique avec stridor respiratoire ?",
+    options: ["Lui donner du pain", "Alerter le 15, injection intramusculaire d'adrénaline et oxygénothérapie", "Lui faire faire des pompes", "Mettre un garrot au cou"],
+    answer: 1,
+    explanation: "L'adrénaline intramusculaire est le traitement de première ligne vital pour lever le spasme laryngé et le choc."
+  }
+];
+
 const moduleQuestions = [
-  // --- MODULE 1 : URGENCES VITALES (20 Q) ---
   {
     module: "Module 1 : Urgences Vitales",
-    diagram: "garrot",
     question: "Face à une hémorragie externe abondante au bras ne cédant pas à la compression directe, quelle est l'action prioritaire ?",
     options: ["Poser un pansement compressif simple sans serrer", "Poser immédiatement un garrot tourniquet 5 à 7 cm en amont de la lésion", "Surélever le membre et appliquer des glaçons", "Rincer la plaie avec du sérum physiologique"],
     answer: 1,
     explanation: "Hémorragie cataclysmique ou échec de compression : pose immédiate d'un garrot en amont (hors articulation) avec notation de l'heure."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    diagram: "heimlich",
-    question: "Adulte conscient en obstruction totale des voies aériennes (ne peut ni parler ni tousser). Que débutez-vous ?",
-    options: ["1 à 5 claques vigoureuses entre les omoplates", "Lui donner immédiatement à boire", "Pratiquer d'emblée des compressions thoraciques", "Le coucher en PLS"],
-    answer: 0,
-    explanation: "Chez l'adulte conscient : 1 à 5 claques dorsales vigoureuses entre les omoplates, relayées si échec par 1 à 5 compressions abdominales."
   },
   {
     module: "Module 1 : Urgences Vitales",
@@ -528,1264 +537,14 @@ const moduleQuestions = [
   },
   {
     module: "Module 1 : Urgences Vitales",
-    question: "Quel est le ratio compressions / insufflations chez l'adulte en arrêt cardiaque ?",
-    options: ["15:2", "30:2", "5:1", "Compressions seules sans insufflation"],
-    answer: 1,
-    explanation: "Le ratio universel chez l'adulte est de 30 compressions pour 2 insufflations à une fréquence de 100 à 120/min."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
     question: "Pendant l'analyse du rythme cardiaque par un DAE, quelle est la consigne de sécurité ?",
     options: ["Maintenir le menton en arrière", "Ne pas toucher la victime et faire reculer tout le monde", "Continuer de masser énergiquement", "Retirer les patchs"],
     answer: 1,
     explanation: "Pendant l'analyse et avant le choc, nul ne doit toucher la victime afin d'éviter tout artefact ou électrisation."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Victime inconsciente qui respire normalement : que faites-vous immédiatement ?",
-    options: ["La laisser sur le dos", "La mettre en Position Latérale de Sécurité (PLS) et surveiller la respiration", "Lui donner à boire", "Pratiquer 30 compressions"],
-    answer: 1,
-    explanation: "La PLS préserve la liberté des voies aériennes et évite l'inhalation de vomissures chez le sujet inconscient qui respire."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Quelle est la profondeur de compression sternale recommandée chez l'adulte ?",
-    options: ["2 à 3 cm", "5 à 6 cm au centre du thorax", "8 à 10 cm", "Moins de 4 cm"],
-    answer: 1,
-    explanation: "La profondeur efficace recommandée chez l'adulte est de 5 à 6 cm avec relâchement complet du thorax."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Quel est le rythme optimal des compressions thoraciques lors d'une RCP adulte ?",
-    options: ["60 à 80/min", "100 à 120/min", "140 à 160/min", "Au moins 180/min"],
-    answer: 1,
-    explanation: "Le rythme de compression recommandé se situe entre 100 et 120 compressions par minute."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Après la pose d'un garrot tourniquet, que ne faut-il JAMAIS faire sans ordre médical ?",
-    options: ["Inscrire l'heure sur le garrot", "Desserrer ou retirer le garrot", "Couvrir le blessé", "Vérifier l'arrêt du saignement"],
-    answer: 1,
-    explanation: "Un garrot posé ne doit JAMAIS être desserré ni enlevé sans supervision médicale directe (risque de choc et reprise du saignement)."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Une victime d'étouffement perd connaissance au cours des manœuvres de désobstruction. Que faire ?",
-    options: ["Aller chercher le corps étranger avec les doigts à l'aveugle", "L'allonger, alerter le SAMU 15 et débuter la RCP par 30 compressions", "Lui donner des claques sur le ventre", "La secouer"],
-    answer: 1,
-    explanation: "Perte de connaissance suite à un étouffement = mise au sol, alerte 15 immédiate et début de la RCP par 30 compressions."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Comment vérifie-t-on la respiration chez une victime inconsciente allongée ?",
-    options: ["Prendre son pouls radial pendant 1 minute", "Libérer les voies aériennes et écouter/sentir/regarder le thorax pendant 10 secondes maximum", "Secouer ses épaules", "Poser un miroir devant sa bouche"],
-    answer: 1,
-    explanation: "Bascule prudente de la tête en arrière, élévation du menton, évaluation visuelle, auditive et tactile pendant 10 secondes au maximum."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Où positionne-t-on les électrodes du DAE chez un adulte ?",
-    options: ["Sous la clavicule droite et sous l'aisselle gauche (flanc gauche)", "Sur le ventre et sur le dos", "Sur les deux bras", "Au milieu de la poitrine côte à côte"],
-    answer: 0,
-    explanation: "Position antéro-latérale standard : sous la clavicule droite et sur le flanc gauche sous l'aisselle."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Quelle est la durée maximale d'insufflation recommandée lors de la RCP ?",
-    options: ["1 seconde par insufflation avec soulèvement visible de la poitrine", "3 à 4 secondes en soufflant avec force", "5 secondes continues", "Moins de 0,2 seconde"],
-    answer: 0,
-    explanation: "Chaque insufflation dure environ 1 seconde, juste assez pour faire monter visiblement la poitrine sans hyperinsuffler."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Pourquoi évite-t-on d'appuyer sur la partie molle sous le menton lors de la bascule de la tête ?",
-    options: ["Cela provoque une douleur vive", "Cela risque d'écraser la trachée et d'obstruer les voies aériennes", "Cela fait vomir la victime", "Cela accélère le cœur"],
-    answer: 1,
-    explanation: "L'appui sur les tissus mous submentaux peut écraser les voies aériennes. On place les doigts exclusivement sur la partie osseuse du menton."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Une victime inconsciente en arrêt cardiaque se trouve sur un sol mouillé. Que faire avant de défibriller ?",
-    options: ["Défibriller immédiatement dans la flaque d'eau", "Sécher rapidement le thorax et déplacer la victime sur une zone sèche si possible", "Attendre que l'eau s'évapore", "Ne jamais poser le DAE"],
-    answer: 1,
-    explanation: "Sécher le thorax de la victime et la glisser hors de l'eau stagnante pour éviter la dispersion du courant et sécuriser les sauveteurs."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "En cas de garrot improvisé faute de matériel homologué, quelle largeur minimale de lien choisir ?",
-    options: ["Un fil de fer fin", "Un lien large non élastique d'au moins 3 à 5 cm (écharpe, cravate)", "Un lacet de chaussure", "Un élastique fin"],
-    answer: 1,
-    explanation: "Le lien doit être large (≥ 3 à 5 cm) pour stopper l'artère sans cisailler la peau ni léser les troncs nerveux sous-jacents."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Si le DAE annonce 'Choc non recommandé', que doit faire immédiatement le sauveteur ?",
-    options: ["Éteindre l'appareil", "Reprendre immédiatement les compressions thoraciques (30:2) sans attendre", "Prendre la tension artérielle", "Retirer les patchs"],
-    answer: 1,
-    explanation: "Choc non recommandé = asystolie ou rythme sans pouls. Reprise immédiate du massage cardiaque 30:2 pendant 2 minutes jusqu'à la prochaine analyse."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Lors d'une obstruction partielle des voies aériennes (la victime tousse vigoureusement et siffle), que faut-il faire ?",
-    options: ["Pratiquer immédiatement la manœuvre de Heimlich", "L'encourager à tousser et ne pas pratiquer de tapes dans le dos", "Lui taper sur la tête", "Lui faire avaler du pain"],
-    answer: 1,
-    explanation: "Obstruction partielle = la toux est le mécanisme le plus efficace. Ne jamais taper dans le dos (risque d'enclaver le corps étranger en obstruction totale)."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Chez une victime inconsciente en PLS, à quelle fréquence réévalue-t-on la respiration ?",
-    options: ["Toutes les heures", "En continu, en surveillant les mouvements du thorax et le souffle", "Une seule fois au début", "Uniquement si les secours le demandent"],
-    answer: 1,
-    explanation: "La surveillance respiratoire est continue car une victime inconsciente peut passer en arrêt respiratoire à tout instant."
-  },
-  {
-    module: "Module 1 : Urgences Vitales",
-    question: "Quel est le premier réflexe à avoir dès la découverte d'une victime inanimée avant tout geste ?",
-    options: ["Pratiquer une injection", "Assurer la protection (danger persistant pour la victime et les sauveteurs)", "Appeler la famille", "Prendre une photo"],
-    answer: 1,
-    explanation: "La protection préalable (sécurité du lieu, danger électrique, toxique, suraccident) est le prérequis absolu à toute intervention."
-  },
-
-  // --- MODULE 2 : URGENCES POTENTIELLES (20 Q) ---
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Quels sont les trois signes d'alerte de l'AVC résumés par l'acronyme VITE / FAST ?",
-    options: ["Fièvre, toux et courbatures", "Visage asymétrique, Inertie/faiblesse d'un membre, Trouble de la parole", "Douleur gastrique, nausées et vertiges", "Toux sifflante et sueurs"],
-    answer: 1,
-    explanation: "Asymétrie faciale, déficit moteur d'un membre ou anomalie d'élocution = appel immédiat du 15 en relevant l'heure exacte."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Patient se plaignant d'une douleur thoracique constrictive irradiant au bras gauche. Quelle action immédiate ?",
-    options: ["Lui faire faire un effort physique", "Mise au repos strict assis, alerte 15 immédiate et surveillance rapprochée", "Lui donner à boire abondamment", "Lui conseiller de dormir"],
-    answer: 1,
-    explanation: "Suspicion de syndrome coronarien aigu : repos strict absolu, appel 15 immédiat, préparation du DAE."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Patient conscient en sueurs avec glycémie capillaire à 0,40 g/L (2,2 mmol/L). Que donner ?",
-    options: ["De l'insuline", "15 g de glucides d'action rapide (3 morceaux de sucre ou jus de fruits)", "Un grand verre d'eau pure", "Rien du tout"],
-    answer: 1,
-    explanation: "Hypoglycémie chez patient conscient = resucrage oral immédiat avec 15 g de sucres rapides (3 morceaux de sucre)."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Crise d'asthme aiguë chez un patient conscient : quelle position privilégier ?",
-    options: ["Plat dos les jambes en l'air", "Position assise ou demi-assise buste vertical", "Position ventrale", "Position déclive"],
-    answer: 1,
-    explanation: "La position assise/demi-assise soulage la mécanique ventilatoire et libère le travail du diaphragme."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Quels signes signent une anaphylaxie sévère nécessitant un traitement urgent ?",
-    options: ["Légère démangeaison isolée au coude", "Urticaire avec gêne respiratoire, œdème de Quincke et chute tensionnelle", "Fièvre modérée à 38°C", "Crampe au mollet"],
-    answer: 1,
-    explanation: "Atteinte cutanée + détresse respiratoire ou collapsus cardiovasculaire = choc anaphylactique (indication d'adrénaline)."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Premier geste face à une brûlure thermique cutanée récente ?",
-    options: ["Appliquer de l'huile ou du dentifrice", "Refroidir à l'eau courante tempérée (15-20°C) pendant 10 à 15 minutes", "Percer les cloques immédiatement", "Frotter avec de l'alcool"],
-    answer: 1,
-    explanation: "Refroidissement précoce à l'eau tempérée : stoppe la propagation thermique et soulage la douleur. Pas de corps gras."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Pendant une crise convulsive généralisée (secousses tonico-cloniques), que faire ?",
-    options: ["Mettre une cuillère dans la bouche", "Protéger la tête des chocs, écarter les objets dangereux et noter l'heure de début", "Maintenir de force les membres", "Lui faire boire de l'eau"],
-    answer: 1,
-    explanation: "Ne jamais rien introduire dans la bouche ni entraver les mouvements. Protéger le crâne et installer en PLS dès la fin des secousses."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Céphalées et nausées chez plusieurs personnes dans un local chauffé au poêle. Premier réflexe ?",
-    options: ["Suspecter une intoxication au monoxyde de carbone (CO), évacuer, aérer et alerter hors du local", "Fermer les fenêtres", "Leur donner du paracétamol sur place", "Attendre"],
-    answer: 0,
-    explanation: "Le CO est inodore et asphyxiant. Évacuation immédiate de tous les occupants et alerte depuis l'extérieur."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Après un traumatisme crânien avec perte de connaissance, que surveille-t-on en priorité ?",
-    options: ["La force de mastication", "La conscience (score de Glasgow/AVPU), l'orientation et la symétrie pupillaire", "Le transit intestinal", "La couleur des cheveux"],
-    answer: 1,
-    explanation: "La surveillance neurologique répétée recherche des signes d'engagement ou d'hématome intracrânien (anisocorie, baisse de conscience)."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Que signifie une anisocorie pupillaire (une pupille dilatée, une pupille serrée) chez un comateux ?",
-    options: ["Une anomalie bénigne de la vision", "Un signe d'alarme neurologique majeur (souffrance cérébrale / engagement)", "Une fatigue oculaire", "Un manque de lumière"],
-    answer: 1,
-    explanation: "L'asymétrie pupillaire récente chez un traumatisé crânien est un signe d'urgence chirurgicale absolue."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Patient présentant une pâleur extrême, des sueurs, des vertiges et une sensation de malaise en position debout. Que faire ?",
-    options: ["Le forcer à marcher", "L'allonger sur le dos et surélever ses jambes", "Lui donner de l'alcool fort", "L'asseoir tête en arrière"],
-    answer: 1,
-    explanation: "En cas de malaise vagal ou hypotension orthostatique, l'allongement avec surélévation des jambes favorise le retour veineux cérébral."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Quelle est la conduite à tenir face à un traumatisme fermé de jambe avec déformation évidente ?",
-    options: ["Tenter de remettre l'os en place énergiquement", "Immobiliser le membre dans l'axe de la déformation, surveiller pouls et sensibilité distale, alerter le 15", "Faire marcher le patient", "Mettre du chaud"],
-    answer: 1,
-    explanation: "Immobilisation sans réduction intempestive, surveillance du pouls distal et de la sensibilité, avis médical."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Devant une morsure de vipère en forêt, quel geste est formellement proscrit ?",
-    options: ["Mettre la victime au repos", "Poser un garrot serré, inciser ou aspirer le venin à la bouche", "Alerter les secours", "Désinfecter à l'eau et savon"],
-    answer: 1,
-    explanation: "Garrots, incisions, cautérisations et aspiration buccale sont dangereux et aggravent les lésions tissulaires."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Une brûlure chimique oculaire impose quel traitement immédiat sur les lieux ?",
-    options: ["Mettre un pansement sec sans rincer", "Lavage oculaire continu abondant à l'eau ou sérum physiologique pendant au moins 15 minutes", "Mettre des gouttes d'alcool", "Frotter l'œil avec un coton"],
-    answer: 1,
-    explanation: "Rinçage immédiat, continu et prolongé à l'eau tiède ou sérum physiologique paupières écartées."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "En présence d'un patient diabétique confus incapable d'avaler, que ne faut-il pas faire ?",
-    options: ["Appeler le SAMU 15", "Le forcer à boire ou lui mettre des morceaux de sucre solides dans la bouche (fausse route)", "Contrôler sa glycémie capillaire", "Le surveiller en PLS s'il s'endort"],
-    answer: 1,
-    explanation: "Ne jamais faire boire ou manger un patient confus ou inconscient : risque majeur d'inhalation bronchique mortelle."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Que suspecter devant une douleur brutale et intense du mollet avec gonflement et chaleur locale chez un patient alité ?",
-    options: ["Une entorse bénigne", "Une phlébite / thrombose veineuse profonde (risque d'embolie pulmonaire)", "Une crise de goutte", "Une tendinite"],
-    answer: 1,
-    explanation: "Signes évocateurs de thrombose veineuse profonde : repos au lit sans masser (risque de migration du caillot) et avis médical."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Quelle position adopter pour un patient conscient présentant une plaie pénétrante à l'abdomen ?",
-    options: ["Plat ventre", "Allongé sur le dos avec les cuisses fléchies pour relâcher les muscles abdominaux", "Debout penché en avant", "Suspendu par les bras"],
-    answer: 1,
-    explanation: "La flexion des cuisses détend les muscles de la paroi abdominale et diminue la pression intra-abdominale."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Comment réagir face à une hypothermie sévère chez un adulte conscient trouvé dehors ?",
-    options: ["Le frictionner avec de l'alcool et lui donner un bain bouillant", "Le soustraire au froid, retirer vêtements mouillés, le réchauffer passivement (couvertures) et éviter les mobilisations brusques", "Lui faire courir un sprint", "Lui donner du café brûlant"],
-    answer: 1,
-    explanation: "Réchauffement doux et progressif. Pas de réchauffement actif violent ni de mouvements brusques (risque de fibrillation ventriculaire)."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Face à une crise d'angoisse avec hyperventilation rapide et tétanie des mains, quel est le rôle du soignant ?",
-    options: ["Lui crier dessus", "Rassurer calmement la victime, l'isoler au calme et l'aider à ralentir son rythme respiratoire", "Lui faire respirer un sac plastique fermé hermétiquement", "L'allonger en PLS de force"],
-    answer: 1,
-    explanation: "Le calme, la réassurance et le contrôle verbal du rythme respiratoire permettent de normaliser la capnie."
-  },
-  {
-    module: "Module 2 : Urgences Potentielles",
-    question: "Un patient âgé présente une chute à domicile avec impossibilité de se relever et membre inférieur raccourci tourné vers l'extérieur. Que suspecter ?",
-    options: ["Une fracture de l'extrémité supérieure du fémur (col du fémur)", "Une simple courbature", "Une luxation de cheville", "Une crampe"],
-    answer: 0,
-    explanation: "L'impotence fonctionnelle avec raccourcissement et rotation externe est typique de la fracture du col fémoral."
-  },
-
-  // --- MODULE 3 : RISQUES SANITAIRES & COLLECTIFS (20 Q) ---
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Attaque armée en espace clos : quel est le triptyque de sécurité nationale ?",
-    options: ["Observer, Négocier, Avancer", "S'échapper si possible, sinon Se cacher / Se confiner, puis Alerter (17/112)", "Prendre des photos et filmer", "Allumer toutes les lumières"],
-    answer: 1,
-    explanation: "Consignes nationales : 1. S'échapper si issue sûre, 2. Se cacher/barricader en silence, 3. Alerter dès mise en sécurité."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Accident chimique avec nuage toxique : quelle est la première règle de sauvegarde ?",
-    options: ["Courir vers la fuite", "S'éloigner rapidement de la zone perpendiculairement à l'axe du vent et se confiner en hauteur", "Boire l'eau de pluie", "Retirer son masque"],
-    answer: 1,
-    explanation: "Évacuation perpendiculaire au vent pour sortir du panache toxique, puis confinement calfeutré."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Comment s'intitule le plan d'urgence hospitalier pour afflux massif de victimes ?",
-    options: ["Le Plan Blanc (dispositif ORSAN)", "Le Plan Vigipirate simple", "Le Plan Canicule", "Le Plan Bleu"],
-    answer: 0,
-    explanation: "Le Plan Blanc mobilise les ressources hospitalières internes dans le cadre de l'organisation ORSAN."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Lors d'un tri de catastrophe, quelle victime est classée en Urgence Absolue (UA) ?",
-    options: ["Une personne indemne très choquée", "Une victime avec détresse respiratoire aiguë ou hémorragie non contrôlée", "Un blessé léger marchant seul", "Un corps sans vie"],
-    answer: 1,
-    explanation: "Les Urgences Absolues regroupent les victimes dont le pronostic vital est immédiatement menacé sans geste chirurgical/médical rapide."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quel est le rôle du système SINUS en situation d'événement majeur à victimes multiples ?",
-    options: ["Gérer les payes du personnel", "Assurer l'identification unique, la traçabilité et le suivi médical de chaque blessé du terrain à l'hôpital", "Réserver les taxis", "Prendre les rendez-vous"],
-    answer: 1,
-    explanation: "SINUS assure le dénombrement, l'identification et la régulation hospitalière précise de chaque victime."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Découverte d'un colis suspect ou bagage abandonné en gare ou hôpital. Première consigne ?",
-    options: ["L'ouvrir pour vérifier", "Ne pas toucher l'objet, faire évacuer la zone calmement et alerter les forces de l'ordre (17)", "Le déplacer dans un placard", "Le secouer"],
-    answer: 1,
-    explanation: "Règle stricte : ne jamais toucher, établir un périmètre de sécurité et faire appel aux démineurs."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quels sont les 3 principes fondamentaux de radioprotection face à une source radioactive ?",
-    options: ["Temps court, Distance maximale, Écran protecteur", "Respirer fort, avancer, boire", "Manger des carottes, s'approcher, toucher", "Courir en rond"],
-    answer: 0,
-    explanation: "Réduire la durée d'exposition, augmenter la distance à la source et interposer un blindage adapté (Écran)."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Que signifie le sigle NRBC-E ?",
-    options: ["Nucléaire, Radiologique, Biologique, Chimique et Explosif", "Nouveau Réseau Biologique et Clinique d'Europe", "Norme Régionale des Bâtiments de Crise", "Niveau de Risque Brûlure Élevé"],
-    answer: 0,
-    explanation: "Menaces et risques technologiques/terroristes : Nucléaire, Radiologique, Biologique, Chimique et Explosif."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "En cas d'intoxication cutanée par produit toxique persistant, quel geste élimine 80 à 90 % du contaminant ?",
-    options: ["Le déshabillage d'urgence complet précautionneux sans frotter", "Prendre une douche brûlante", "Mettre du talc", "Appliquer de l'alcool"],
-    answer: 0,
-    explanation: "Le déshabillage rapide sans arracher les vêtements par la tête supprime la quasi-totalité du toxique superficiel."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quel service coordonne l'ensemble de la régulation médicale lors d'un plan NOVI (Nombreuses Victimes) ?",
-    options: ["Le SAMU / Centre 15", "Le commissariat de police", "La mairie", "La sécurité sociale"],
-    answer: 0,
-    explanation: "Le SAMU / Centre 15 assure la direction des secours médicaux (DSM) et la régulation vers les structures adaptées."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quel numéro d'urgence européen unique peut être composé gratuitement depuis n'importe quel portable ?",
-    options: ["112", "911", "999", "180"],
-    answer: 0,
-    explanation: "Le 112 est le numéro d'urgence unique valable dans toute l'Union Européenne."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Dans le tri START simplifié, que demande-t-on d'abord pour séparer les blessés légers ?",
-    options: ["'Que ceux qui peuvent marcher me suivent'", "'Que ceux qui ont mal crient'", "'Que tout le monde s'assoie'", "'Que les adultes sortent'"],
-    answer: 0,
-    explanation: "Les victimes valides capables de marcher spontanément sont orientées en zone Urgences Relatives (UR / 'blessés légers')."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Dans un hôpital, où s'effectue la décontamination des victimes de produits chimiques avant entrée aux urgences ?",
-    options: ["Dans les chambres des patients", "Dans une chaîne de décontamination externe dédiée (sas NRBC)", "Dans le hall d'accueil", "Dans les blocs opératoires"],
-    answer: 1,
-    explanation: "La décontamination se fait impérativement avant l'accès aux locaux de soins pour ne pas contaminer la structure hospitalière."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quelle est la zone la plus dangereuse lors d'une intervention sur incident chimique/toxique ?",
-    options: ["La zone d'exclusion (zone rouge)", "La zone de soutien (zone verte)", "La zone de décontamination (zone orange)", "La zone de presse"],
-    answer: 0,
-    explanation: "La zone rouge (zone d'exclusion) est contaminée et nécessite des scaphandres étanches spécifiques."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "En cas d'incendie dans un établissement de santé, que signifie la règle d'évacuation ?",
-    options: ["Fuir par les ascenseurs", "Évacuation horizontale vers un compartiment coupe-feu voisin avant l'évacuation verticale", "Sauter par les fenêtres", "Ouvrir toutes les portes"],
-    answer: 1,
-    explanation: "En hôpital, on pratique le transfert horizontal des lits vers le compartiment protégé adjacent."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Que doit-on couper en priorité dans un bâtiment lors d'un accident toxique extérieur avec confinement ?",
-    options: ["L'eau courante", "La ventilation mécanique et la climatisation", "La connexion internet", "La lumière"],
-    answer: 1,
-    explanation: "Couper les aérations et VMC empêche l'aspiration des gaz toxiques extérieurs dans les locaux."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quel produit chimique de guerre ou pesticide organophosphoré provoque un myosis serré bilatéral et une hypersécrétion ?",
-    options: ["Les neurotoxiques / anticholinestérasiques (ex: Sarin, VX)", "L'aspirine", "L'oxygène", "Le chlore seul"],
-    answer: 0,
-    explanation: "Le syndrome toxidrome cholinergique (myosis serré, hypersécrétion bronchique, bradycardie) oriente vers un neurotoxique organophosphoré."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quel rôle a le Poste Médical Avancé (PMA) déployé sur le terrain en catastrophe ?",
-    options: ["Servir de dortoir", "Assurer le tri, les gestes de réanimation d'urgence et le conditionnement avant évacuation", "Vendre des médicaments", "Gérer la communication médias"],
-    answer: 1,
-    explanation: "Le PMA est l'unité de tri et de réanimation avancée déployée à proximité de la catastrophe."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Comment qualifie-t-on une victime indemne physiquement mais profondément traumatisée psychologiquement en attentat ?",
-    options: ["Blessé grave", "Impliqué / blessé psychique (pris en charge par la CUMP)", "Simulateur", "Malade chronique"],
-    answer: 1,
-    explanation: "Les impliqués psychiques sont pris en charge par la Cellule d'Urgence Médico-Psychologique (CUMP)."
-  },
-  {
-    module: "Module 3 : Risques Sanitaires & Collectifs",
-    question: "Quel moyen d'alerte spécifique pour les personnes sourdes ou muettes existe en France ?",
-    options: ["Le 114 (accessible par SMS et application)", "Le 17 uniquement", "Le 18 par fax", "Le 15 vocal"],
-    answer: 0,
-    explanation: "Le numéro national d'urgence 114 est joignable gratuitement par SMS pour les personnes sourdes, malentendantes ou aphasiques."
-  },
-
-  // --- MODULE 4 : URGENCES PÉDIATRIQUES & MATERNITÉ (20 Q) ---
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    diagram: "pediatrique",
-    question: "Séquence de RCP recommandée chez l'enfant et le nourrisson ?",
-    options: ["30:2 d'emblée sans insufflation", "5 insufflations initiales de sauvetage puis cycle 15:2", "Compressions seules sans insuffler", "1 insufflation puis 5 compressions"],
-    answer: 1,
-    explanation: "Arrêt d'origine hypoxique : 5 insufflations initiales de sauvetage obligatoires, puis alternance 15 compressions pour 2 insufflations."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Obstruction totale des voies aériennes chez un nourrisson de moins de 1 an. Quelle manœuvre ?",
-    options: ["Compressions abdominales de Heimlich", "5 tapes dans le dos tête basse puis 5 compressions thoraciques (Manoeuvre de Mofenson)", "Secouer le bébé par les pieds", "Mettre les doigts au fond de la gorge"],
-    answer: 1,
-    explanation: "Heimlich contre-indiqué chez le nourrisson (< 1 an). Utiliser la manœuvre de Mofenson (tapes dorsales + compressions sternales)."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Technique de compression thoracique chez le nourrisson (< 1 an) ?",
-    options: ["Deux mains superposées", "Avec 2 doigts (ou la technique des pouces encerclants) sur la moitié inférieure du sternum", "Appuyer sur le ventre", "Masser les côtes gauches"],
-    answer: 1,
-    explanation: "Technique à 2 doigts ou pouces encerclants, dépression d'environ un tiers du diamètre antéro-postérieur (4 cm)."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Crise convulsive fébrile chez le jeune enfant : premier geste ?",
-    options: ["Bain glacé obligatoire", "Sécuriser l'enfant, le déshabiller légèrement, vérifier la respiration et alerter le 15", "Lui mettre un linge dans la bouche", "Lui donner à boire"],
-    answer: 1,
-    explanation: "Bain froid proscrit (choc thermique). Protéger des traumatismes, découvrir légèrement et avis médical 15."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Accouchement inopiné : action immédiate dès l'expulsion complète du nouveau-né ?",
-    options: ["Le laver à l'eau froide", "Sécher vigoureusement avec un linge propre, couvrir (bonnet, peau à peau) et stimuler la respiration", "Lui donner un biberon", "Tirer sur le cordon"],
-    answer: 1,
-    explanation: "Séchage immédiat et protection contre l'hypothermie (peau à peau, bonnet, linge chaud)."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Femme enceinte au 3e trimestre en détresse hémodynamique : quelle précaution de position ?",
-    options: ["Strictement à plat dos", "Déplacer manuellement l'utérus vers la gauche (ou incliner le bassin à gauche)", "La mettre tête en bas", "La mettre debout"],
-    answer: 1,
-    explanation: "Le décubitus latéral gauche ou le refoulement utérin à gauche lève la compression foetale sur la veine cave inférieure."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Quels paramètres constituent le score d'Apgar du nouveau-né ?",
-    options: ["Taille, poids, température, glycémie, vue", "Cœur, Respiration, Tonus, Réactivité, Coloration cutanée", "Pression artérielle, diurèse, faim, soif, sommeil", "Taux de fer"],
-    answer: 1,
-    explanation: "Évaluation à 1, 5 et 10 minutes : Fréquence cardiaque, Respiration, Tonus, Réactivité à la stimulation et Couleur."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Qu'est-ce qu'une éclampsie gravidique ?",
-    options: ["Une simple nausée matinale", "Une crise convulsive généralisée survenant dans un contexte de pré-éclampsie hypertensive", "Une infection urinaire", "Une hypoglycémie"],
-    answer: 1,
-    explanation: "Urgence vitale obstétricale et neurologique associant convulsions et hypertension artérielle sévère."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Mort Inattendue du Nourrisson (MIN) constatée au berceau. Conduite réflexe ?",
-    options: ["Ne rien faire", "Alerter le SAMU 15, débuter immédiatement la RCP pédiatrique et préserver l'environnement", "Secouer l'enfant", "Donner un médicament"],
-    answer: 1,
-    explanation: "Alerte 15 immédiate, réanimation pédiatrique immédiate et préservation des éléments de la chambre."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Électrodes du DAE chez l'enfant de moins de 8 ans : quelle règle ?",
-    options: ["Patchs adulte sans atténuateur", "Utiliser des électrodes pédiatriques avec atténuateur (position antéro-postérieure si risque de contact)", "DAE interdit chez l'enfant", "Sur les membres"],
-    answer: 1,
-    explanation: "Électrodes pédiatriques recommandées. Si indisponibles, patchs adulte placés en avant et en arrière (antéro-postérieur) pour éviter qu'ils se touchent."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Quel signe clinique chez le nourrisson traduit un épuisement respiratoire sévère ?",
-    options: ["Un rire", "Le geignement expiratoire (grunting), le balancement thoraco-abdominal et le battement des ailes du nez", "Une faim soudaine", "Un bâillement"],
-    answer: 1,
-    explanation: "Le geignement expiratoire et le balancement thoraco-abdominal traduisent une détresse respiratoire pédiatrique décompensée."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Comment positionner la tête du nourrisson pour libérer ses voies aériennes ?",
-    options: ["Hyperextension maximale en arrière", "Position neutre (axe tête-cou-tronc aligné horizontal sans hyperextension)", "Flexion maximale vers l'avant", "Tourner la tête sur le côté"],
-    answer: 1,
-    explanation: "Chez le nourrisson, la trachée est souple et l'occiput proéminent : l'hyperextension obstrue la trachée. Maintenir en position neutre."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Dans un accouchement inopiné, si le cordon ombilical fait une boucle serrée autour du cou (circulaire du cordon) ?",
-    options: ["Tirer fort", "Glisser prudemment le doigt pour faire passer la boucle par-dessus la tête de l'enfant", "Le couper avec des ciseaux de cuisine rouillés", "Pousser l'enfant vers l'intérieur"],
-    answer: 1,
-    explanation: "Faire glisser délicatement l'anse du cordon par-dessus le front et le nez du nouveau-né au moment du dégagement."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Quelle est la fréquence cardiaque normale au repos chez un nourrisson de 6 mois ?",
-    options: ["40 à 60 bpm", "110 à 150 bpm", "220 à 280 bpm", "50 bpm"],
-    answer: 1,
-    explanation: "La fréquence cardiaque normale du nourrisson est beaucoup plus rapide que l'adulte (environ 110 à 140-150 bpm)."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Signe précoce et fiable de déshydratation sévère chez un nourrisson présentant des diarrhées ?",
-    options: ["Une prise de poids", "Fontanelle déprimée, yeux cernés enfoncés, sécheresse buccale et apathie", "Des cheveux gras", "Des rires répétés"],
-    answer: 1,
-    explanation: "La dépression de la fontanelle, l'absence de larmes et l'hypotonie signent une déshydratation aiguë."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Lors des insufflations chez le nourrisson, comment appliquer sa bouche ?",
-    options: ["Uniquement sur la bouche en pinçant le nez", "Technique bouche-à-bouche-et-nez (englobant la bouche ET le nez du nourrisson)", "Sur le nez seul", "À distance"],
-    answer: 1,
-    explanation: "Chez le nourrisson, la bouche du sauveteur englobe à la fois la bouche et le nez de l'enfant."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Enfant suspect de purpura fulminans (taches rouge-violacé ne s'effaçant pas à la vitropression + fièvre). Conduite ?",
-    options: ["Donner un bain et attendre 24h", "Urgence absolue vitale : alerte SAMU 15 immédiate pour injection d'antibiotique en urgence", "Appliquer de la pommade", "Lui faire faire du sport"],
-    answer: 1,
-    explanation: "Le purpura fulminans est une infection méningococcique foudroyante imposant une injection préhospitalière d'antibiotique sans délai."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Que faire du placenta après la délivrance lors d'un accouchement inopiné ?",
-    options: ["Le jeter dans les ordures ménagères", "Le conserver précieusement dans un sac propre pour examen médical par la sage-femme ou le SMUR", "Le laver à grande eau", "Le brûler"],
-    answer: 1,
-    explanation: "Le placenta doit être inspecté en totalité par les équipes médicales pour s'assurer de l'absence de rétention placentaire."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Quel est le volume d'insufflation chez le nourrisson lors de la réanimation ?",
-    options: ["La capacité pulmonaire totale d'un adulte", "Le volume contenu dans les joues du sauveteur (juste assez pour faire lever le thorax)", "Deux grandes bouffées complètes", "Un souffle continu"],
-    answer: 1,
-    explanation: "Insuffler uniquement le volume de ses joues sans forcer pour éviter un barotraumatisme ou une distension gastrique."
-  },
-  {
-    module: "Module 4 : Urgences Pédiatriques & Maternité",
-    question: "Élévation brutale de la température à 40°C chez un nourrisson de 2 mois : quel est le réflexe ?",
-    options: ["Lui donner du miel", "Avis médical urgent SAMU 15 (toute fièvre chez le nourrisson de moins de 3 mois est une urgence médicale)", "Le couvrir de plusieurs doudounes", "Attendre 3 jours"],
-    answer: 1,
-    explanation: "Chez le nourrisson de moins de 3 mois, toute fièvre impose un bilan pédiatrique hospitalier urgent."
-  },
-
-  // --- MODULE 5 : RISQUE INFECTIEUX & AES (20 Q) ---
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Accident d'Exposition au Sang (AES) par piqûre d'aiguille : premier geste local immédiat ?",
-    options: ["Faire saigner fortement", "Laver à l'eau et savon, rincer, puis tremper/désinfecter au moins 5 min (Dakin ou alcool 70°)", "Mettre un pansement sans désinfecter", "Attendre la fin de journée"],
-    answer: 1,
-    explanation: "Nettoyer sans faire saigner (le traumatisme favorise l'inoculation virale), puis désinfecter par contact pendant au moins 5 minutes."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Délai optimal pour initier un Traitement Post-Exposition (TPE) contre le VIH après un AES à risque ?",
-    options: ["Dans les 4 heures (au plus tard dans les 48 heures)", "Dans les 7 jours", "Dans le mois", "Aucune efficacité"],
-    answer: 0,
-    explanation: "Urgence thérapeutique : efficacité maximale si débuté dans les 4 heures qui suivent l'accident (délai butoir de 48h)."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Projection de liquide biologique dans l'œil : que faire immédiatement ?",
-    options: ["Frotter l'œil avec sa manche", "Rincer abondamment à l'eau courante ou au sérum physiologique pendant au moins 5 minutes", "Mettre un collyre sans laver", "Fermer les yeux"],
-    answer: 1,
-    explanation: "Rinçage oculaire immédiat, continu et abondant au sérum physiologique ou à l'eau courante pendant 5 minutes."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Règle absolue pour l'élimination des aiguilles après un soin ?",
-    options: ["Recapuchonner à deux mains", "Ne jamais recapuchonner et déposer immédiatement dans le collecteur pour objets piquants/coupants (OPCT/DASRI)", "Jeter à la poubelle noire ordinaire", "Plier l'aiguille"],
-    answer: 1,
-    explanation: "Le recapuchonnage des aiguilles est la principale cause d'accident : il est formellement interdit."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Technique de référence pour l'hygiène des mains sur mains non visiblement souillées ?",
-    options: ["Savonnage simple de 5 secondes", "Friction hydro-alcoolique (FHA) sur peau sèche pendant 20 à 30 secondes", "Essuyage sur blouse", "Rinçage à l'eau froide seule"],
-    answer: 1,
-    explanation: "La friction hydro-alcoolique est la méthode de choix pour l'inactivation microbienne sur mains non souillées."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Quels sont les trois principaux virus transmissibles lors d'un AES ?",
-    options: ["Grippe, Rougeole, Varicelle", "VIH, Hépatite B (VHB), Hépatite C (VHC)", "Gale, Tétanos, Rage", "Paludisme, Covid, Zona"],
-    answer: 1,
-    explanation: "Les virus majeurs surveillés lors du protocole AES sont le VIH, le VHB et le VHC."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Quel vaccin est légalement obligatoire pour exercer en établissement de soins en France ?",
-    options: ["Fièvre jaune", "Hépatite B (avec contrôle sérologique de l'immunité)", "Rage", "Choléra"],
-    answer: 1,
-    explanation: "L'immunisation contre le virus de l'Hépatite B est obligatoire pour les professionnels de santé."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Face à un patient tuberculeux contagieux (aérosolisation), quel masque porte le soignant ?",
-    options: ["Masque chirurgical simple", "Appareil de protection respiratoire de type FFP2 étanche", "Visière seule", "Aucun masque"],
-    answer: 1,
-    explanation: "La transmission par microgouttelettes en suspension aérienne impose le port d'un masque FFP2 étanche au visage."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Délai légal pour déclarer un AES en accident du travail ?",
-    options: ["Sous 24 à 48 heures ouvrées", "Dans les 6 mois", "Un an après", "Ce n'est pas nécessaire"],
-    answer: 0,
-    explanation: "Déclaration obligatoire d'accident du travail dans les 24 à 48 heures pour garantir la prise en charge médico-légale."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Que préconisent les précautions complémentaires 'Contact' pour entrer dans la chambre d'un patient porteur de BMR/BHRe ?",
-    options: ["Lunettes de ski", "Surblouse protectrice et gants à usage unique lors des soins", "Scaphandre lourd", "Rien de plus"],
-    answer: 1,
-    explanation: "Port d'une surblouse et de gants pour tout contact direct avec le patient ou son environnement proche."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "À quel niveau de remplissage doit-on fermer définitivement un collecteur à aiguilles (boîte jaune) ?",
-    options: ["Lorsqu'il déborde", "Dès qu'il atteint la limite maximale de remplissage indiquée (repère horizontal de sécurité)", "À la moitié", "Quand il est plein à ras bord"],
-    answer: 1,
-    explanation: "Ne jamais forcer ni dépasser la ligne repère de remplissage pour éviter toute piqûre lors de l'insertion."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Quand le lavage des mains à l'eau et au savon doux est-il obligatoire plutôt que la FHA ?",
-    options: ["Après chaque poignée de main", "Lorsque les mains sont visiblement souillées, mouillées, ou en cas de contact avec des spores (Clostridium difficile)", "Jamais", "Uniquement le matin"],
-    answer: 1,
-    explanation: "Mains visiblement souillées ou bactéries sporulées (les solutions hydro-alcooliques ne détruisent pas les spores de Clostridium)."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Peut-on porter des bagues, alliances ou vernis à ongles lors des soins de santé ?",
-    options: ["Oui si c'est discret", "Non : ongles courts sans vernis, ni faux ongles, ni bagues/bracelets pour garantir l'efficacité de la FHA", "Seulement des bagues en or", "Oui"],
-    answer: 1,
-    explanation: "Les bijoux et vernis constituent des réservoirs microbiens majeurs et empêchent l'action antiseptique de la friction."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Quelle est la durée d'efficacité d'un masque chirurgical avant saturation par l'humidité ?",
-    options: ["30 minutes", "3 à 4 heures maximum (ou dès qu'il est souillé ou humide)", "Une semaine entière", "24 heures"],
-    answer: 1,
-    explanation: "Un masque chirurgical doit être changé toutes les 3 à 4 heures ou immédiatement s'il devient humide ou souillé."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Dans quelle filière de déchets élimine-t-on des compresses saturées de sang ?",
-    options: ["Poubelle ménagère classique (noire)", "Filière DASRI (Déchets d'Activités de Soins à Risques Infectieux - sac jaune)", "Recyclage papier", "Évier"],
-    answer: 1,
-    explanation: "Tout déchet souillé par un liquide biologique relève de la filière spécifique sécurisée DASRI (jaune)."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Le port de gants à usage unique dispense-t-il de réaliser une friction hydro-alcoolique ?",
-    options: ["Oui totalement", "Non : l'hygiène des mains s'impose immédiatement avant de mettre les gants et dès le retrait des gants", "Uniquement s'ils sont troués", "Oui s'ils sont stériles"],
-    answer: 1,
-    explanation: "Le gant n'est pas une barrière absolue : friction indispensable avant l'enfilage et immédiatement au retrait."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Comment retire-t-on des gants souillés sans se contaminer les mains ?",
-    options: ["En tirant sur les doigts avec les dents", "En pinçant l'extérieur du premier gant pour le retourner, puis en glissant un doigt nu sous le second gant", "En soufflant dedans", "En les lavant"],
-    answer: 1,
-    explanation: "Technique du gant retourné sur lui-même (l'extérieur souillé reste enfermé à l'intérieur) sans contact cutané."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Quel risque infectieux cutané très contagieux impose l'isolement et le traitement du linge à 60°C ?",
-    options: ["La gale", "Le rhume", "L'acné", "L'eczéma"],
-    answer: 0,
-    explanation: "La gale sarcoptique est un ectoparasite hautement contagieux imposant traitement du patient, de l'entourage et du linge."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Face à une morsure humaine profonde ayant saigné, quelle complication infectieuse redoute-t-on ?",
-    options: ["Infection polymicrobienne sévère et risque de transmission virale sanguine", "Uniquement une ecchymose", "Aucune", "La rougeole"],
-    answer: 0,
-    explanation: "La flore buccale humaine est riche en germes agressifs : risque d'infection locale grave et transmission virale."
-  },
-  {
-    module: "Module 5 : Risque Infectieux & AES",
-    question: "Quel statut du patient source tente-t-on d'obtenir en urgence après un AES ?",
-    options: ["Son extrait de casier judiciaire", "Ses sérologies VIH, VHB et VHC (avec son consentement)", "Son groupe sanguin seul", "Son régime alimentaire"],
-    answer: 1,
-    explanation: "La connaissance rapide du statut sérologique du patient source permet d'orienter ou d'arrêter un traitement prophylactique TPE."
-  },
-
-  // --- MODULE 6 : DAMAGE CONTROL & PLAIES GRAVES (20 Q) ---
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    diagram: "chest_seal",
-    question: "Plaie thoracique soufflante par projectile : quel dispositif appliquer en urgence ?",
-    options: ["Pansement hermétique 4 côtés étanche", "Pansement 3 côtés (faisant valve) ou pansement à valve anti-retour (Chest Seal)", "Garrot de poitrine", "Méchage profond"],
-    answer: 1,
-    explanation: "Le pansement à valve évacue l'air expiratoire sous pression et empêche l'entrée d'air inspiratoire (évite le pneumothorax suffocant)."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Qu'est-ce que le 'packing' d'une plaie jonctionnelle à l'aine où un garrot est impossible ?",
-    options: ["Mettre de la glace", "Bourrer fermement la cavité de gaze hémostatique jusqu'au contact osseux/vasculaire puis comprimer 3 minutes", "Recoudre sans anesthésie", "Appliquer une bande lâche"],
-    answer: 1,
-    explanation: "Le packing comble la cavité au contact du vaisseau qui saigne avec une compresse hémostatique, suivi d'une forte compression."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Quels sont les 3 éléments de la 'triade létale' du blessé hémorragique grave ?",
-    options: ["Fièvre, hypertension, bradypnée", "Hypothermie, Acidose métabolique et Coagulopathie", "Hyperglycémie, soif, fatigue", "Toux, courbatures, vertiges"],
-    answer: 1,
-    explanation: "Hypothermie + Acidose + Coagulopathie forment le cercle vicieux mortel qui paralyse la coagulation sanguine."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Éviscération abdominale aiguë traumatique : que faire des anses intestinales extériorisées ?",
-    options: ["Les rentrer de force dans l'abdomen", "Les recouvrir sans réduction de champs stériles humidifiés au sérum physiologique et protéger du froid", "Mettre de la glace dessus", "Faire boire"],
-    answer: 1,
-    explanation: "Ne jamais réintégrer les viscères. Protection par pansement stérile humidifié chaud et couverture isotherme."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Section traumatique d'un doigt : comment conditionner le segment sectionné ?",
-    options: ["Le plonger directement dans les glaçons", "L'envelopper dans une compresse stérile, le mettre dans un sac étanche sec, puis placer ce sac dans un récipient d'eau et de glace", "Le laisser à l'air", "Le congeler"],
-    answer: 1,
-    explanation: "Pas de contact direct avec la glace (risque de gelure tissulaire irréversible). Sac étanche entouré d'eau glacée."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Objectif tensionnel toléré en Damage Control chez le blessé hémorragique sans traumatisme crânien (hypotension permissive) ?",
-    options: ["PAS > 160 mmHg", "PAS entre 80 et 90 mmHg (pouls radial tout juste palpable)", "PAS < 30 mmHg", "Tension indifférente"],
-    answer: 1,
-    explanation: "Tolérer une pression artérielle modérée (80-90 mmHg) préserve la perfusion des organes nobles sans détruire les caillots récents."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Couteau empalé dans la cuisse : quelle conduite à tenir ?",
-    options: ["Retirer le couteau immédiatement", "Laisser impérativement le corps étranger en place, le stabiliser par des pansements et surveiller", "L'enfoncer plus loin", "Tourner la lame"],
-    answer: 1,
-    explanation: "Ne jamais retirer un corps étranger empalé : il assure un effet tampon hémostatique sur les vaisseaux lésés."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Cause numéro 1 de mortalité évitable lors d'une blessure de guerre ou attentat ?",
-    options: ["Infection tardive", "Hémorragie massive externe des membres", "Fracture fermée", "Choc émotionnel"],
-    answer: 1,
-    explanation: "L'hémorragie externe cataclysmique tue en quelques minutes si elle n'est pas jugulée par un garrot immédiat."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Suspicion de fracture du bassin avec instabilité hémodynamique : quel dispositif poser ?",
-    options: ["Une ceinture de contention pelvienne (Pelvic Binder)", "Un garrot cervical", "Une attelle de doigt", "Un plâtre"],
-    answer: 0,
-    explanation: "La ceinture pelvienne referme l'anneau pelvien, réduit le volume du bassin et limite le saignement rétro-péritonéal."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Pourquoi couvrir systématiquement tout blessé hémorragique avec une couverture isotherme ?",
-    options: ["Pour l'esthétique", "Car l'hypothermie détruit les enzymes de coagulation sanguine et aggrave l'hémorragie", "Pour le cacher", "Pour remplacer une perfusion"],
-    answer: 1,
-    explanation: "Dès que la température corporelle chute (< 35°C), les facteurs de coagulation cessent de fonctionner : le sang ne coagule plus."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Quel type de garrot homologué est le standard en Damage Control tactique ?",
-    options: ["Le garrot tourniquet militaire (type CAT ou SOFT-T)", "Un fil de pêche", "Un élastique de bureau", "Un ruban adhésif"],
-    answer: 0,
-    explanation: "Le tourniquet hémostatique à guindeau (ex: Combat Application Tourniquet) permet une hémostase artérielle totale et rapide."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Si un premier garrot tourniquet posé ne stoppe pas complètement le saignement artériel ?",
-    options: ["Le retirer immédiatement", "Poser un second garrot immédiatement au-dessus (en amont) du premier", "Attendre 30 minutes", "Desserrer le premier"],
-    answer: 1,
-    explanation: "En cas d'échec du premier garrot sur membre volumineux, placer un deuxième garrot côte à côte juste au-dessus du premier."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Qu'est-ce qu'un pansement israélien / pansement compressif d'urgence ?",
-    options: ["Un pansement avec barre de compression intégrée et système de blocage pour comprimer la plaie", "Un sparadrap simple", "Une compresse non stérile", "Un plâtre"],
-    answer: 0,
-    explanation: "Pansement d'urgence tout-en-un comportant une compresse stérile, une bande élastique et un étrier de compression mécanique."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Que signifie le concept de 'Chirurgie de Damage Control' au bloc opératoire ?",
-    options: ["Opérer pendant 12 heures d'affilée pour tout réparer", "Chirurgie écourtée d'urgence vitale : contrôler le saignement et la contamination, puis réanimer en soins intensifs", "Refuser d'opérer", "Faire de la chirurgie esthétique"],
-    answer: 1,
-    explanation: "Intervention ultra-courte axée uniquement sur l'hémostase et la coprostase, reportant les reconstructions après réchauffement et réanimation."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Dans le bilan SAFE / MARCH en Damage Control, que représente le 'M' initial ?",
-    options: ["Massage", "Massive Bleeding (Hémorragie massive prioritaire sur tout le reste)", "Médicament", "Morphine"],
-    answer: 1,
-    explanation: "M = Massive Bleeding. L'arrêt des hémorragies cataclysmiques prime sur les voies aériennes en médecine tactique."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Plaie par blast (effet de souffle d'une explosion) : quelle atteinte interne occulte recherche-t-on ?",
-    options: ["Blast pulmonaire (hématomes et contusions alvéolaires) et rupture tympanique", "Fracture des orteils seule", "Carence en vitamines", "Rien"],
-    answer: 0,
-    explanation: "L'onde de choc lèse en priorité les organes creux contenant de l'air : poumons (blast pulmonaire), tympans, tube digestif."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Peut-on poser un garrot tourniquet sur une articulation (coude ou genou) ?",
-    options: ["Oui c'est l'endroit idéal", "Non, toujours en amont sur un os unique (bras ou cuisse) ou 5 à 7 cm au-dessus hors articulation", "Peu importe", "Sur la rotule"],
-    answer: 1,
-    explanation: "Les articulations empêchent la compression efficace des artères et risquent de glisser. Poser en amont sur le segment osseux."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Pourquoi est-il crucial de noter l'heure exacte de pose du garrot sur la bande blanche ?",
-    options: ["Pour le dossier administratif", "Pour informer les chirurgiens de la durée d'ischémie du membre et guider les choix thérapeutiques", "Pour chronométrer le sauveteur", "Ce n'est pas utile"],
-    answer: 1,
-    explanation: "La durée d'ischémie guide la stratégie chirurgicale de revascularisation ou d'amputation."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Face à une fracture ouverte de cuisse avec hémorragie pulsatile en jet : premier geste ?",
-    options: ["Mettre un plâtre", "Pose immédiate d'un garrot hémostatique à la racine de la cuisse", "Nettoyer l'os", "Faire des radios"],
-    answer: 1,
-    explanation: "Hémorragie artérielle en jet = menace vitale immédiate imposant le garrot tourniquet sans attendre."
-  },
-  {
-    module: "Module 6 : Damage Control & Plaies Graves",
-    question: "Quel soluté de remplissage massif est proscrit chez le blessé hémorragique grave en Damage Control moderne ?",
-    options: ["Les perfusions massives de cristalloïdes froids qui aggravent l'hypothermie et diluent les plaquettes", "Le sang total", "Le plasma frais congelé", "Les culots globulaires"],
-    answer: 0,
-    explanation: "Le remplissage massif par sérum physiologique froid dilue les facteurs de coagulation et accélère la triade létale."
-  },
-
-  // --- MODULE 7 : CAS CLINIQUES & ABCDE (20 Q) ---
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "À quoi correspond l'étape 'A' dans l'approche systématique ABCDE ?",
-    options: ["Airway : liberté des voies aériennes avec protection du rachis cervical", "Analyse sanguine", "Administration de drogues", "Arrêt cardiaque"],
-    answer: 0,
-    explanation: "A = Airway. Vérification immédiate de la perméabilité des voies aériennes et stabilisation de l'axe tête-cou."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Paramètres prioritaires évalués à l'étape 'B' (Breathing) de l'ABCDE ?",
-    options: ["Fréquence respiratoire, travail ventilatoire, symétrie auscultatoire et SpO2", "Glycémie", "Force musculaire", "Température"],
-    answer: 0,
-    explanation: "B = Breathing. Évaluation de la fréquence, des signes de tirage, de l'auscultation et de la saturation en oxygène."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Cas clinique : Pâleur, marbrures aux genoux, FC à 130 bpm, PA à 80/50 mmHg, TRC > 3s. Diagnostic à l'étape 'C' ?",
-    options: ["Détresse respiratoire isolée", "État de choc circulatoire aigu", "Crise d'angoisse", "Coma éthylique"],
-    answer: 1,
-    explanation: "Tachycardie, hypotension et allongement du temps de recoloration cutanée (TRC > 2s) signent une défaillance circulatoire (C)."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Signification de l'échelle neurologique rapide 'AVPU' à l'étape 'D' ?",
-    options: ["Alerte, Vocal (répond à la voix), Pain (répond à la douleur), Unresponsive (inconscient)", "Air, Pouls, Ventre, Urgence", "Appareil, Voie, Perfusion, Unité", "Analyse simple"],
-    answer: 0,
-    explanation: "AVPU : Alert, Voice, Pain, Unresponsive. Échelle simplifiée d'évaluation immédiate de la vigilance."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Examen biologique capillaire instantané obligatoire devant tout trouble de la conscience à l'étape 'D' ?",
-    options: ["La glycémie capillaire", "Le cholestérol", "L'acide urique", "Les plaquettes"],
-    answer: 0,
-    explanation: "L'hypoglycémie mime tous les troubles neurologiques : le dosage de la glycémie est obligatoire à l'étape D."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Que comprend l'étape 'E' (Exposure / Environment) de l'ABCDE ?",
-    options: ["Examen corporel complet (lésions cachées), prévention de l'hypothermie et respect de la pudeur", "Évacuation sans examen", "Écoute musicale", "Remplir les papiers"],
-    answer: 0,
-    explanation: "E = Exposure/Environment : dévêtir pour inspecter sans laisser refroidir le patient."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Cas clinique : Coma avec bradypnée à 6/min et myosis punctiforme serré après injection. Quelle intoxication ?",
-    options: ["Surdosage aux opioïdes (overdose d'héroïne/morphinique)", "Intoxication au paracétamol", "Manque de sucre", "Insolation"],
-    answer: 0,
-    explanation: "Toxidrome opioïde : coma + bradypnée sévère + myosis serré bilatéral (indication de la Naloxone)."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Structure recommandée pour transmettre un bilan d'urgence au médecin régulateur du SAMU (15) ?",
-    options: ["Donner son avis sans chiffres", "Identification/lieu, Motif d'appel, Constat chiffré ABCDE, Antécédents/Traitements et gestes effectués", "Raccrocher vite", "Parler du planning"],
-    answer: 1,
-    explanation: "Transmission médicale claire, structurée et chiffrée pour permettre l'envoi des moyens adaptés (SMUR, hélicoptère)."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Libération des voies aériennes chez un polytraumatisé inconscient (étape A) : quelle technique ?",
-    options: ["Hyperflexion de nuque", "Subluxation de la mandibule en maintenant l'axe tête-cou-tronc en rectitude neutre", "Tourner la tête à gauche", "Secouer la tête"],
-    answer: 1,
-    explanation: "Suspicion de fracture du rachis cervical : élévation de la mâchoire sans hyperextension cervicale."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Pourquoi l'approche ABCDE est-elle une démarche itérative permanente ?",
-    options: ["Pour passer le temps", "Car toute dégradation clinique ou geste thérapeutique impose de réévaluer le patient en reprenant au point A", "Ce n'est pas nécessaire", "À la demande de la famille"],
-    answer: 1,
-    explanation: "L'état d'un patient d'urgence est évolutif : tout changement impose de réévaluer depuis A."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Cas clinique : Patient traumatisé thoracique avec dyspnée aiguë, absence de murmure vésiculaire à droite et turgescence jugulaire. Suspicion ?",
-    options: ["Pneumothorax sous tension suffocant", "Simple bronchite", "Douleur musculaire", "Crise d'angoisse"],
-    answer: 0,
-    explanation: "Asymétrie auscultatoire + détresse respiratoire + signes de choc = pneumothorax compressif (urgence décompressive)."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Quelle valeur de SpO2 au saturomètre définit une hypoxémie sévère nécessitant une oxygénothérapie à haut débit ?",
-    options: ["SpO2 < 90-92 % chez un sujet sans BPCO", "SpO2 à 98 %", "SpO2 à 100 %", "SpO2 à 95 %"],
-    answer: 0,
-    explanation: "Une SpO2 < 90-92 % témoigne d'une hypoxémie aiguë justifiant une oxygénothérapie au masque à haute concentration."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Que mesure le Temps de Recoloration Cutanée (TRC) à l'étape 'C' ?",
-    options: ["La température de la pièce", "La perfusion capillaire périphérique tissulaire (anormal si > 2 secondes)", "Le taux d'hémoglobine", "La vitesse de marche"],
-    answer: 1,
-    explanation: "Pression de 5 secondes sur la pulpe de l'ongle : recoloration retardée (> 2 secondes) traduit une vasoconstriction de choc."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Cas clinique : Patient présentant une aphasie brutale et un déficit moteur du bras droit. À quelle étape de l'ABCDE cotez-vous ce signe ?",
-    options: ["Étape D (Disability / Évaluation neurologique)", "Étape A", "Étape B", "Étape E"],
-    answer: 0,
-    explanation: "Déficit moteur focal et troubles du langage sont des éléments neurologiques majeurs évalués à l'étape D."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Un patient inconscient réagit uniquement en grognant lors d'une stimulation douloureuse. Son niveau AVPU est ?",
-    options: ["A", "V", "P (Pain / Réagit à la douleur)", "U (Unresponsive)"],
-    answer: 2,
-    explanation: "P = Pain. La victime ne répond pas spontanément ni à la voix, mais réagit à la stimulation douloureuse."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Que recherche-t-on lors de la palpation abdominale chez un polytraumatisé à l'étape 'C' ?",
-    options: ["La faim", "Une défense ou contracture abdominale témoignant d'une hémorragie ou péritonite interne", "Un ganglion", "Rien"],
-    answer: 1,
-    explanation: "Ventre douloureux, distendu ou tendu chez un traumatisé oriente vers un hémopéritoine par lésion de rate ou de foie."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Patient BPCO connu en détresse respiratoire modérée. Quel objectif de SpO2 cible vise-t-on généralement ?",
-    options: ["Strictement 100 %", "Entre 88 % et 92 % pour éviter l'hypercapnie induite", "Moins de 70 %", "50 %"],
-    answer: 1,
-    explanation: "Chez l'insuffisant respiratoire chronique hypercapnique, la cible d'oxygénothérapie se situe entre 88 et 92 %."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Cas clinique : Brûlures circulaires des deux cuisses avec phlyctènes rompues. Quelle priorité à l'étape 'E' ?",
-    options: ["Mettre du sel", "Évaluer la surface brûlée, emballer stérilement et couvrir immédiatement d'une couverture isotherme", "Faire marcher le patient", "Laver à l'alcool"],
-    answer: 1,
-    explanation: "Évaluation de la surface (règle de Wallace), pansement stérile protecteur et lutte majeure contre l'hypothermie."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "Que signifie un score de Glasgow (GCS) de 7 chez une victime inconsciente ?",
-    options: ["Patient pleinement éveillé", "Coma profond imposant la protection instrumentale des voies aériennes (intubation)", "Somnolence légère", "État normal"],
-    answer: 1,
-    explanation: "Un score de Glasgow ≤ 8 définit un coma grave incapable de protéger ses voies aériennes."
-  },
-  {
-    module: "Module 7 : Cas Cliniques & ABCDE",
-    question: "À quelle étape de l'ABCDE pose-t-on l'indication de poser le DAE face à une victime inerte ?",
-    options: ["Dès l'absence de réaction (A/D) et l'absence de respiration normale (B)", "À la fin de l'étape E", "Après 1 heure", "Uniquement à l'hôpital"],
-    answer: 0,
-    explanation: "Inconscience + arrêt respiratoire = ACR immédiat imposant le DAE sans délai sans attendre le reste de l'examen."
   }
 ];
 
-// ================= BANQUE AUTONOME EXCLUSIVE DES QUIZ RAPIDES (40 QUESTIONS DÉDIÉES SANS DOUBLON) =================
-const quickQuizBank = [
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Sur un arrêt cardiaque chez la femme enceinte au 3e trimestre, quelle manœuvre optimise le massage ?",
-    options: ["La mettre sur le ventre", "Déplacer manuellement l'utérus vers la gauche pour dégager la veine cave", "Surélever sa tête", "Masser uniquement l'abdomen"],
-    answer: 1,
-    explanation: "Le refoulement utérin vers la gauche lève la compression de la veine cave inférieure et restaure le débit cardiaque."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel toxique inodore est responsable d'intoxications collectives hivernales en espace clos ?",
-    options: ["Le méthane", "Le monoxyde de carbone (CO)", "L'azote", "L'hélium"],
-    answer: 1,
-    explanation: "Le monoxyde de carbone provient d'une combustion incomplète et provoque anoxie cellulaire et décès."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Face à une suspicion d'AVC avec début des symptômes il y a 1 heure, quel est l'enjeu prioritaire ?",
-    options: ["Prendre rendez-vous chez l'ophtalmo", "Alerter le SAMU 15 sans délai pour envisager une thrombolyse/thrombectomie d'urgence", "Attendre le lendemain", "Donner un somnifère"],
-    answer: 1,
-    explanation: "Chaque minute compte ('Time is brain') : la revascularisation cérébrale est possible dans une fenêtre horaire étroite."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quelle est la conduite à tenir en présence d'une victime en choc anaphylactique avec stridor respiratoire ?",
-    options: ["Lui donner du pain", "Alerter le 15, injection intramusculaire d'adrénaline et oxygénothérapie", "Lui faire faire des pompes", "Mettre un garrot au cou"],
-    answer: 1,
-    explanation: "L'adrénaline intramusculaire est le traitement de première ligne vital du choc anaphylactique."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Lors d'un accident par arme à feu, quelle est l'action prioritaire en Damage Control ?",
-    options: ["Extraire la balle avec les doigts", "Poser un garrot tourniquet si membre ou packing hémostatique si zone jonctionnelle", "Donner à boire", "Faire une radio sur place"],
-    answer: 1,
-    explanation: "L'arrêt immédiat des hémorragies massives externes prime sur tout autre geste."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "En cas d'Accident d'Exposition au Sang par piqûre, quelle durée minimale de trempage antiseptique est requise ?",
-    options: ["10 secondes", "Au moins 5 minutes", "30 minutes", "Aucune"],
-    answer: 1,
-    explanation: "Après lavage, la désinfection cutanée de contact doit durer au minimum 5 minutes."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quelle attitude adopter en premier lieu face à une victime d'électrisation par fil haute tension au sol ?",
-    options: ["La tirer immédiatement par les bras", "Ne pas approcher, couper le courant ou faire consigner la ligne avant tout secours", "Lui jeter de l'eau", "Toucher le câble"],
-    answer: 1,
-    explanation: "Risque mortel d'arc électrique : ne jamais approcher avant coupure confirmée du courant."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Comment se manifeste une détresse respiratoire aiguë chez le nourrisson ?",
-    options: ["Tirage sous-costal, battement des ailes du nez et geignement expiratoire", "Respiration calme et silencieuse", "Augmentation du sommeil", "Sourires"],
-    answer: 0,
-    explanation: "Ces signes de lutte traduisent un travail respiratoire critique chez le nourrisson."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quelle position d'attente pour une victime consciente se plaignant d'une douleur thoracique constrictive ?",
-    options: ["Debout en marchant", "Position assise ou demi-assise au repos strict", "Sur le ventre", "Tête en bas"],
-    answer: 1,
-    explanation: "La position demi-assise minimise la consommation d'oxygène du myocarde et facilite la ventilation."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Sur un DAE, quelle est la conduite si la victime a un pacemaker visible sous la clavicule droite ?",
-    options: ["Ne pas poser le DAE", "Coller l'électrode à au moins 8-10 cm du boîtier de pacemaker", "Coller l'électrode directement dessus", "L'arracher"],
-    answer: 1,
-    explanation: "On positionne le patch à distance du relief du boîtier pour que le courant traverse correctement le cœur."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Que signifie le 'P' dans l'échelle d'évaluation de la conscience AVPU ?",
-    options: ["Pouls", "Pain (réagit uniquement à la stimulation douloureuse)", "Parole", "Pression"],
-    answer: 1,
-    explanation: "P = Pain. Réponse uniquement motrice ou verbale lors de la stimulation nociceptive."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Face à une hémorragie extériorisée de l'oreille (otorragie) après chute d'une échelle, que suspecter ?",
-    options: ["Une otite simple", "Une fracture de la base du crâne", "Un bouchon de cérumen", "Une coupure bénigne"],
-    answer: 1,
-    explanation: "L'écoulement de sang par le conduit auditif chez un traumatisé crânien évoque une fracture du rocher."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Combien de claques dorsales donne-t-on au maximum avant d'alterner avec les compressions abdominales ?",
-    options: ["1 claque", "Jusqu'à 5 claques vigoureuses entre les omoplates", "20 claques", "50 claques"],
-    answer: 1,
-    explanation: "Séquence standard : cycles de 1 à 5 claques dorsales alternées avec 1 à 5 compressions abdominales."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Pourquoi est-il formellement interdit de réchauffer trop brutalement un membre gelé ?",
-    options: ["Pour éviter la transpiration", "Pour éviter les brûlures tissulaires et la libération massive de toxines froides", "Pour le garder dur", "Ce n'est pas interdit"],
-    answer: 1,
-    explanation: "Le réchauffement doit être progressif dans une eau à 38-40°C pour éviter la nécrose."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel signe clinique chez l'enfant traduit une déshydratation aiguë majeure ?",
-    options: ["Pli cutané persistant et yeux enfoncés", "Prise de poids rapide", "Transpiration abondante", "Rires"],
-    answer: 0,
-    explanation: "La persistance du pli cutané et la sécheresse des muqueuses signent une perte hydrique grave."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Qu'évalue la règle des 9 de Wallace chez un grand brûlé ?",
-    options: ["Le niveau de douleur", "La surface corporelle totale brûlée en pourcentage", "L'âge du patient", "La quantité d'eau à boire"],
-    answer: 1,
-    explanation: "La règle de Wallace découpe le corps en multiples de 9 % pour quantifier la gravité thermique."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quelle est la durée de surveillance recommandée après réanimation d'une noyade même apparemment bénigne ?",
-    options: ["Départ immédiat à la maison", "Hospitalisation et surveillance médicale obligatoire en raison du risque d'œdème pulmonaire secondaire", "5 minutes", "Aucune"],
-    answer: 1,
-    explanation: "Toute inhalation d'eau expose au risque d'œdème pulmonaire lésionnel retardé (surveillance hospitalière)."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quelle conduite tenir face à une plaie cutanée avec verre brisé encore profondément incrusté ?",
-    options: ["Retirer tous les morceaux à la pince à épiler", "Ne pas mobiliser le corps étranger, protéger le pourtour par un pansement en pont et avis médical", "Appuyer fort dessus", "Mettre de l'eau bouillante"],
-    answer: 1,
-    explanation: "Ne jamais retirer un fragment incrusté : immobiliser la zone et transférer vers une structure de soins."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel geste est systématique lors du conditionnement d'un traumatisé du rachis ?",
-    options: ["Le faire asseoir", "Maintien strict de l'axe tête-cou-tronc en position neutre", "Lui tourner la tête", "L'étirer par les pieds"],
-    answer: 1,
-    explanation: "Le maintien en rectitude évite l'aggravation secondaire d'une lésion médullaire instable."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Lors d'un attentat, à quel moment s'effectue l'alerte aux forces de l'ordre ?",
-    options: ["En restant devant les tireurs", "Dès que l'on est en sécurité, caché ou confiné", "Le lendemain", "Jamais"],
-    answer: 1,
-    explanation: "S'échapper, Se cacher, puis Alerter dès que l'on n'est plus exposé directement."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel produit ne doit-on jamais appliquer sur une brûlure thermique fraîche ?",
-    options: ["De l'eau tiède", "Des corps gras (beurre, huile, dentifrice)", "Une compresse stérile", "Un champ propre"],
-    answer: 1,
-    explanation: "Les corps gras emprisonnent la chaleur et augmentent le risque d'infection locale."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Sur un arrêt cardiaque de l'enfant, que fait le sauveteur isolé sans téléphone avant de partir chercher du secours ?",
-    options: ["Partir immédiatement sans toucher l'enfant", "Réaliser 1 minute de RCP pédiatrique (5 insufflations + cycles 15:2) avant d'aller alerter", "Attendre", "Le secouer"],
-    answer: 1,
-    explanation: "L'oxygénation immédiate peut lever l'hypoxie : 1 minute de réanimation avant de quitter l'enfant."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Signe précoce d'état de choc hémorragique avant l'apparition de l'hypotension ?",
-    options: ["Une bradycardie à 40 bpm", "Une tachycardie sinusale compensatrice avec pâleur et soif", "Une peau rouge et chaude", "Une euphorie"],
-    answer: 1,
-    explanation: "La tachycardie et la vasoconstriction périphérique sont les premiers mécanismes de compensation du choc."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Que risque un soignant qui recapuchonne une aiguille après une prise de sang ?",
-    options: ["Rien", "Un Accident d'Exposition au Sang par piqûre accidentelle", "De tordre l'aiguille", "De perdre son temps"],
-    answer: 1,
-    explanation: "Le recapuchonnage est la cause historique majeure de piqûres septiques accidentelles."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel dispositif assure une hémostase temporaire sur une fracture instable du bassin ?",
-    options: ["Une sangle de traction de cheville", "Une ceinture pelvienne de contention circulaire", "Un garrot de cuisse", "Un plâtre"],
-    answer: 1,
-    explanation: "La ceinture pelvienne stabilise l'anneau fracturé et limite le saignement pelvien."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel paramètre vital reflète la ventilation minute à l'étape B de l'ABCDE ?",
-    options: ["La fréquence respiratoire chiffrée sur une minute", "La couleur des yeux", "Le périmètre crânien", "Le poids"],
-    answer: 0,
-    explanation: "La fréquence respiratoire est l'indicateur le plus sensible et le plus précoce de dégradation clinique."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Que faire face à un traumatisme oculaire perforant avec globe ouvert ?",
-    options: ["Appuyer sur l'œil pour fermer la plaie", "Protéger l'œil sans aucun appui par une coque rigide et maintenir la tête immobile", "Laver avec force", "Mettre une pommade"],
-    answer: 1,
-    explanation: "Ne jamais exercer de pression sur un œil perforé (risque d'extrusion oculaire) : coque oculaire rigide protectrice."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quelle position pour une femme enceinte victime d'un malaise vagal ?",
-    options: ["Décubitus latéral gauche (ou inclinée sur le flanc gauche)", "Plat dos", "Debout", "Sur le ventre"],
-    answer: 0,
-    explanation: "Le décubitus latéral gauche décomprime la veine cave et restaure le flux sanguin foeto-maternel."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "En cas d'intoxication aux organophosphorés, quel antidote spécifique est administré ?",
-    options: ["L'aspirine", "L'atropine à doses répétées", "Le paracétamol", "Le glucose"],
-    answer: 1,
-    explanation: "L'atropine lève le syndrome muscarinique mortel (hypersécrétion, bronchospasme, bradycardie)."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel est le premier traitement de l'hypoglycémie chez un patient inconscient en milieu médical ?",
-    options: ["Lui mettre du sucre dans la bouche", "Injection intraveineuse de glucose concentré (G30%) ou Glucagon intramusculaire", "Lui faire faire du vélo", "L'asseoir"],
-    answer: 1,
-    explanation: "Patient inconscient = voie parentérale exclusive (G30% IV ou Glucagon IM) pour prévenir les fausses routes."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "À quelle fréquence alterne-t-on les sauveteurs au massage cardiaque lors d'une réanimation ?",
-    options: ["Toutes les heures", "Toutes les 2 minutes (au moment de l'analyse du DAE) pour éviter l'épuisement", "Toutes les 20 minutes", "Jamais"],
-    answer: 1,
-    explanation: "L'efficacité du massage chute après 2 minutes : relais systématique toutes les 2 minutes."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel signe clinique permet de différencier une obstruction totale d'une obstruction partielle des voies aériennes ?",
-    options: ["La capacité de parler ou tousser (présente en partielle, impossible en totale)", "La couleur des chaussures", "L'âge de la victime", "L'heure du repas"],
-    answer: 0,
-    explanation: "En obstruction totale, aucun son n'est émis : la toux et la parole sont rigoureusement impossibles."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Dans quel type de poubelle jette-t-on un flacon de verre vide sans risque infectieux ?",
-    options: ["DASRI jaune", "Filière déchets ménagers / verre ordinaire", "Boîte à aiguilles", "Sac rouge"],
-    answer: 1,
-    explanation: "Les emballages et verres non contaminés rejoignent la filière de tri des déchets ordinaires."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Pourquoi évite-t-on de donner à boire à une victime d'accident corporel grave ?",
-    options: ["Pour économiser l'eau", "En prévision d'une anesthésie générale chirurgicale urgente et pour éviter l'inhalation en cas de vomissements", "Pour qu'elle n'ait pas envie d'uriner", "C'est sans raison"],
-    answer: 1,
-    explanation: "Le jeûne strict est impératif pour sécuriser une intubation ou une intervention chirurgicale en urgence."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Comment vérifie-t-on la bonne efficacité des compressions thoraciques ?",
-    options: ["En comptant à voix haute uniquement", "En s'assurant d'une dépression de 5 à 6 cm et d'un relâchement complet du sternum", "En appuyant sans relâcher", "En massant le ventre"],
-    answer: 1,
-    explanation: "La décompression complète permet le remplissage des cavités cardiaques avant l'éjection suivante."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quelle est la conduite à tenir en présence d'une morsure humaine souillée au bras ?",
-    options: ["Fermer les yeux", "Lavage abondant eau et savon, désinfection ≥ 5 min, vérification du vaccin antitétanique et avis médical", "Mettre du beurre", "Ignorer"],
-    answer: 1,
-    explanation: "Lavage prolongé, antiseptique et évaluation du risque infectieux bactérien et tétanique."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Dans le bilan ABCDE, à quoi sert l'évaluation de la saturation pulsée en oxygène (SpO2) ?",
-    options: ["À connaître la tension artérielle", "À quantifier le pourcentage d'hémoglobine saturée en oxygène dans le sang artériel", "À doser le sodium", "À compter les globules blancs"],
-    answer: 1,
-    explanation: "La saturométrie renseigne instantanément sur l'efficacité de l'oxygénation tissulaire."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Quel numéro d'urgence gratuit alerte les pompiers en France ?",
-    options: ["18", "15", "17", "115"],
-    answer: 0,
-    explanation: "Le 18 est le numéro national d'urgence des sapeurs-pompiers."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Comment se nomme la manœuvre consistant à basculer la tête en arrière pour dégager la langue du pharynx ?",
-    options: ["La bascule prudente de la tête en arrière avec élévation du menton", "La flexion cervicale", "La torsion latérale", "Le plaquage"],
-    answer: 0,
-    explanation: "Cette manœuvre décolle la base de la langue de la paroi postérieure du pharynx chez le patient inconscient."
-  },
-  {
-    module: "Évaluation Rapide Globale",
-    question: "Face à une victime inconsciente qui respire, quel risque mortel prévient la Position Latérale de Sécurité (PLS) ?",
-    options: ["L'étouffement par la chute de langue et l'inhalation bronchique de vomissures", "La perte de mémoire", "La déshydratation", "L'angine"],
-    answer: 0,
-    explanation: "La PLS maintient les voies aériennes ouvertes et draine les liquides vers l'extérieur."
-  }
-];
-
-// ================= GESTION DE L'ÉTAT =================
+// ================= GESTION DU QUIZ =================
 let isTrainee = false;
 let currentModule = "RANDOM_20";
 let traineeName = "";
@@ -1796,136 +555,44 @@ let wrongs = [];
 
 function getModuleLabel(key) {
   switch (key) {
-    case "RANDOM_20": return "⚡ Quiz Rapide Global (20 questions exclusives)";
-    case "RANDOM_30": return "🎯 Quiz Bilan Global (30 questions exclusives)";
-    default: return `${key} (20 questions)`;
+    case "RANDOM_20": return "⚡ Quiz Rapide Global";
+    case "RANDOM_30": return "🎯 Quiz Bilan Global";
+    default: return key;
   }
 }
 
-// ================= STATISTIQUES LOCALES =================
-function getStats() {
-  try {
-    return JSON.parse(localStorage.getItem('afgsu_quiz_stats') || '[]');
-  } catch (e) {
-    return [];
-  }
-}
-
-function saveResultToStats(result) {
-  const stats = getStats();
-  stats.unshift(result);
-  localStorage.setItem('afgsu_quiz_stats', JSON.stringify(stats));
-  updateStatsBadge();
-}
-
-function updateStatsBadge() {
-  const stats = getStats();
-  const badge = document.getElementById('stats-badge-count');
-  if (badge) badge.textContent = stats.length;
-}
-
-function renderStatsModal() {
-  const stats = getStats();
-  const total = stats.length;
-  document.getElementById('kpi-total-tests').textContent = total;
-
-  if (total === 0) {
-    document.getElementById('kpi-avg-score').textContent = "0%";
-    document.getElementById('kpi-success-rate').textContent = "0%";
-    document.getElementById('stats-table-body').innerHTML = `
-      <tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 12px;">Aucune session enregistrée</td></tr>
-    `;
-    return;
-  }
-
-  const sumPct = stats.reduce((acc, s) => acc + s.percentage, 0);
-  const avgPct = Math.round(sumPct / total);
-  const successCount = stats.filter(s => s.percentage >= 80).length;
-  const successRate = Math.round((successCount / total) * 100);
-
-  document.getElementById('kpi-avg-score').textContent = `${avgPct}%`;
-  document.getElementById('kpi-success-rate').textContent = `${successRate}%`;
-
-  const tbody = document.getElementById('stats-table-body');
-  tbody.innerHTML = '';
-  stats.forEach(s => {
-    const tr = document.createElement('tr');
-    const color = s.percentage >= 80 ? 'var(--success)' : 'var(--danger)';
-    tr.innerHTML = `
-      <td>${s.date}</td>
-      <td><strong>${s.name}</strong></td>
-      <td style="font-size:0.75rem;">${s.moduleShort}</td>
-      <td style="color:${color}; font-weight:bold;">${s.score}/${s.total} (${s.percentage}%)</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-// ================= INITIALISATION =================
 window.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const mode = urlParams.get('mode');
 
-  updateStatsBadge();
-
   if (mode === 'stagiaire') {
     isTrainee = true;
     currentModule = urlParams.get('module') || "RANDOM_20";
-
     document.getElementById('view-trainer').style.display = 'none';
     document.getElementById('view-trainee-welcome').style.display = 'block';
-
     document.getElementById('trainee-assigned-module').textContent = getModuleLabel(currentModule);
   } else {
     isTrainee = false;
     document.getElementById('view-trainer').style.display = 'block';
     document.getElementById('view-trainee-welcome').style.display = 'none';
+    listenToLiveTrainees(); // Écoute temps réel sur l'écran du formateur
   }
 
-  // Formateur
   document.getElementById('btn-show-qr').addEventListener('click', generateAndShowQR);
-  document.getElementById('btn-trainer-play').addEventListener('click', () => {
-    currentModule = document.getElementById('trainer-module-select').value;
-    traineeName = "Formateur";
-    startQuiz();
-  });
-
-  // Modal Stats
-  document.getElementById('btn-open-stats').addEventListener('click', () => {
-    renderStatsModal();
-    document.getElementById('stats-modal').style.display = 'flex';
-  });
-
-  document.getElementById('btn-clear-stats').addEventListener('click', () => {
-    if (confirm("Voulez-vous vraiment effacer tout l'historique des résultats ?")) {
-      localStorage.removeItem('afgsu_quiz_stats');
-      renderStatsModal();
-      updateStatsBadge();
-    }
-  });
-
-  // Stagiaire
+  document.getElementById('btn-clear-session-live').addEventListener('click', clearLiveSession);
+  
   document.getElementById('btn-start-trainee-quiz').addEventListener('click', () => {
     const input = document.getElementById('trainee-initials').value.trim();
     traineeName = input ? input : "Stagiaire";
+    registerTraineeLive(traineeName, getModuleLabel(currentModule));
     startQuiz();
   });
 
-  // Quiz
   document.getElementById('btn-next-question').addEventListener('click', nextQuestion);
   document.getElementById('btn-download-pdf').addEventListener('click', generateAttestationPDF);
-  document.getElementById('btn-restart').addEventListener('click', () => {
-    if (isTrainee) {
-      document.getElementById('view-result').style.display = 'none';
-      document.getElementById('view-trainee-welcome').style.display = 'block';
-    } else {
-      document.getElementById('view-result').style.display = 'none';
-      document.getElementById('view-trainer').style.display = 'block';
-    }
-  });
+  document.getElementById('btn-restart').addEventListener('click', () => location.reload());
 });
 
-// ================= GÉNÉRATION DU QR CODE =================
 function generateAndShowQR() {
   const mod = document.getElementById('trainer-module-select').value;
   const baseUrl = window.location.href.split('?')[0];
@@ -1946,22 +613,8 @@ function generateAndShowQR() {
   document.getElementById('qr-modal').style.display = 'flex';
 }
 
-// ================= DÉROULEMENT DU QUIZ =================
 function startQuiz() {
-  let pool = [];
-
-  if (currentModule === "RANDOM_20") {
-    // 20 questions tirées au sort dans la banque exclusive transversale
-    pool = [...quickQuizBank].sort(() => Math.random() - 0.5).slice(0, 20);
-  } else if (currentModule === "RANDOM_30") {
-    // 30 questions tirées au sort dans la banque exclusive transversale
-    pool = [...quickQuizBank].sort(() => Math.random() - 0.5).slice(0, 30);
-  } else {
-    // Les 20 questions dédiées du module choisi
-    pool = moduleQuestions.filter(q => q.module === currentModule).sort(() => Math.random() - 0.5);
-  }
-
-  // Mélange dynamique des propositions à chaque question
+  let pool = currentModule.startsWith("RANDOM") ? [...quickQuizBank] : [...moduleQuestions];
   questions = pool.map(q => {
     const correctText = q.options[q.answer];
     const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
@@ -1972,11 +625,6 @@ function startQuiz() {
     };
   });
 
-  if (questions.length === 0) {
-    alert("Aucune question trouvée pour ce choix.");
-    return;
-  }
-
   qIndex = 0;
   score = 0;
   wrongs = [];
@@ -1985,26 +633,22 @@ function startQuiz() {
   document.getElementById('view-trainee-welcome').style.display = 'none';
   document.getElementById('view-result').style.display = 'none';
   document.getElementById('view-quiz').style.display = 'block';
-
-  document.getElementById('quiz-user-tag').textContent = traineeName ? `👤 ${traineeName}` : '';
+  document.getElementById('quiz-user-tag').textContent = `👤 ${traineeName}`;
 
   renderQuestion();
 }
 
 function renderQuestion() {
   const q = questions[qIndex];
-  
   const pct = (qIndex / questions.length) * 100;
   document.getElementById('progress-fill').style.width = `${pct}%`;
   document.getElementById('quiz-counter').textContent = `Question ${qIndex + 1} / ${questions.length}`;
-
   document.getElementById('quiz-module-badge').textContent = q.module;
   document.getElementById('quiz-question-text').textContent = q.question;
 
   const container = document.getElementById('options-container');
   container.innerHTML = '';
   document.getElementById('quiz-feedback').style.display = 'none';
-  document.getElementById('quiz-feedback').innerHTML = '';
   document.getElementById('btn-next-question').style.display = 'none';
 
   q.shuffledOptions.forEach((opt, idx) => {
@@ -2028,187 +672,64 @@ function chooseAnswer(idx) {
   } else {
     buttons[idx].classList.add('wrong');
     buttons[q.shuffledAnswer].classList.add('correct');
-    wrongs.push({
-      question: q.question,
-      user: q.shuffledOptions[idx],
-      correct: q.shuffledOptions[q.shuffledAnswer],
-      explanation: q.explanation
-    });
+    wrongs.push({ question: q.question, user: q.shuffledOptions[idx], correct: q.shuffledOptions[q.shuffledAnswer], explanation: q.explanation });
   }
 
-  const diagram = (q.diagram && SVG_DIAGRAMS[q.diagram]) ? SVG_DIAGRAMS[q.diagram] : '';
   const fb = document.getElementById('quiz-feedback');
-  fb.innerHTML = `
-    ${diagram}
-    <strong>Rappel réflexe :</strong> ${q.explanation}
-  `;
+  fb.innerHTML = `<strong>Rappel réflexe :</strong> ${q.explanation}`;
   fb.style.display = 'block';
   document.getElementById('btn-next-question').style.display = 'flex';
 }
 
 function nextQuestion() {
   qIndex++;
-  if (qIndex < questions.length) {
-    renderQuestion();
-  } else {
-    finishQuiz();
-  }
+  if (qIndex < questions.length) renderQuestion();
+  else finishQuiz();
 }
 
 function finishQuiz() {
   document.getElementById('view-quiz').style.display = 'none';
   document.getElementById('view-result').style.display = 'block';
 
-  document.getElementById('final-score').textContent = `${score}/${questions.length}`;
   const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('final-score').textContent = `${score}/${questions.length}`;
+  document.getElementById('result-user-title').textContent = `Bilan de ${traineeName}`;
 
-  document.getElementById('result-user-title').textContent = traineeName ? `Bilan de ${traineeName}` : "Bilan de l'évaluation";
-  
   const msg = document.getElementById('score-msg');
   if (pct >= 80) {
-    msg.innerHTML = "🌟 <strong>Félicitations !</strong> Objectifs AFGSU atteints.";
-    if (typeof confetti === 'function') {
-      confetti({
-        particleCount: 90,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    }
-  } else if (pct >= 60) {
-    msg.innerHTML = "👍 <strong>Bon travail !</strong> Quelques révisions conseillées pour consolider vos réflexes.";
+    msg.innerHTML = "🌟 <strong>Félicitations !</strong> Objectifs validés.";
+    if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
   } else {
-    msg.innerHTML = "⚠️ <strong>Révision vivement conseillée</strong> sur les points clés.";
+    msg.innerHTML = "⚠️ <strong>Révision conseillée</strong> sur les points clés.";
   }
 
-  // Enregistrement des statistiques
-  const now = new Date();
-  const dateStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-  saveResultToStats({
-    date: dateStr,
-    name: traineeName || "Anonyme",
-    module: getModuleLabel(currentModule),
-    moduleShort: currentModule.replace('Module ', 'M'),
-    score: score,
-    total: questions.length,
-    percentage: pct
-  });
-
-  const review = document.getElementById('review-container');
-  review.innerHTML = '';
-  if (wrongs.length > 0) {
-    const t = document.createElement('h3');
-    t.style.cssText = "font-size: 0.95rem; text-align: left; margin: 12px 0 8px 0;";
-    t.textContent = "Points à retravailler :";
-    review.appendChild(t);
-
-    wrongs.forEach(w => {
-      const d = document.createElement('div');
-      d.className = 'review-box';
-      d.innerHTML = `
-        <strong>${w.question}</strong><br>
-        <span style="color: var(--danger);">✖ Réponse donnée : ${w.user}</span><br>
-        <span style="color: var(--success);">✔ Réponse attendue : ${w.correct}</span><br>
-        <em style="color: var(--text-muted);">${w.explanation}</em>
-      `;
-      review.appendChild(d);
-    });
-  }
+  // Remontée automatique du score final dans la console du formateur
+  updateTraineeScoreLive(score, questions.length, pct);
 }
 
-// ================= GÉNÉRATION DU PDF (ATTESTATION) =================
 function generateAttestationPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({
-    orientation: 'landscape',
-    unit: 'mm',
-    format: 'a4'
-  });
-
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
   const pct = Math.round((score / questions.length) * 100);
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+  const dateStr = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
 
-  // Bordures
-  doc.setDrawColor(2, 132, 199);
-  doc.setLineWidth(2);
-  doc.rect(10, 10, 277, 190);
+  doc.setDrawColor(2, 132, 199); doc.setLineWidth(2); doc.rect(10, 10, 277, 190);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(15, 23, 42);
+  doc.text("ATTESTATION DE RÉUSSITE - AFGSU", 148.5, 42, { align: "center" });
 
-  doc.setDrawColor(226, 232, 240);
-  doc.setLineWidth(0.5);
-  doc.rect(14, 14, 269, 182);
+  doc.setFontSize(14); doc.setFont("helvetica", "normal"); doc.setTextColor(51, 65, 85);
+  doc.text(`Délivrée à : ${traineeName}`, 148.5, 75, { align: "center" });
+  doc.text(`Score validé : ${score} / ${questions.length} (${pct}%)`, 148.5, 95, { align: "center" });
 
-  // En-tête
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(2, 132, 199);
-  doc.text("FORMATION AUX GESTES ET SOINS D'URGENCE (AFGSU)", 148.5, 26, { align: "center" });
-
-  doc.setFontSize(22);
-  doc.setTextColor(15, 23, 42);
-  doc.text("ATTESTATION DE RÉUSSITE AU QUIZ D'ÉVALUATION", 148.5, 42, { align: "center" });
-
-  doc.setFontSize(11);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(100, 116, 139);
-  doc.text("Délivrée dans le cadre du contrôle continu et de l'entraînement aux réflexes d'urgence", 148.5, 50, { align: "center" });
-
-  doc.setDrawColor(2, 132, 199);
-  doc.setLineWidth(1);
-  doc.line(80, 56, 217, 56);
-
-  // Nom de l'apprenant
-  doc.setFontSize(13);
-  doc.setTextColor(51, 65, 85);
-  doc.text("Ce document atteste que le stagiaire :", 148.5, 72, { align: "center" });
-
-  doc.setFontSize(20);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(2, 132, 199);
-  doc.text(traineeName || "Stagiaire AFGSU", 148.5, 84, { align: "center" });
-
-  // Détails de la session
-  doc.setFontSize(12);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(51, 65, 85);
-  doc.text(`A validé avec succès la session d'évaluation suivante :`, 148.5, 98, { align: "center" });
-
-  doc.setFont("helvetica", "bold");
-  doc.text(`${getModuleLabel(currentModule)}`, 148.5, 106, { align: "center" });
-
-  // Résultat
-  doc.setFillColor(241, 245, 249);
-  doc.roundedRect(88, 116, 121, 26, 4, 4, "F");
-  
-  doc.setFontSize(13);
-  doc.setTextColor(15, 23, 42);
-  doc.text(`Score obtenu : ${score} / ${questions.length} (${pct}%)`, 148.5, 132, { align: "center" });
-
-  // Signature
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(100, 116, 139);
-  doc.text(`Fait le ${dateStr}`, 30, 160);
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(15, 23, 42);
+  doc.setFontSize(10); doc.text(`Fait le ${dateStr}`, 30, 160);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(11);
   doc.text("Alain VALARCHER", 215, 153, { align: "center" });
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(71, 85, 105);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(8.5);
   doc.text("Formateur AFGSU | CESU 94 | Croix-Rouge Française", 215, 159, { align: "center" });
   doc.text("Ambulancier SMUR – SAMU 91", 215, 164, { align: "center" });
 
-  doc.setFont("helvetica", "italic");
-  doc.setFontSize(8);
-  doc.setTextColor(148, 163, 184);
-  doc.text("Validation pédagogique", 215, 171, { align: "center" });
-
-  const cleanName = (traineeName || "Stagiaire").replace(/[^a-zA-Z0-9]/g, "_");
-  doc.save(`Attestation_AFGSU_${cleanName}.pdf`);
+  doc.save(`Attestation_AFGSU_${traineeName.replace(/\s+/g, '_')}.pdf`);
 }
 </script>
-
 </body>
 </html>
